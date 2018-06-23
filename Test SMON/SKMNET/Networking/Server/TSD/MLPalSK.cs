@@ -19,15 +19,15 @@ namespace SKMNET.Networking.Server.TSD
 
         public override Header ParseHeader(byte[] data)
         {
-            command = BitConverter.ToUInt16(data, 0);
-            palno = BitConverter.ToUInt16(data, 2);
-            mpaltype = BitConverter.ToUInt16(data, 4);
-            last = BitConverter.ToUInt16(data, 6) != 0;
-            skcount = BitConverter.ToUInt16(data, 8);
+            command = ByteUtils.ToUShort(data, 0);
+            palno = ByteUtils.ToUShort(data, 2);
+            mpaltype = ByteUtils.ToUShort(data, 4);
+            last = ByteUtils.ToUShort(data, 6) != 0;
+            skcount = ByteUtils.ToUShort(data, 8);
             skTable = new ushort[skcount];
             for(int i = 0; i < skcount; i++)
             {
-                skTable[i] = BitConverter.ToUInt16(data, i * 2 + HeaderLength);
+                skTable[i] = ByteUtils.ToUShort(data, i * 2 + HeaderLength);
             }
             return this;
         }

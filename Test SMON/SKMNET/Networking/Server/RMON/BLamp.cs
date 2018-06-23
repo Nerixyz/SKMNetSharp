@@ -6,18 +6,24 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.RMON
 {
+    [Serializable]
     class BLamp : Header
     {
         public override int HeaderLength => 0;
 
-        public byte[] lampStates;
+        public State[] lampStates;
 
         public override Header ParseHeader(byte[] data)
         {
-            lampStates = (byte[])data.Clone();
+            lampStates = new State[data.Length];
+            for(int i = 0; i < data.Length; i++)
+            {
+                lampStates[i] = (State)Enum.ToObject(typeof(State), data[i]);
+            }
             return this;
         }
 
+        [Serializable]
         public enum State
         {
             Aus,

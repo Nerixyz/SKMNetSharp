@@ -17,14 +17,14 @@ namespace SKMNET.Networking.Server.TSD
 
         public override Header ParseHeader(byte[] data)
         {
-            command = BitConverter.ToUInt16(data, 0);
-            count = BitConverter.ToUInt16(data, 2);
+            command = ByteUtils.ToUShort(data, 0);
+            count = ByteUtils.ToUShort(data, 2);
             dmxLines = new DMXDataEntry[count];
             for(int i = 0; i < count; i++)
             {
                 byte[] dmxData = new byte[512];
                 Array.Copy(data, i * 514 + 6, data, 0, 512);
-                dmxLines[i] = new DMXDataEntry(BitConverter.ToUInt16(data, i * 514 + 4), dmxData);
+                dmxLines[i] = new DMXDataEntry(ByteUtils.ToUShort(data, i * 514 + 4), dmxData);
             }
             return this;
         }

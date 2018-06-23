@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET
 {
+    [Serializable]
     class MLPal
     {
         public ushort paltype;

@@ -16,9 +16,9 @@ namespace SKMNET.Networking.Server.ISKMON
 
         public override Header ParseHeader(byte[] data)
         {
-            command = BitConverter.ToUInt16(data, 0);
-            flags = BitConverter.ToUInt16(data, 2);
-            linetext = Encoding.ASCII.GetString(data, 4, 48);
+            command = ByteUtils.ToUShort(data, 0);
+            flags = ByteUtils.ToUShort(data, 2);
+            linetext = ByteUtils.ToString(data, 4, 48);
             return this;
         }
 

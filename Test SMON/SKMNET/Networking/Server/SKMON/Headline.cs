@@ -19,9 +19,9 @@ namespace SKMNET.Networking.Server.SKMON
 
         public override Header ParseHeader(byte[] data)
         {
-            farbno = BitConverter.ToUInt16(data, 0);
-            count = BitConverter.ToUInt16(data, 2);
-            this.data = Encoding.ASCII.GetString(data, 4, count);
+            farbno = ByteUtils.ToUShort(data, 0);
+            count = ByteUtils.ToUShort(data, 2);
+            this.data = ByteUtils.ToString(data, 4, count);
             return this;
         }
     }

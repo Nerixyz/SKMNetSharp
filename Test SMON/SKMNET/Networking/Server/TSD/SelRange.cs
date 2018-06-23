@@ -22,14 +22,14 @@ namespace SKMNET.Networking.Server.TSD
 
         public override Header ParseHeader(byte[] data)
         {
-            command = BitConverter.ToUInt16(data, 0);
-            fixture = BitConverter.ToUInt16(data, 2);
-            fixpar = BitConverter.ToUInt16(data, 4);
-            val16 = BitConverter.ToUInt16(data, 6);
-            res1 = BitConverter.ToUInt16(data, 8);
-            res2 = BitConverter.ToUInt16(data, 10);
-            last = BitConverter.ToUInt16(data, 12) != 0;
-            count = BitConverter.ToUInt16(data, 14);
+            command = ByteUtils.ToUShort(data, 0);
+            fixture = ByteUtils.ToUShort(data, 2);
+            fixpar = ByteUtils.ToUShort(data, 4);
+            val16 = ByteUtils.ToUShort(data, 6);
+            res1 = ByteUtils.ToUShort(data, 8);
+            res2 = ByteUtils.ToUShort(data, 10);
+            last = ByteUtils.ToUShort(data, 12) != 0;
+            count = ByteUtils.ToUShort(data, 14);
             arr = new SelRangeData[count];
             for(int i = 0; i < count; i++)
             {
@@ -38,9 +38,9 @@ namespace SKMNET.Networking.Server.TSD
                     data[i * 16 + 17],
                     data[i * 16 + 18],
                     data[i * 16 + 19],
-                    BitConverter.ToUInt16(data, i * 16 + 20),
-                    BitConverter.ToUInt16(data, i * 16 + 22),
-                    Encoding.ASCII.GetString(data, i * 16 + 24, 8));
+                    ByteUtils.ToUShort(data, i * 16 + 20),
+                    ByteUtils.ToUShort(data, i * 16 + 22),
+                    ByteUtils.ToString(data, i * 16 + 24, 8));
             }
             return this;
         }

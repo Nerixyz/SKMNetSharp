@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.TSD
 {
+    [Serializable]
     class SelPar : Header
     {
-        public override int HeaderLength => 16;
-
-        public ushort command;
+        public override int HeaderLength => 14;
+        
         public ushort fixture;
         public string fixtureName;
         public bool last;
@@ -19,26 +19,26 @@ namespace SKMNET.Networking.Server.TSD
 
         public override Header ParseHeader(byte[] data)
         {
-            command = BitConverter.ToUInt16(data, 0);
-            fixture = BitConverter.ToUInt16(data, 2);
-            fixtureName = Encoding.ASCII.GetString(data, 4, 8);
-            last = BitConverter.ToUInt16(data, 12) != 0;
-            count = BitConverter.ToUInt16(data, 14);
+            fixture = ByteUtils.ToUShort(data, 0);
+            fixtureName = ByteUtils.ToString(data, 2, 8);
+            last = ByteUtils.ToUShort(data, 10) != 0;
+            count = ByteUtils.ToUShort(data, 12);
             parameters = new SelParData[count];
             const byte DATA_ENTRY_LENGTH = 28;
             for(int i = 0; i < count; i++)
             {
                 parameters[i] = new SelParData(
-                    BitConverter.ToInt16(data, i * DATA_ENTRY_LENGTH + HeaderLength),
-                    BitConverter.ToUInt16(data, i * DATA_ENTRY_LENGTH + HeaderLength + 2),
-                    Encoding.ASCII.GetString(data, i * DATA_ENTRY_LENGTH + HeaderLength + 4, 8),
-                    Encoding.ASCII.GetString(data, i * DATA_ENTRY_LENGTH + HeaderLength + 12, 8),
-                    Encoding.ASCII.GetString(data, i * DATA_ENTRY_LENGTH + HeaderLength + 20, 8));
+                    ByteUtils.ToShort(data, i * DATA_ENTRY_LENGTH + HeaderLength),
+                    ByteUtils.ToUShort(data, i * DATA_ENTRY_LENGTH + HeaderLength + 2),
+                    ByteUtils.ToString(data, i * DATA_ENTRY_LENGTH + HeaderLength + 4, 8),
+                    ByteUtils.ToString(data, i * DATA_ENTRY_LENGTH + HeaderLength + 12, 8),
+                    ByteUtils.ToString(data, i * DATA_ENTRY_LENGTH + HeaderLength + 20, 8));
 
             }
             return this;
         }
 
+        [Serializable]
         public class SelParData
         {
             /// <summary>

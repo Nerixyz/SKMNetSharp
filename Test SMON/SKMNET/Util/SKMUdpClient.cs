@@ -56,7 +56,6 @@ namespace SKMNET.Util
 
         public void SendData(byte[] data)
         {
-            Console.WriteLine(endPoint.ToString() + " sent data: " + ByteUtils.ArrayToString(data));
             baseClient.Send(data, data.Length);
         }
 

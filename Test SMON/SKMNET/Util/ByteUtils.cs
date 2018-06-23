@@ -35,5 +35,17 @@ namespace SKMNET
         {
             return (short)(arr[start] << 8 | arr[start + 1]);
         }
+
+        public static uint ToUInt(byte[] arr, int start)
+        {
+            return (uint) (arr[start] << 24 | arr[start + 1] << 16 | arr[start + 2] << 8 | arr[start + 3]);
+        }
+
+        public static string ToString(byte[] arr, int index, int count)
+        {
+            string stage0 = Encoding.ASCII.GetString(arr, index, count);
+            return stage0.Replace("\u0000", string.Empty);
+        }
+
     }
 }

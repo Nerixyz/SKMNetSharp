@@ -16,8 +16,8 @@ namespace SKMNET.Networking.Server.SKMON
 
         public override Header ParseHeader(byte[] data)
         {
-            start = BitConverter.ToUInt16(data, 0);
-            count = BitConverter.ToUInt16(data, 2);
+            start = ByteUtils.ToUShort(data, 0);
+            count = ByteUtils.ToUShort(data, 2);
             this.data = new byte[count];
             for(int i = 0; i < count; i++)
             {

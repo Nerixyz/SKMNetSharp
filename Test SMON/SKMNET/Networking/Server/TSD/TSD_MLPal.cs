@@ -7,23 +7,23 @@ using SKMNET.Util;
 
 namespace SKMNET.Networking.Server.TSD
 {
+    [Serializable]
     class TSD_MLPal : Header
     {
-        public override int HeaderLength => 8;
-
-        public ushort command; /* = SKMON_TSD_MLPAL */
+        public override int HeaderLength => 6;
+       
         public MLPal[] pallets;
         public bool last;
         
         public override Header ParseHeader(byte[] data)
         {
-            ushort type = BitConverter.ToUInt16(data, 2);
-            ushort count = BitConverter.ToUInt16(data, 6);
-            last = BitConverter.ToUInt16(data, 4) != 0;
+            ushort type = ByteUtils.ToUShort(data, 0);
+            ushort count = ByteUtils.ToUShort(data, 4);
+            last = ByteUtils.ToUShort(data, 2) != 0;
             pallets = new MLPal[count];
             for (int i = 0; i < count; i++)
             {
-                pallets[i] = new MLPal(type, BitConverter.ToInt16(data, i * 10 + 8), Encoding.ASCII.GetString(data, i * 10 + 10, 8));
+                pallets[i] = new MLPal(type, ByteUtils.ToShort(data, i * 10 + 6), ByteUtils.ToString(data, i * 10 + 8, 8));
             }
             return this;
         }

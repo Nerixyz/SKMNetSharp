@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.ISKMON
 {
+    [Serializable]
     class SKGConf : Header
     {
         public override int HeaderLength => 4;
-        public ushort command;
         public ushort count;
         public SKGConfEntry[] entries;
 
         public override Header ParseHeader(byte[] data)
         {
-            command = BitConverter.ToUInt16(data, 0);
-            count = BitConverter.ToUInt16(data, 2);
+            count = ByteUtils.ToUShort(data, 0);
             entries = new SKGConfEntry[count];
             for(int i = 0; i < count; i++)
             {
-                entries[i] = new SKGConfEntry(BitConverter.ToUInt16(data, i * 10 + 4), Encoding.ASCII.GetString(data, i * 10 + 6, 8));
+                entries[i] = new SKGConfEntry(ByteUtils.ToUShort(data, i * 10 + 2), ByteUtils.ToString(data, i * 10 + 4, 8));
             }
             return this;
         }
 
+        [Serializable]
         public class SKGConfEntry
         {
             public ushort skgnum;

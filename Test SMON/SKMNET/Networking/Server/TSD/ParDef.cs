@@ -17,18 +17,18 @@ namespace SKMNET.Networking.Server.TSD
 
         public override Header ParseHeader(byte[] data)
         {
-            command = BitConverter.ToUInt16(data, 0);
-            last = BitConverter.ToUInt16(data, 2) != 0;
-            count = BitConverter.ToUInt16(data, 4);
+            command = ByteUtils.ToUShort(data, 0);
+            last = ByteUtils.ToUShort(data, 2) != 0;
+            count = ByteUtils.ToUShort(data, 4);
             arr = new ParDefData[count];
             for(int i = 0; i < count; i++)
             {
                 arr[i] = new ParDefData(
-                    BitConverter.ToInt16(data, i * 16 + HeaderLength),
-                    BitConverter.ToInt16(data, i * 16 + HeaderLength + 2),
-                    BitConverter.ToInt16(data, i * 16 + HeaderLength + 4),
-                    BitConverter.ToInt16(data, i * 16 + HeaderLength + 6),
-                    Encoding.ASCII.GetString(data, i * 16 + HeaderLength + 8, 8));
+                    ByteUtils.ToShort(data, i * 16 + HeaderLength),
+                    ByteUtils.ToShort(data, i * 16 + HeaderLength + 2),
+                    ByteUtils.ToShort(data, i * 16 + HeaderLength + 4),
+                    ByteUtils.ToShort(data, i * 16 + HeaderLength + 6),
+                    ByteUtils.ToString(data, i * 16 + HeaderLength + 8, 8));
             }
             return this;
         }

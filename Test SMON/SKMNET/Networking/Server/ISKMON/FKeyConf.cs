@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.ISKMON
 {
+    [Serializable]
     class FKeyConf : Header
     {
         public override int HeaderLength => 4;
@@ -16,16 +17,16 @@ namespace SKMNET.Networking.Server.ISKMON
 
         public override Header ParseHeader(byte[] data)
         {
-            cmd = BitConverter.ToUInt16(data, 0);
-            count = BitConverter.ToUInt16(data, 2);
+            count = ByteUtils.ToUShort(data, 0);
             entries = new FKeyConfEntry[count];
             for(int i = 0; i < count; i++)
             {
-                entries[i] = new FKeyConfEntry(BitConverter.ToUInt16(data, i * 24 + 4), Encoding.ASCII.GetString(data, i * 24 + 4 + 2, 22));
+                entries[i] = new FKeyConfEntry(ByteUtils.ToUShort(data, i * 24 + 2), ByteUtils.ToString(data, i * 24 + 2 + 2, 22));
             }
             return this;
         }
 
+        [Serializable]
         public class FKeyConfEntry
         {
             public ushort fkeynr;

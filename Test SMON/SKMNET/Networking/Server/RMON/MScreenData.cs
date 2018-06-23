@@ -21,13 +21,13 @@ namespace SKMNET.Networking.Server.RMON
 
         public override Header ParseHeader(byte[] data)
         {
-            monitor = BitConverter.ToUInt16(data, 0);
-            start = BitConverter.ToUInt16(data, 2);
-            count = BitConverter.ToUInt16(data, 4);
+            monitor = ByteUtils.ToUShort(data, 0);
+            start = ByteUtils.ToUShort(data, 2);
+            count = ByteUtils.ToUShort(data, 4);
 
             this.data = new ushort[count];
             for(int i = 0; i < count; i++){
-                this.data[i] = BitConverter.ToUInt16(data, 6 + i * 2);
+                this.data[i] = ByteUtils.ToUShort(data, 6 + i * 2);
             }
 
             return this;

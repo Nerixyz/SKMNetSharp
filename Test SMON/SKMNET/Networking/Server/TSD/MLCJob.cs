@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.TSD
 {
+    [Serializable]
     class MLCJob : Header
     {
-        public override int HeaderLength => throw new NotImplementedException();
-
-        public ushort command; /* = SKMON_MLC_JOB */
+        public override int HeaderLength => 18;
+        
         public ushort job;
         public uint par1;
         public uint par2;
@@ -22,14 +22,13 @@ namespace SKMNET.Networking.Server.TSD
 
         public override Header ParseHeader(byte[] data)
         {
-            command = BitConverter.ToUInt16(data, 0);
-            job = BitConverter.ToUInt16(data, 2);
-            par1 = BitConverter.ToUInt32(data, 4);
-            par2 = BitConverter.ToUInt32(data, 8);
-            par3 = BitConverter.ToUInt32(data, 12);
-            res1 = BitConverter.ToUInt16(data, 16);
-            count = BitConverter.ToUInt16(data, 18);
-            buf = Encoding.ASCII.GetString(data, 20, count);
+            job = ByteUtils.ToUShort(data, 0);
+            par1 = ByteUtils.ToUInt(data, 2);
+            par2 = ByteUtils.ToUInt(data, 6);
+            par3 = ByteUtils.ToUInt(data, 10);
+            res1 = ByteUtils.ToUShort(data, 14);
+            count = ByteUtils.ToUShort(data, 16);
+            buf = ByteUtils.ToString(data, 18, count);
             return this;
         }
 

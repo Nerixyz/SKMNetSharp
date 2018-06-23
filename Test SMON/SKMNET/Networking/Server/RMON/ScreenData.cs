@@ -37,12 +37,12 @@ namespace SKMNET.Networking.Server
 
         public override Header ParseHeader(byte[] data)
         {
-            this.start = BitConverter.ToUInt16(data, 0);
-            this.count = BitConverter.ToUInt16(data, 2);
+            this.start = ByteUtils.ToUShort(data, 0);
+            this.count = ByteUtils.ToUShort(data, 2);
             this.data = new ushort[count];
             for (int i = 0; i < count; i++)
             {
-                this.data[i] = BitConverter.ToUInt16(data, 4 + i * 2);
+                this.data[i] = ByteUtils.ToUShort(data, 4 + i * 2);
             }
             return this;
         }

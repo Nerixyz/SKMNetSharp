@@ -11,35 +11,34 @@ namespace SKMNET.Networking.Server
         public override int HeaderLength => 4;
 
         public BTastConfEntry[] entries;
-        public ushort cmd;
         public ushort count;
 
         public override Header ParseHeader(byte[] data)
         {
-            cmd = BitConverter.ToUInt16(data, 0);
-            count = BitConverter.ToUInt16(data, 2);
+            count = ByteUtils.ToUShort(data, 0);
             entries = new BTastConfEntry[count];
             for(int i = 0; i < count; i++)
             {
-                entries[i] = new BTastConfEntry(BitConverter.ToUInt16(data, i * 8), Encoding.ASCII.GetString(data, i * 8 + 2, 6));
+                entries[i] = new BTastConfEntry(ByteUtils.ToUShort(data, i * 8), ByteUtils.ToString(data, i * 8 + 2, 6));
             }
             return this;
         }
 
+        [Serializable]
         public class BTastConfEntry
         {
-            public ushort tastnr;
-            public string name;
+            public ushort Tastnr { get; }
+            public string Name { get; }
 
             public BTastConfEntry(ushort tastnr, string name)
             {
-                this.tastnr = tastnr;
-                this.name = name;
+                this.Tastnr = tastnr;
+                this.Name = name;
             }
 
             public ushort GetNumber()
             {
-                return (ushort)( tastnr & 0x3fff);
+                return (ushort)( Tastnr & 0x3fff);
             }
         }
     }

@@ -17,13 +17,13 @@ namespace SKMNET.Networking.Server.T98
 
         public override Header ParseHeader(byte[] data)
         {
-            start = BitConverter.ToUInt16(data, 0);
-            update = BitConverter.ToUInt16(data, 2) != 0x0;
-            count = BitConverter.ToUInt16(data, 4);
+            start = ByteUtils.ToUShort(data, 0);
+            update = ByteUtils.ToUShort(data, 2) != 0x0;
+            count = ByteUtils.ToUShort(data, 4);
             this.data = new ushort[count];
             for (int i = 0; i < count; i++)
             {
-                this.data[i] = BitConverter.ToUInt16(data, i * 2 + 6);
+                this.data[i] = ByteUtils.ToUShort(data, i * 2 + 6);
             }
             return this;
         }
