@@ -31,7 +31,6 @@ namespace SKMNET.Util
                         byte[] data = baseClient.Receive(ref endPoint);
                         if(data != null)
                         {
-                            Console.WriteLine(endPoint.ToString() + " got data: " + ByteUtils.ArrayToString(data));
                             OnRecieveBasePort(data);
                         }
                     }

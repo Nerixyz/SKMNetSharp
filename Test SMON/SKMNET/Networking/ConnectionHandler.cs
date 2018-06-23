@@ -17,23 +17,21 @@ namespace SKMNET.Networking
     {
         const ushort MAGIC_NUMBER = 0x1fe2;
         SKMUdpClient sender;
-        SKMUdpClient reciever;
-        LightingConsole console;
+        RecieveClient reciever;
+        readonly LightingConsole console;
         Thread syncThread;
-        Thread recSendThread;
-        DateTime lastResponse;
+        readonly DateTime lastResponse;
 
         public ConnectionHandler(string ipAdress, LightingConsole parent)
         {
             this.console = parent;
             this.sender = new SKMUdpClient(new IPEndPoint(IPAddress.Parse(ipAdress), 5063));
-            this.reciever = new SKMUdpClient(new IPEndPoint(IPAddress.Parse(ipAdress), 5064));
+            this.reciever = new RecieveClient();
             this.sender.Recieve += Sender_Recieve;
             this.sender.Errored += Sender_Errored;
             this.sender.Start();
             this.reciever.Recieve += Reciever_Recieve;
             this.reciever.Errored += Reciever_Errored;
-            this.reciever.Start();
             SendPacket(new SKMSync(-1));
             syncThread = new Thread(() =>
             {
@@ -49,23 +47,24 @@ namespace SKMNET.Networking
             throw e;
         }
 
-        private void Reciever_Recieve(object sender, byte[] e)
+        private void Reciever_Recieve(object sender, RecieveClient.RecieveEventArgs args)
         {
+            byte[] e = args.Data;
             short type = BitConverter.ToInt16(e, 0);
-            byte[] data = null;
+            byte[] data = new byte[e.Length - 2];
             if (e.Length > 2)
             {
                 Array.Copy(e, 2, data, 0, e.Length - 2);
             }
 
-            if (Enum.IsDefined(typeof(Enums.Type), type)){
-                RespondInc(SKMON_RES.OK);
+            if (Enum.IsDefined(typeof(Enums.Type), (int)type)){
+                args.ResponseCode = Enums.Response.OK;
                 Enums.Type t = (Enums.Type)type;
                 switch (t)
                 {
                     case Enums.Type.Sync:
                         {
-                            RespondInc(SKMON_RES.OK);
+                            args.ResponseCode = Enums.Response.OK;
                             break;
                         }
                     case Enums.Type.ScreenData:
@@ -200,14 +199,14 @@ namespace SKMNET.Networking
                         }
                     default:
                         {
-                            RespondInc(SKMON_RES.BAD_CMD);
+                            args.ResponseCode = Enums.Response.BadCmd;
                             break;
                         }
                 }
             }
             else
             {
-                RespondInc(SKMON_RES.BAD_CMD);
+                args.ResponseCode = Enums.Response.BadCmd;
             }
         }
 
@@ -218,10 +217,7 @@ namespace SKMNET.Networking
 
         private void Sender_Recieve(object sender, byte[] e)
         {
-            if (e[0] == 0x0)
-                RespondInc(SKMON_RES.OK);
-            else
-                throw new Exception("not implemented");
+            
         }
 
         public void SendData(ISendable data)
@@ -252,19 +248,6 @@ namespace SKMNET.Networking
                 }
             }
             throw new Exception("No network adapters with an IPv4 address in the system!");
-        }
-
-        public void RespondInc(SKMON_RES response)
-        {
-            if (recSendThread == null || recSendThread.ThreadState == ThreadState.Stopped)
-            {
-                recSendThread = new Thread(() =>
-                {
-                    reciever.SendData(new ByteArrayParser().Add((short)response).GetArray());
-                    Thread.Sleep(100);
-                });
-                recSendThread.Start();
-            }
         }
 
         public enum SKMON_RES

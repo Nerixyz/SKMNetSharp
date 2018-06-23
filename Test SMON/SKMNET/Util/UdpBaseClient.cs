@@ -12,8 +12,8 @@ namespace SKMNET.Util
     class UdpBaseClient
     {
         Socket socket;
-        IPEndPoint endPoint;
-        Thread readThread;
+        readonly IPEndPoint endPoint;
+        readonly Thread readThread;
 
         public UdpBaseClient(IPEndPoint dst)
         {

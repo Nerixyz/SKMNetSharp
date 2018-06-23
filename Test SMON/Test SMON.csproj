@@ -91,6 +91,7 @@
     <Compile Include="SKMNET\Util\ByteArrayParser.cs" />
     <Compile Include="SKMNET\Util\ByteUtils.cs" />
     <Compile Include="SKMNET\Util\ISendable.cs" />
+    <Compile Include="SKMNET\Util\RecieveClient.cs" />
     <Compile Include="SKMNET\Util\SKMUdpClient.cs" />
     <Compile Include="SKMNET\Util\UdpBaseClient.cs" />
     <Compile Include="SKMNET\VideoFarbe.cs" />
