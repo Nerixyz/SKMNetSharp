@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Header
+namespace SKMNET.Networking.Server
 {
     /// <summary>
     /// SKMON_SCREEN_DATA - Bildschirmdaten.
@@ -35,26 +35,14 @@ namespace SKMNET.Header
         /// </summary>
         public ushort[] data;
 
-        public override byte[] ParseData()
-        {
-            List<byte> bytes = new List<byte>(HeaderLength + data.Length * 2);
-            bytes.AddRange(BitConverter.GetBytes(start));
-            bytes.AddRange(BitConverter.GetBytes(count));
-            foreach(ushort us in data)
-            {
-                bytes.AddRange(BitConverter.GetBytes(us));
-            }
-            return bytes.ToArray();
-        }
-
         public override Header ParseHeader(byte[] data)
         {
             this.start = BitConverter.ToUInt16(data, 0);
             this.count = BitConverter.ToUInt16(data, 2);
-            this.data = new ushort[count * 2];
-            for(int i = 0; i < count; i++)
+            this.data = new ushort[count];
+            for (int i = 0; i < count; i++)
             {
-                this.data[i] = data[i * 2 + 4];
+                this.data[i] = BitConverter.ToUInt16(data, 4 + i * 2);
             }
             return this;
         }

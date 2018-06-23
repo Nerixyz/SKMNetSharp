@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Header
+namespace SKMNET.Client
 {
-    class PalData
+    class LightingConsole
     {
     }
 }

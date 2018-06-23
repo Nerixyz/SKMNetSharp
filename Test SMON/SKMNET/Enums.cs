@@ -8,7 +8,7 @@ namespace SKMNET
 {
     class Enums
     {
-        enum Type
+        public enum Type
         {
             // #define SKMON_X
             /* von RMON übernommene Telegramme */
@@ -16,7 +16,7 @@ namespace SKMNET
             ScreenData           ,   /* Bildschirmdaten */
             PalData              ,   /* Palettendaten (Komplett-Telegramm) */
             ReadKey              ,   /* Keyboard Eingabe abholen */
-            Pipes                ,   /* Piepsen */
+            Pieps                ,   /* Piepsen */
             BLamp                ,   /* Lampendaten fuer Bedientasten (Komplett-Telegramm) */
             ACK_Reset            ,   /* Auf das RESET wurde ein vollständiges Update gesendet */
 
@@ -88,7 +88,7 @@ namespace SKMNET
 
             // Telegramme 200-299 reserviert fuer Libra-Kommunikation
         }
-        enum Response
+        public enum Response
         {
             // #define SKMON_RES_X
             // Ergebniskennungen auf ein SKMON-Telegramm
@@ -98,6 +98,94 @@ namespace SKMNET
             BadCmd          , /* Falsches Kommando */
             Offline         , /* Client kann nicht ausgeben */
         }
+        public enum Pal
+        {
+            /* Systemfarben werden 1:1 aus der Anlagenpalette (pal.h) uebernommen */
+            Bef = 8,   /* Befehls- und Meldezeile */
+            RegHead = 13,   /* Aktuellzeile */
+            RegHeadAW,   /* Aktuellzeile angewaehlt */
 
+            /* Paletteneintraege fuer die SK- und Wertezeilen. */
+            SKNorm = 24,   /* Stromkreisnummer, nicht angewaehlt */
+            SKAnw,   /* Stomkreisnummer, angewaehlt */
+            ValNorm,   /* Stromkreiswert normal */
+            ValBld,   /* Stromkreiswert blind */
+            ValSkuErr,   /* Stromkreiswert bei SKU-Fehler */
+            /* Erweiterungen fuer ISKMON */
+            ButtonNorm,   /* Bedientaste normal (Lampe aus) */
+            ButtonLED,   /* Bedientaste mit Lampe ein */
+            FKey,   /* Funktionstaste */
+            ValMas,   /* Stromkreiswert in der Maske */
+            SKG,   /* Stromkreisgruppenfeld*/
+        }
+        public enum SkAttribute
+        {
+            /// <summary>
+            /// Sk-Angewählt
+            /// </summary>
+            AW = 0x01,
+            /// <summary>
+            /// SKU-Fehler
+            /// </summary>
+            SKU = 0x02,
+            /// <summary>
+            /// SK in Maske
+            /// </summary>
+            MAS = 0x04,
+            /// <summary>
+            /// SK an Register beteiligt
+            /// </summary>
+            BET = 0x08,
+            /// <summary>
+            /// Dimmerwert geändert
+            /// </summary>
+            MOD = 0x10,
+            /// <summary>
+            /// SK Gesperrt
+            /// </summary>
+            SPERR = 0x20,
+            /// <summary>
+            /// SK wird heller
+            /// </summary>
+            HE = 0x40,
+            /// <summary>
+            /// SK wird dunkler
+            /// </summary>
+            DU = 0x80
+        }
+        public enum OVDisp
+        {
+            Normal,
+            FF,
+            FL
+        }
+        public enum SKCmd
+        {
+            PGUp = 1,
+            PGDown,
+            Home,
+            End
+        }
+        public enum SelRangeFlags
+        {
+            SetPoint        = 0x01,     /* nur Setwert, kein linearer Bereich */
+            EncoderSkip     = 0x02,     /* Bereich wird bei Encoder uebersprungen */
+            DMXVal          = 0x04,     /* absoluten DMX-Wert darstellen */
+            RelVal          = 0x08,     /* relativen Prozentwert darstellen */
+        }
+        public enum SelRangeDisp
+        {
+            Normal  ,       /* Standard: 0..100 (%) */
+            DMX     ,       /* DMX-Wert: 000..255 */
+            Pos     ,       /* normierte Darstellung -99.9 .. +99.9 */
+            L16     ,       /* 0..65565 */
+        }
+        public enum FixParDst
+        {
+            Current = 0,
+            SKMON =  1001,
+            Voyager,
+            ShowDesigner,
+        }
     }
 }
