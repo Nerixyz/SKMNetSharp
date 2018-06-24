@@ -10,8 +10,7 @@ namespace SKMNET.Networking.Server.ISKMON
     class FKeyConf : Header
     {
         public override int HeaderLength => 4;
-
-        public ushort cmd;
+        
         public ushort count;
         public FKeyConfEntry[] entries;
 

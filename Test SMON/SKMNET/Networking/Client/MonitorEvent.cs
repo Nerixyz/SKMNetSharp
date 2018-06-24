@@ -8,9 +8,9 @@ namespace SKMNET.Networking.Client
 {
     class MonitorEvent : Event
     {
-        byte monitor;
-        byte param;
-        byte cmd;
+        readonly byte monitor;
+        readonly byte param  = 0;
+        readonly byte cmd;
 
         public override int GetEventInteger()
         {

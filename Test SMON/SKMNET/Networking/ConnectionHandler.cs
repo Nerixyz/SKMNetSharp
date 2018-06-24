@@ -22,12 +22,12 @@ namespace SKMNET.Networking
 {
     class ConnectionHandler
     {
-        const ushort MAGIC_NUMBER = 0x1fe2;
-        SKMUdpClient sender;
-        readonly RecieveClient reciever;
-        readonly LightingConsole console;
-        Thread syncThread;
-        readonly DateTime lastResponse;
+        public  const    ushort          MAGIC_NUMBER = 0x1fe2;
+        private          SKMUdpClient    sender;
+        private readonly RecieveClient   reciever;
+        private readonly LightingConsole console;
+        private          Thread          syncThread;
+        private readonly DateTime        lastResponse;
 
         public ConnectionHandler(string ipAdress, LightingConsole parent)
         {
