@@ -1,4 +1,5 @@
 ﻿using SKMNET.Client.Stromkreise;
+using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Networking;
 using SKMNET.Util;
 using System;
@@ -16,6 +17,10 @@ namespace SKMNET.Client
         public string AktReg { get; set; }
         public string AktList { get; set; }
         public List<SK> ActiveSK { get; set; } = new List<SK>();
+        public List<MLPal> IPal { get; set; } = new List<MLPal>();
+        public List<MLPal> FPal { get; set; } = new List<MLPal>();
+        public List<MLPal> CPal { get; set; } = new List<MLPal>();
+        public List<MLPal> BPal { get; set; } = new List<MLPal>();
 
         public ConnectionHandler Connection { get; }
 

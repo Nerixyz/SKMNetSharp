@@ -51,7 +51,6 @@
     <Compile Include="SKMNET\Client\Stromkreise\ML\Flags.cs" />
     <Compile Include="SKMNET\Client\Stromkreise\ML\MLPal.cs" />
     <Compile Include="SKMNET\Client\Stromkreise\ML\MLParameter.cs" />
-    <Compile Include="SKMNET\Client\Stromkreise\ML\MLType.cs" />
     <Compile Include="SKMNET\Client\Stromkreise\SK.cs" />
     <Compile Include="SKMNET\Enums.cs" />
     <Compile Include="SKMNET\Networking\Client\DmxData.cs" />
@@ -94,7 +93,7 @@
     <Compile Include="SKMNET\Networking\Server\TSD\SelPar.cs" />
     <Compile Include="SKMNET\Networking\Server\TSD\SelRange.cs" />
     <Compile Include="SKMNET\Networking\Server\TSD\TSD_MLPal.cs" />
-    <Compile Include="SKMNET\MLPal_Prefab.cs" />
+    <Compile Include="SKMNET\Util\MLPal_Prefab.cs" />
     <Compile Include="SKMNET\Util\ByteArrayParser.cs" />
     <Compile Include="SKMNET\Util\ByteUtils.cs" />
     <Compile Include="SKMNET\Util\ISendable.cs" />

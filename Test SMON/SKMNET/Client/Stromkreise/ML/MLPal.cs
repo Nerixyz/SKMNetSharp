@@ -8,11 +8,11 @@ namespace SKMNET.Client.Stromkreise.ML
 {
     class MLPal
     {
-        public Enums.Pal Type { get; set; }
+        public MLPalFlag Type { get; set; }
         public string Name { get; set; }
         public double Number { get; set; }
         
-        public MLPal(Enums.Pal pal, string name, ushort num)
+        public MLPal(MLPalFlag pal, string name, short num)
         {
             if (((ushort)pal & 0x0070) != 0)
                 throw new Exception("MLPal is only for IFCB pal");

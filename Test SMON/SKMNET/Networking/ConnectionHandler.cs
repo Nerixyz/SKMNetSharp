@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SKMNET.Client;
 using SKMNET.Client.Stromkreise;
+using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Networking.Client;
 using SKMNET.Networking.Server;
 using SKMNET.Networking.Server.ISKMON;
@@ -277,6 +278,43 @@ namespace SKMNET.Networking
                         case Enums.Type.MLPal_Conf:
                             {
                                 MLPalConf palConf = (MLPalConf)new MLPalConf().ParseHeader(data);
+                                if (palConf.absolute)
+                                {
+                                    console.IPal.Clear();
+                                    console.FPal.Clear();
+                                    console.CPal.Clear();
+                                    console.BPal.Clear();
+                                }
+                                if ((palConf.Mlpaltype & 0x0070) == 0)
+                                {
+                                    MLPal.MLPalFlag flag = (palConf.Mlpaltype & 0x0001) != 0 ? MLPal.MLPalFlag.I : (palConf.Mlpaltype & 0x0002) != 0 ? MLPal.MLPalFlag.F : (palConf.Mlpaltype & 0x0004) != 0 ? MLPal.MLPalFlag.C : MLPal.MLPalFlag.B;
+                                    foreach (var pal in palConf.Entries)
+                                    {
+                                        switch (flag)
+                                        {
+                                            case MLPal.MLPalFlag.I:
+                                                {
+                                                    console.IPal.Add(new MLPal(flag, pal.Text, pal.Palno));
+                                                    break;
+                                                }
+                                            case MLPal.MLPalFlag.F:
+                                                {
+                                                    console.FPal.Add(new MLPal(flag, pal.Text, pal.Palno));
+                                                    break;
+                                                }
+                                            case MLPal.MLPalFlag.C:
+                                                {
+                                                    console.CPal.Add(new MLPal(flag, pal.Text, pal.Palno));
+                                                    break;
+                                                }
+                                            case MLPal.MLPalFlag.B:
+                                                {
+                                                    console.BPal.Add(new MLPal(flag, pal.Text, pal.Palno));
+                                                    break;
+                                                }
+                                        }
+                                    }
+                                }
                                 string json = JsonConvert.SerializeObject(palConf);
                                 Console.WriteLine(json);
                                 return;
