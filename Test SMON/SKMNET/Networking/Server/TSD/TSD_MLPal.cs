@@ -12,7 +12,7 @@ namespace SKMNET.Networking.Server.TSD
     {
         public override int HeaderLength => 6;
        
-        public MLPal[] pallets;
+        public MLPal_Prefab[] pallets;
         public bool last;
         
         public override Header ParseHeader(byte[] data)
@@ -20,10 +20,10 @@ namespace SKMNET.Networking.Server.TSD
             ushort type = ByteUtils.ToUShort(data, 0);
             ushort count = ByteUtils.ToUShort(data, 4);
             last = ByteUtils.ToUShort(data, 2) != 0;
-            pallets = new MLPal[count];
+            pallets = new MLPal_Prefab[count];
             for (int i = 0; i < count; i++)
             {
-                pallets[i] = new MLPal(type, ByteUtils.ToShort(data, i * 10 + 6), ByteUtils.ToString(data, i * 10 + 8, 8));
+                pallets[i] = new MLPal_Prefab(type, ByteUtils.ToShort(data, i * 10 + 6), ByteUtils.ToString(data, i * 10 + 8, 8));
             }
             return this;
         }

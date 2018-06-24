@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Stromkreise.ML
 {
-    class MLParameter
+    partial class MLParameter
     {
         public string Name { get; }
         public short ParNo { get; set; }
@@ -23,18 +23,6 @@ namespace SKMNET.Client.Stromkreise.ML
             this.defaultVal = defaultVal;
             this.flags = flags;
             this.Value = value;
-        }
-
-
-
-        // future use
-        public enum Flags
-        {
-            Red = 0x1,
-            Green = 0x2,
-            Blue = 0x4,
-            White = 0x8,
-            Dimmer = 0x80,
         }
     }
 }

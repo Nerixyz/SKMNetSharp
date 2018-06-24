@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SKMNET.Client;
+using SKMNET.Client.Stromkreise;
 using SKMNET.Networking.Client;
 using SKMNET.Networking.Server;
 using SKMNET.Networking.Server.ISKMON;
@@ -26,8 +27,6 @@ namespace SKMNET.Networking
         private          SKMUdpClient    sender;
         private readonly RecieveClient   reciever;
         private readonly LightingConsole console;
-        private          Thread          syncThread;
-        private readonly DateTime        lastResponse;
 
         public ConnectionHandler(string ipAdress, LightingConsole parent)
         {
@@ -39,14 +38,8 @@ namespace SKMNET.Networking
             this.sender.Start();
             this.reciever.Recieve += Reciever_Recieve;
             this.reciever.Errored += Reciever_Errored;
+
             SendPacket(new SKMSync(-1));
-            syncThread = new Thread(() =>
-            {
-                Thread.Sleep(1000);
-                SendPacket(new PalSelect((short)MLPal.MLPalFlag.BLK));
-            });
-            syncThread.Start();
-            lastResponse = DateTime.Now;
         }
 
         private void Reciever_Errored(object sender, Exception e)
@@ -69,7 +62,12 @@ namespace SKMNET.Networking
                 {
                     args.ResponseCode = Enums.Response.OK;
                     Enums.Type t = (Enums.Type)type;
-                    Console.WriteLine("{0:x2}", type);
+                    if (t != Enums.Type.Sync)
+                    {
+                        Console.Write("{0:x2}", type);
+                        Console.WriteLine(" " + Enum.GetName(typeof(Enums.Type), t));
+                    }
+
                     switch (t)
                     {
                         case Enums.Type.Sync:
@@ -159,6 +157,9 @@ namespace SKMNET.Networking
                             }
                         case Enums.Type.Bedienzeile:
                             {
+                                Bed bed = (Bed)new Bed().ParseHeader(data);
+                                string json = JsonConvert.SerializeObject(bed);
+                                Console.WriteLine(json);
                                 break;
                             }
                         case Enums.Type.Meldezeile:
@@ -180,27 +181,56 @@ namespace SKMNET.Networking
                             }
                         case Enums.Type.SKRegSync:
                             {
+                                // 0 OK
                                 break;
                             }
                         case Enums.Type.SKRegConf:
                             {
                                 SKRegConf conf = (SKRegConf)new SKRegConf().ParseHeader(data);
-                                //string json = JsonConvert.SerializeObject(conf);
-                                //Console.WriteLine(json);
+                                if (conf.clear)
+                                {
+                                    console.Stromkreise.Clear();
+
+                                }
+                                for (ushort i = conf.start; i < conf.count + conf.start; i++)
+                                {
+                                    console.Stromkreise.Insert(i, new SK(conf.data[i - conf.start]));
+                                }
                                 break;
                             }
                         case Enums.Type.SKRegData:
                             {
                                 SKRegData regData = (SKRegData)new SKRegData().ParseHeader(data);
-                                //string json = JsonConvert.SerializeObject(regData);
-                                //Console.WriteLine(json);
+                                for(int i = regData.start; i < regData.start + regData.count; i++)
+                                {
+                                    SK reg = console.Stromkreise[i];
+                                    if(reg != null)
+                                    {
+                                        reg.Intensity = regData.data[i - regData.start];
+                                    }
+                                }
                                 break;
                             }
                         case Enums.Type.SKRegAttr:
                             {
                                 SKRegAttr attr = (SKRegAttr)new SKRegAttr().ParseHeader(data);
-                                //string json = JsonConvert.SerializeObject(attr);
-                                //Console.WriteLine(json);
+                                console.ActiveSK.Clear();
+                                for (int i = attr.start; i < attr.start + attr.count; i++)
+                                {
+                                    SK sk = console.Stromkreise[i];
+                                    if (sk != null)
+                                    {
+                                        sk.Attrib = attr.data[i - attr.start];
+                                    }
+                                }
+                                // TODO: optimize speed
+                                foreach(SK sk in console.Stromkreise)
+                                {
+                                    if(sk.Attrib != 0&& sk.Number != 0)
+                                    {
+                                        console.ActiveSK.Add(sk);
+                                    }
+                                }
                                 break;
                             }
                         case Enums.Type.TSD_Sync:
