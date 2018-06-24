@@ -68,6 +68,7 @@
     <Compile Include="SKMNET\Networking\Server\ISKMON\FKeyConf.cs" />
     <Compile Include="SKMNET\Networking\Server\ISKMON\Meld.cs" />
     <Compile Include="SKMNET\Networking\Server\ISKMON\SKGConf.cs" />
+    <Compile Include="SKMNET\Networking\Server\LIBRAExt\AktInfo.cs" />
     <Compile Include="SKMNET\Networking\Server\RMON\BLamp.cs" />
     <Compile Include="SKMNET\Networking\Server\RMON\MPalData.cs" />
     <Compile Include="SKMNET\Networking\Server\RMON\MScreenData.cs" />
@@ -103,8 +104,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SKMNET\Networking\Server\LIBRAExt\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

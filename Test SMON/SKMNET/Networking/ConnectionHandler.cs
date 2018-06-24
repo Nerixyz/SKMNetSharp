@@ -3,6 +3,7 @@ using SKMNET.Client;
 using SKMNET.Networking.Client;
 using SKMNET.Networking.Server;
 using SKMNET.Networking.Server.ISKMON;
+using SKMNET.Networking.Server.LIBRAExt;
 using SKMNET.Networking.Server.RMON;
 using SKMNET.Networking.Server.SKMON;
 using SKMNET.Networking.Server.T98;
@@ -190,6 +191,9 @@ namespace SKMNET.Networking
                             }
                         case Enums.Type.SKRegData:
                             {
+                                SKRegData regData = (SKRegData)new SKRegData().ParseHeader(data);
+                                //string json = JsonConvert.SerializeObject(regData);
+                                //Console.WriteLine(json);
                                 break;
                             }
                         case Enums.Type.SKRegAttr:
@@ -231,6 +235,9 @@ namespace SKMNET.Networking
                             }
                         case Enums.Type.MLC_SelRange:
                             {
+                                SelRange selRange = (SelRange)new SelRange().ParseHeader(data);
+                                string json = JsonConvert.SerializeObject(selRange);
+                                Console.WriteLine(json);
                                 break;
                             }
                         case Enums.Type.MLC_ParDef:
@@ -246,6 +253,13 @@ namespace SKMNET.Networking
                             }
                         case Enums.Type.MLPal_SK:
                             {
+                                break;
+                            }
+                        case Enums.Type.AKTInfo:
+                            {
+                                AktInfo info = (AktInfo)new AktInfo().ParseHeader(data);
+                                string json = JsonConvert.SerializeObject(info);
+                                Console.WriteLine(json);
                                 break;
                             }
                         default:

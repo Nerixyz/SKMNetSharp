@@ -8,5 +8,6 @@ namespace SKMNET.Client
 {
     class LightingConsole
     {
+        
     }
 }
