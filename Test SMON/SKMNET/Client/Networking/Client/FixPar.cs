@@ -26,7 +26,7 @@ namespace SKMNET.Networking.Client
                 Add((short)dictCC.Count);
             foreach(KeyValuePair<SK, MLParameter> par in dictCC)
             {
-                parser.Add(par.Key.Number).Add(par.Value.ParNo).Add(par.Value.Value);
+                parser.Add(par.Key.Number).Add(par.Value.ParNo).Add((byte)par.Value.Value);
             }
             return parser.GetArray();
         }

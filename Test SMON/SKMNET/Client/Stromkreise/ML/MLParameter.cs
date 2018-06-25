@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Stromkreise.ML
 {
+    [Serializable]
     partial class MLParameter
     {
         public string Name { get; }
@@ -13,16 +14,21 @@ namespace SKMNET.Client.Stromkreise.ML
         (short, short) range;
         short defaultVal;
         byte flags;
-        public short Value { get; set; }
+        public double Value { get; set; }
+        public string Display { get; set; }
+        public string PalName { get; set; }
 
-        public MLParameter(string name, (short, short) range, short parNo = -1, short value = 0, short defaultVal = 0, byte flags = 0)
+        public MLParameter(string name, (short, short) range, short parNo = -1, double value = 0, short defaultVal = 0, byte flags = 0)
         {
             this.Name = name;
             this.range = range;
+
             this.ParNo = parNo;
             this.defaultVal = defaultVal;
             this.flags = flags;
             this.Value = value;
+            this.Display = Value.ToString();
+            this.PalName = string.Empty;
         }
     }
 }

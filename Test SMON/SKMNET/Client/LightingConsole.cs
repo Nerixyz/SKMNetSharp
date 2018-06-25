@@ -10,9 +10,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client
 {
+    [Serializable]
     class LightingConsole
     {
-        public List<SK> Stromkreise { get; set; } = new List<SK>();
+        [NonSerialized]
+        public List<SK> Stromkreise = new List<SK>();
         public string Headline { get; set; }
         public string AktReg { get; set; }
         public string AktList { get; set; }

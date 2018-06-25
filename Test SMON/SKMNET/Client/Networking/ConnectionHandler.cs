@@ -260,6 +260,39 @@ namespace SKMNET.Networking
                         case Enums.Type.MLC_SelPar:
                             {
                                 SelPar selPar = (SelPar)new SelPar().ParseHeader(data);
+                                SK sk = console.ActiveSK.Find((inc) =>
+                                {
+                                    if (inc.Number == selPar.fixture)
+                                        return true;
+                                    return false;
+                                });
+                                if(sk != null)
+                                {
+                                    foreach(SelPar.SelParData par in selPar.parameters)
+                                    {
+                                        MLParameter param = sk.Parameters.Find((inc) => { return inc.ParNo == par.parno; });
+                                        if (param != null)
+                                        {
+                                            param.Value = (par.val16 & 0xff00) >> 8;
+                                            param.Display = par.parval;
+                                            param.PalName = par.palname;
+                                        }
+                                        else
+                                        {
+                                            param = new MLParameter(par.parname, (-1, -1), par.parno, (par.val16 & 0xff00) >> 8)
+                                            {
+                                                PalName = par.palname,
+                                                Display = par.parname
+                                            };
+                                            sk.Parameters.Add(param);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    args.ResponseCode = Enums.Response.BadCmd;
+                                    return;
+                                }
                                 string json = JsonConvert.SerializeObject(selPar);
                                 Console.WriteLine(json);
                                 break;

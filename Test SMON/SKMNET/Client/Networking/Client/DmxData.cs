@@ -27,16 +27,16 @@ namespace SKMNET.Networking.Client
             {
                 SKs.Sort(new Comparison<SK>((SK n1, SK n2) =>
                 {
-                    if (n1.DMXOut > n2.DMXOut) return -1;
-                    else if (n2.DMXOut > n1.DMXOut) return 1;
+                    if (n1.Number > n2.Number) return -1;
+                    else if (n2.Number > n1.Number) return 1;
                     else return 0;
                 }));
                 // assume they are all on the same line
-                parser.Add(SKs[0].DMXLine);
+                parser.Add(1);
                 int ptr = 0;
                 for(int i = 0; i < 512; i++)
                 {
-                    if(SKs.Count > ptr && SKs[ptr].DMXOut == i + 1)
+                    if(SKs.Count > ptr && SKs[ptr].Number == i + 1)
                     {
                         parser.Add(SKs[ptr].Intensity);
                         ptr++;
