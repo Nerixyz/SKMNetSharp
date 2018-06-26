@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SKMNET.Client;
+using SKMNET.Client.Networking.Client;
 using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Networking.Client;
@@ -28,6 +29,8 @@ namespace SKMNET.Networking
         private          SKMUdpClient    sender;
         private readonly RecieveClient   reciever;
         private readonly LightingConsole console;
+        private readonly Queue<byte[]> sendQueue;
+        private readonly Thread sendThread;
 
         public ConnectionHandler(string ipAdress, LightingConsole parent)
         {
@@ -39,6 +42,19 @@ namespace SKMNET.Networking
             this.sender.Start();
             this.reciever.Recieve += Reciever_Recieve;
             this.reciever.Errored += Reciever_Errored;
+            this.sendQueue = new Queue<byte[]>();
+            sendThread = new Thread(() =>
+            {
+                while (true)
+                {
+                    if(sendQueue.Count > 0)
+                    {
+                        sender.SendData(sendQueue.Dequeue());
+                    }
+                    Thread.Sleep(50);
+                }
+            });
+            sendThread.Start();
 
             SendPacket(new SKMSync(-1));
         }
@@ -392,15 +408,31 @@ namespace SKMNET.Networking
 
         public void SendData(ISendable data)
         {
-            sender.SendData(data.GetDataToSend());
+            sendQueue.Enqueue(data.GetDataToSend());
+        }
+
+        public void SendData(ISplittable data)
+        {
+            foreach(byte[] arr in data.GetData())
+            {
+                sendQueue.Enqueue(arr);
+            }
         }
 
         public void SendPacket(Client.Header header)
         {
             ByteArrayParser parser = new ByteArrayParser();
-            byte[] ip = GetLocalIPAddress();
             parser.Add(MAGIC_NUMBER).Add(header.Type).Add(GetLocalIPAddress()).Add(header.GetDataToSend());
-            sender.SendData(parser.GetArray());
+            sendQueue.Enqueue(parser.GetArray());
+        }
+        public void SendPacket(SplittableHeader header)
+        {
+            foreach (byte[] arr in header.GetData())
+            {
+                ByteArrayParser parser = new ByteArrayParser();
+                parser.Add(MAGIC_NUMBER).Add(header.Type).Add(GetLocalIPAddress()).Add(arr);
+                sendQueue.Enqueue(parser.GetArray());
+            }
         }
 
         public byte[] GetLocalIPAddress()

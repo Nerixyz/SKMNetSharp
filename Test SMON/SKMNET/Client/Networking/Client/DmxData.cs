@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Client
 {
-    class DmxData : Header
+    class DmxData : Header, ISendable
     {
         public override short Type => 21;
         private const short BdStNo = 0;
         private const short subCmd = 0;
-        private Enums.FixParDst dst;
+        private readonly Enums.FixParDst dst;
         private List<SK> SKs;
 
         public override byte[] GetDataToSend()
@@ -54,6 +54,7 @@ namespace SKMNET.Networking.Client
         {
             this.SKs = SKs;
             this.dst = dst;
+            throw new NotImplementedException("sknum != dmxout");
         }
     }
 }

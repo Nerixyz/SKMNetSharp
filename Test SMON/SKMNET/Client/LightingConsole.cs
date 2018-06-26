@@ -1,6 +1,8 @@
-﻿using SKMNET.Client.Stromkreise;
+﻿using SKMNET.Client.Networking.Client;
+using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Networking;
+using SKMNET.Networking.Client;
 using SKMNET.Util;
 using System;
 using System.Collections.Generic;
@@ -31,9 +33,14 @@ namespace SKMNET.Client
             Connection = new ConnectionHandler(ip, this);
         }
 
-        public void Query(ISendable packet)
+        public void Query(Header packet)
         {
-            Connection.SendData(packet);
+            Connection.SendPacket(packet);
+        }
+
+        public void Query(SplittableHeader packet)
+        {
+            Connection.SendPacket(packet);
         }
     }
 }
