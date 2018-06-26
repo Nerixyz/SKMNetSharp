@@ -25,7 +25,7 @@ namespace SKMNET.Util
             {
                 try
                 {
-                    Console.WriteLine(endPoint.ToString() + " -> " + baseClient.Available);
+                    Logger.Log(endPoint.ToString() + " -> " + baseClient.Available);
                     while (true)
                     {
                         byte[] data = baseClient.Receive(ref endPoint);

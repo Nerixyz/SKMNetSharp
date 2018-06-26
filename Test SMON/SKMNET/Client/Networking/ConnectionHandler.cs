@@ -82,7 +82,7 @@ namespace SKMNET.Networking
                     if (t != Enums.Type.Sync)
                     {
                         Console.Write("{0:x2}", type);
-                        Console.WriteLine(" " + Enum.GetName(typeof(Enums.Type), t));
+                        Logger.Log(" " + Enum.GetName(typeof(Enums.Type), t));
                     }
 
                     switch (t)
@@ -95,14 +95,14 @@ namespace SKMNET.Networking
                         case Enums.Type.ScreenData:
                             {
                                 ScreenData packet = (ScreenData)new ScreenData().ParseHeader(data);
-                                Console.WriteLine("[in] Got Screen Data: " + packet.count);
+                                Logger.Log("[in] Got Screen Data: " + packet.count);
                                 break;
                             }
                         case Enums.Type.PalData:
                             {
                                 PalData palData = (PalData)new PalData().ParseHeader(data);
                                 string json = JsonConvert.SerializeObject(palData.farbeintrag);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 break;
                             }
                         case Enums.Type.ReadKey:
@@ -117,7 +117,7 @@ namespace SKMNET.Networking
                             {
                                 BLamp lamp = (BLamp)new BLamp().ParseHeader(data);
                                 //string json = JsonConvert.SerializeObject(lamp);
-                                //Console.WriteLine(json);
+                                //Logger.Log(json);
                                 break;
                             }
                         case Enums.Type.ACK_Reset:
@@ -144,14 +144,14 @@ namespace SKMNET.Networking
                         case Enums.Type.Headline:
                             {
                                 Headline headline = (Headline)new Headline().ParseHeader(data);
-                                Console.WriteLine("Headline: fNo:" + headline.farbno + " d: " + headline.data);
+                                Logger.Log("Headline: fNo:" + headline.farbno + " d: " + headline.data);
                                 return; 
                             }
                         case Enums.Type.Conf:
                             {
                                 Conf conf = (Conf)new Conf().ParseHeader(data);
                                 string json = JsonConvert.SerializeObject(conf);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 break;
                             }
                         case Enums.Type.Cmd:
@@ -162,21 +162,21 @@ namespace SKMNET.Networking
                             {
                                 BTastConf packet = (BTastConf)new BTastConf().ParseHeader(data);
                                 string json = JsonConvert.SerializeObject(packet.entries);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 return;
                             }
                         case Enums.Type.FKeyConf:
                             {
                                 FKeyConf conf = (FKeyConf)new FKeyConf().ParseHeader(data);
                                 string json = JsonConvert.SerializeObject(conf);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 break;
                             }
                         case Enums.Type.Bedienzeile:
                             {
                                 Bed bed = (Bed)new Bed().ParseHeader(data);
                                 string json = JsonConvert.SerializeObject(bed);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 break;
                             }
                         case Enums.Type.Meldezeile:
@@ -193,7 +193,7 @@ namespace SKMNET.Networking
                             {
                                 SKGConf conf = (SKGConf)new SKGConf().ParseHeader(data);
                                 string json = JsonConvert.SerializeObject(conf);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 break;
                             }
                         case Enums.Type.SKRegSync:
@@ -263,14 +263,14 @@ namespace SKMNET.Networking
                             {
                                 TSD_MLPal pal = (TSD_MLPal)new TSD_MLPal().ParseHeader(data);
                                 string json = JsonConvert.SerializeObject(pal);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 break;
                             }
                         case Enums.Type.MLC_Job:
                             {
                                 MLCJob job = (MLCJob)new MLCJob().ParseHeader(data);
                                 string json = JsonConvert.SerializeObject(job);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 break;
                             }
                         case Enums.Type.MLC_SelPar:
@@ -310,14 +310,14 @@ namespace SKMNET.Networking
                                     return;
                                 }
                                 string json = JsonConvert.SerializeObject(selPar);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 break;
                             }
                         case Enums.Type.MLC_SelRange:
                             {
                                 SelRange selRange = (SelRange)new SelRange().ParseHeader(data);
                                 string json = JsonConvert.SerializeObject(selRange);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 break;
                             }
                         case Enums.Type.MLC_ParDef:
@@ -365,7 +365,7 @@ namespace SKMNET.Networking
                                     }
                                 }
                                 string json = JsonConvert.SerializeObject(palConf);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 return;
                             }
                         case Enums.Type.MLPal_SK:
@@ -376,7 +376,7 @@ namespace SKMNET.Networking
                             {
                                 AktInfo info = (AktInfo)new AktInfo().ParseHeader(data);
                                 string json = JsonConvert.SerializeObject(info);
-                                Console.WriteLine(json);
+                                Logger.Log(json);
                                 break;
                             }
                         default:
@@ -392,7 +392,7 @@ namespace SKMNET.Networking
                 }
             }catch(Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Logger.Log(e.StackTrace);
             }
         }
 

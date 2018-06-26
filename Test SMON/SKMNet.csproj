@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5CC0EAC1-C3ED-433C-A08B-3BDE4618C9D5}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>Test_SMON</RootNamespace>
     <AssemblyName>Test SMON</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -45,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SKMNET\Client\LightingConsole.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\SplittableHeader.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="SKMNET\Client\Networking\Server\TSD\SelRange.cs" />
     <Compile Include="SKMNET\Client\Networking\Server\TSD\TSD_MLPal.cs" />
     <Compile Include="SKMNET\Util\ISplittable.cs" />
+    <Compile Include="SKMNET\Util\Logger.cs" />
     <Compile Include="SKMNET\Util\MLPal_Prefab.cs" />
     <Compile Include="SKMNET\Util\ByteArrayParser.cs" />
     <Compile Include="SKMNET\Util\ByteUtils.cs" />
