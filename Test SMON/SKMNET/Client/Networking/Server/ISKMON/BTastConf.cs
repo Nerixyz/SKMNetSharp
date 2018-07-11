@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server
 {
-    class BTastConf : Header
+    class BTastConf : SPacket
     {
         public override int HeaderLength => 4;
 
         public BTastConfEntry[] entries;
         public ushort count;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(ByteBuffer buffer)
         {
-            count = ByteUtils.ToUShort(data, 0);
+            count = buffer.ReadUShort();
             entries = new BTastConfEntry[count];
             for(int i = 0; i < count; i++)
             {
-                entries[i] = new BTastConfEntry(ByteUtils.ToUShort(data, i * 8), ByteUtils.ToString(data, i * 8 + 2, 6));
+                entries[i] = new BTastConfEntry(buffer.ReadUShort(), buffer.ReadString(6));
             }
             return this;
         }

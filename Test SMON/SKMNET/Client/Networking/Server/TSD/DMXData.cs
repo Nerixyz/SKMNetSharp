@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.TSD
 {
-    class DMXData : Header
+    class DMXData : SPacket
     {
         public override int HeaderLength => 4;
 
@@ -15,7 +15,7 @@ namespace SKMNET.Networking.Server.TSD
         public ushort count; /* 1 or 2 lines */
         public DMXDataEntry[] dmxLines; /* 1 or 2 line data */
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             command = ByteUtils.ToUShort(data, 0);
             count = ByteUtils.ToUShort(data, 2);

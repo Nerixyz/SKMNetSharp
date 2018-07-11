@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Stromkreise.ML
 {
-    class MLPal
+    public class MLPal
     {
         public MLPalFlag Type { get; set; }
         public string Name { get; set; }

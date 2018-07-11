@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SKMNET.Networking.Server.T98
 {
     [Serializable]
-    class SKRegConf : Header
+    class SKRegConf : SPacket
     {
         public override int HeaderLength => 0;
 
@@ -17,7 +17,7 @@ namespace SKMNET.Networking.Server.T98
         public ushort count;
         public ushort[] data;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             start = ByteUtils.ToUShort(data, 0);
             clear = ByteUtils.ToUShort(data, 2) != 0x0;

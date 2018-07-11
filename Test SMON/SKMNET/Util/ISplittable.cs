@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Util
 {
-    interface ISplittable
+    public interface ISplittable
     {
         List<byte[]> GetData();
     }

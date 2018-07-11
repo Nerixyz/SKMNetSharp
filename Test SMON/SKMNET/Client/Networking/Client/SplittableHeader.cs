@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
-    abstract class SplittableHeader : ISplittable
+    public abstract class SplittableHeader : ISplittable
     {
         public abstract short Type { get; }
 

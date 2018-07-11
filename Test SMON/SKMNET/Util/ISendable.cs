@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Util
 {
-    interface ISendable
+    public interface ISendable
     {
         byte[] GetDataToSend();
     }

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace SKMNET.Networking.Server.RMON
 {
     [Serializable]
-    class BLamp : Header
+    class BLamp : SPacket
     {
         public override int HeaderLength => 0;
 
         public State[] lampStates;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             lampStates = new State[data.Length];
             for(int i = 0; i < data.Length; i++)

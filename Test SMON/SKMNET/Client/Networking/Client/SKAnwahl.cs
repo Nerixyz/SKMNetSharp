@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Client
 {
-    class SKAnwahl : Header
+    class SKAnwahl : CPacket
     {
         public override short Type => 15;
         private AWType type;

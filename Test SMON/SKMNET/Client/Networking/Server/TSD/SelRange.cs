@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SKMNET.Networking.Server.TSD
 {
     [Serializable]
-    class SelRange : Header
+    class SelRange : SPacket
     {
         public override int HeaderLength => 14;
         public ushort fixture;
@@ -20,7 +20,7 @@ namespace SKMNET.Networking.Server.TSD
 
         public SelRangeData[] arr;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             fixture = ByteUtils.ToUShort(data, 0);
             fixpar = ByteUtils.ToUShort(data, 2);

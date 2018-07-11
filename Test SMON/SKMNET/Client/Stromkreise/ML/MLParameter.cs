@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SKMNET.Client.Stromkreise.ML
 {
     [Serializable]
-    partial class MLParameter
+    public partial class MLParameter
     {
         public string Name { get; }
         public short ParNo { get; set; }

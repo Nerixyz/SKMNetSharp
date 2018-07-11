@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SKMNET.Networking.Server.LIBRAExt
 {
     [Serializable]
-    class AktInfo : Header
+    class AktInfo : SPacket
     {
         public override int HeaderLength => 4;
         public string register;
@@ -21,7 +21,7 @@ namespace SKMNET.Networking.Server.LIBRAExt
          * -> useless
          * */
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             register = ByteUtils.ToString(data, 4, 8);
             listenanzeige = ByteUtils.ToString(data, 4 + 8, 8);

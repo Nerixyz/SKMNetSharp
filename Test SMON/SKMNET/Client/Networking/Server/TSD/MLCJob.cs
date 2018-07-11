@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SKMNET.Networking.Server.TSD
 {
     [Serializable]
-    class MLCJob : Header
+    class MLCJob : SPacket
     {
         public override int HeaderLength => 18;
         
@@ -20,7 +20,7 @@ namespace SKMNET.Networking.Server.TSD
         public ushort count;
         public string buf;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             job = ByteUtils.ToUShort(data, 0);
             par1 = ByteUtils.ToUInt(data, 2);

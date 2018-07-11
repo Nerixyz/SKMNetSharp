@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.RMON
 {
-    class MScreenData : Header
+    class MScreenData : SPacket
     {
         public override int HeaderLength => 6;
 
@@ -19,7 +19,7 @@ namespace SKMNET.Networking.Server.RMON
         ushort count;
         ushort[] data;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             monitor = ByteUtils.ToUShort(data, 0);
             start = ByteUtils.ToUShort(data, 2);

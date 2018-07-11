@@ -1,6 +1,6 @@
 ﻿namespace SKMNET.Client.Stromkreise.ML
 {
-    partial class MLParameter
+    public partial class MLParameter
     {
         // future use
         public enum Flags

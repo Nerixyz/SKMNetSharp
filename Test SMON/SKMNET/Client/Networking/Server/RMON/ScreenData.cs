@@ -13,7 +13,7 @@ namespace SKMNET.Networking.Server
     /// aus dem Monitorbild. Die Daten werden zeichenweise,
     /// von oben nach und und von links nach rechts übertragen.
     /// </summary>
-    class ScreenData : Header
+    class ScreenData : SPacket
     {
 
         public override int HeaderLength => 4;
@@ -35,7 +35,7 @@ namespace SKMNET.Networking.Server
         /// </summary>
         public ushort[] data;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             this.start = ByteUtils.ToUShort(data, 0);
             this.count = ByteUtils.ToUShort(data, 2);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.RMON
 {
-    class MPalData : Header
+    class MPalData : SPacket
     {
         public override int HeaderLength => 0;
 
@@ -14,7 +14,7 @@ namespace SKMNET.Networking.Server.RMON
         public ushort monitor;
         // siehe MScreenData.cs
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             monitor = ByteUtils.ToUShort(data, 0);
             const int farbSize = 8;

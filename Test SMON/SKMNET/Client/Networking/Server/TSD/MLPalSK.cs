@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.TSD
 {
-    class MLPalSK : Header
+    class MLPalSK : SPacket
     {
         public override int HeaderLength => 10;
 
@@ -17,7 +17,7 @@ namespace SKMNET.Networking.Server.TSD
         public ushort skcount;
         public ushort[] skTable;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             command = ByteUtils.ToUShort(data, 0);
             palno = ByteUtils.ToUShort(data, 2);

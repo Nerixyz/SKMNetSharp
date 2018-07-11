@@ -1,13 +1,14 @@
 ﻿using SKMNET.Util;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Client
 {
-    abstract class Header : ISendable
+    public abstract class CPacket : ISendable
     {
         public abstract short Type { get; }
 

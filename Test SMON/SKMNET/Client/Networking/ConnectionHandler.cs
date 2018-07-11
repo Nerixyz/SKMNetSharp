@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking
 {
-    class ConnectionHandler
+    public class ConnectionHandler
     {
         public  const    ushort          MAGIC_NUMBER = 0x1fe2;
         private          SKMUdpClient    sender;
@@ -61,31 +61,30 @@ namespace SKMNET.Networking
 
         private void Reciever_Errored(object sender, Exception e)
         {
-            throw e;
+            OnErrored(e);
         }
 
         private void Reciever_Recieve(object sender, RecieveClient.RecieveEventArgs args)
         {
             try
             {
-                byte[] e = args.Data;
-                ushort type = ByteUtils.ToUShort(e, 0);
-                byte[] data = new byte[e.Length - 2];
-                if (e.Length > 2)
-                {
-                    Array.Copy(e, 2, data, 0, e.Length - 2);
-                }
+                byte[] packetDataIN = args.Data;
+
+                ushort type = ByteUtils.ToUShort(packetDataIN, 0);
+
+                byte[] data = new byte[packetDataIN.Length - 2];
+                if (packetDataIN.Length > 2)
+                    Array.Copy(packetDataIN, 2, data, 0, packetDataIN.Length - 2);
+
                 if (Enum.IsDefined(typeof(Enums.Type), (int)type))
                 {
                     args.ResponseCode = Enums.Response.OK;
-                    Enums.Type t = (Enums.Type)type;
-                    if (t != Enums.Type.Sync)
-                    {
-                        Console.Write("{0:x2}", type);
-                        Logger.Log(" " + Enum.GetName(typeof(Enums.Type), t));
-                    }
 
-                    switch (t)
+                    Enums.Type enumType = (Enums.Type)type;
+                    if(enumType != Enums.Type.Sync)
+                        OnPacketRecieved(enumType);
+
+                    switch (enumType)
                     {
                         case Enums.Type.Sync:
                             {
@@ -392,34 +391,19 @@ namespace SKMNET.Networking
                 }
             }catch(Exception e)
             {
+                OnErrored(e);
                 Logger.Log(e.StackTrace);
             }
         }
 
         private void Sender_Errored(object sender, Exception e)
         {
-            throw e;
+            OnErrored(e);
         }
 
-        private void Sender_Recieve(object sender, byte[] e)
-        {
-            
-        }
-
-        public void SendData(ISendable data)
-        {
-            sendQueue.Enqueue(data.GetDataToSend());
-        }
-
-        public void SendData(ISplittable data)
-        {
-            foreach(byte[] arr in data.GetData())
-            {
-                sendQueue.Enqueue(arr);
-            }
-        }
-
-        public void SendPacket(Client.Header header)
+        private void Sender_Recieve(object sender, byte[] e){}
+        
+        public void SendPacket(Client.CPacket header)
         {
             ByteArrayParser parser = new ByteArrayParser();
             parser.Add(MAGIC_NUMBER).Add(header.Type).Add(GetLocalIPAddress()).Add(header.GetDataToSend());
@@ -451,6 +435,12 @@ namespace SKMNET.Networking
             }
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
+
+        public event EventHandler<Exception> Errored;
+        protected virtual void OnErrored(Exception data) { Errored?.Invoke(this, data); }
+
+        public event EventHandler<Enums.Type> PacketRecieved;
+        protected virtual void OnPacketRecieved(Enums.Type type) { PacketRecieved?.Invoke(this, type); }
 
         public enum SKMON_RES
         {

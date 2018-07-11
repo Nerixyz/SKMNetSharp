@@ -59,7 +59,7 @@
     <Compile Include="SKMNET\Client\Networking\Client\DmxData.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\Event.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\FixPar.cs" />
-    <Compile Include="SKMNET\Client\Networking\Client\Header.cs" />
+    <Compile Include="SKMNET\Client\Networking\Client\CPacket.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\MonitorEvent.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\MouseEvent.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\PalSelect.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="SKMNET\Client\Networking\Client\SKGAnwahl.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\SKMSync.cs" />
     <Compile Include="SKMNET\Client\Networking\ConnectionHandler.cs" />
-    <Compile Include="SKMNET\Client\Networking\Server\Header.cs" />
+    <Compile Include="SKMNET\Client\Networking\Server\SPacket.cs" />
     <Compile Include="SKMNET\Client\Networking\Server\ISKMON\AZ.cs" />
     <Compile Include="SKMNET\Client\Networking\Server\ISKMON\Bed.cs" />
     <Compile Include="SKMNET\Client\Networking\Server\ISKMON\FKeyConf.cs" />
@@ -96,6 +96,7 @@
     <Compile Include="SKMNET\Client\Networking\Server\TSD\SelPar.cs" />
     <Compile Include="SKMNET\Client\Networking\Server\TSD\SelRange.cs" />
     <Compile Include="SKMNET\Client\Networking\Server\TSD\TSD_MLPal.cs" />
+    <Compile Include="SKMNET\Util\ByteBuffer.cs" />
     <Compile Include="SKMNET\Util\ISplittable.cs" />
     <Compile Include="SKMNET\Util\Logger.cs" />
     <Compile Include="SKMNET\Util\MLPal_Prefab.cs" />

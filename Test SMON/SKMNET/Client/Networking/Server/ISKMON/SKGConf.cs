@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace SKMNET.Networking.Server.ISKMON
 {
     [Serializable]
-    class SKGConf : Header
+    class SKGConf : SPacket
     {
         public override int HeaderLength => 4;
         public ushort count;
         public SKGConfEntry[] entries;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             count = ByteUtils.ToUShort(data, 0);
             entries = new SKGConfEntry[count];

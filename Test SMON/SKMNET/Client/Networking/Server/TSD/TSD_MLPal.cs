@@ -8,14 +8,14 @@ using SKMNET.Util;
 namespace SKMNET.Networking.Server.TSD
 {
     [Serializable]
-    class TSD_MLPal : Header
+    class TSD_MLPal : SPacket
     {
         public override int HeaderLength => 6;
        
         public MLPal_Prefab[] pallets;
         public bool last;
         
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             ushort type = ByteUtils.ToUShort(data, 0);
             ushort count = ByteUtils.ToUShort(data, 4);

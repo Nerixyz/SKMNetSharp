@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace SKMNET.Client
 {
     [Serializable]
-    class LightingConsole
+    public class LightingConsole
     {
         [NonSerialized]
         public List<SK> Stromkreise = new List<SK>();
@@ -31,9 +31,15 @@ namespace SKMNET.Client
         public LightingConsole(string ip)
         {
             Connection = new ConnectionHandler(ip, this);
+            Connection.Errored += Connection_Errored;
         }
 
-        public void Query(Header packet)
+        private void Connection_Errored(object sender, Exception e)
+        {
+            OnErrored(e);
+        }
+
+        public void Query(CPacket packet)
         {
             Connection.SendPacket(packet);
         }
@@ -42,5 +48,8 @@ namespace SKMNET.Client
         {
             Connection.SendPacket(packet);
         }
+
+        public event EventHandler<Exception> Errored;
+        protected virtual void OnErrored(Exception data) { Errored?.Invoke(this, data); }
     }
 }

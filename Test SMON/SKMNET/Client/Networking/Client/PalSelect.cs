@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Client
 {
-    class PalSelect : Header
+    class PalSelect : CPacket
     {
         public override short Type => 24;
         private short PalMask;

@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 namespace SKMNET.Networking.Server.ISKMON
 {
     [Serializable]
-    class Bed : Header
+    class Bed : SPacket
     {
         public override int HeaderLength => 0;
         
         public string linetext;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(ByteBuffer buffer)
         {
             // LENGTH = { 2, 31, 1} = 34
             // last byte is unused
-            linetext = ByteUtils.ToString(data, 0, 31);
+            linetext = buffer.ReadString(31);
 
             return this;
         }

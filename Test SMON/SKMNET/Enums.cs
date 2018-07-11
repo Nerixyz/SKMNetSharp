@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET
 {
-    class Enums
+    public class Enums
     {
         public enum Type
         {

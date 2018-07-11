@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server
 {
-    class PalData : Header
+    class PalData : SPacket
     {
         public override int HeaderLength => 0;
 
         public VideoFarbe[] farbeintrag;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             const int farbSize = 8;
             for(int i = 0; i < data.Length; i += farbSize)

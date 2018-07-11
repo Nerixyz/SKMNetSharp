@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Client
 {
-    class SKMSync : Header
+    class SKMSync : CPacket
     {
         public override short Type => 13;
 

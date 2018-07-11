@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.TSD
 {
-    class ParDef : Header
+    class ParDef : SPacket
     {
         public override int HeaderLength => 6;
 
@@ -15,7 +15,7 @@ namespace SKMNET.Networking.Server.TSD
         public ushort count;
         public ParDefData[] arr;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             command = ByteUtils.ToUShort(data, 0);
             last = ByteUtils.ToUShort(data, 2) != 0;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKMNET.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.ISKMON
 {
-    class AZ : Header
+    class AZ : SPacket
     {
         public override int HeaderLength => 0;
 
@@ -14,11 +15,11 @@ namespace SKMNET.Networking.Server.ISKMON
         public ushort flags;
         public string linetext;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(ByteBuffer buffer)
         {
-            command = ByteUtils.ToUShort(data, 0);
-            flags = ByteUtils.ToUShort(data, 2);
-            linetext = ByteUtils.ToString(data, 4, 48);
+            command = buffer.ReadUShort();
+            flags = buffer.ReadUShort();
+            linetext = buffer.ReadString(48);
             return this;
         }
 

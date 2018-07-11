@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SKMNET.Networking.Server.TSD
 {
     [Serializable]
-    class MLPalConf : Header
+    class MLPalConf : SPacket
     {
         public override int HeaderLength => 8;
         
@@ -17,7 +17,7 @@ namespace SKMNET.Networking.Server.TSD
 
         public List<ConfEntry> Entries { get; } = new List<ConfEntry>();
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             absolute = ByteUtils.ToUShort(data, 0) == 0;
             Mlpaltype = ByteUtils.ToUShort(data, 2);

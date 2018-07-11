@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.SKMON
 {
-    class SkAttr : Header
+    class SkAttr : SPacket
     {
         public override int HeaderLength => 0;
 
@@ -14,7 +14,7 @@ namespace SKMNET.Networking.Server.SKMON
         public ushort count;
         public byte[] data;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             start = ByteUtils.ToUShort(data, 0);
             count = ByteUtils.ToUShort(data, 2);

@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 namespace SKMNET.Networking.Server.ISKMON
 {
     [Serializable]
-    class FKeyConf : Header
+    class FKeyConf : SPacket
     {
         public override int HeaderLength => 4;
         
         public ushort count;
         public FKeyConfEntry[] entries;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(ByteBuffer buffer)
         {
-            count = ByteUtils.ToUShort(data, 0);
+            count = buffer.ReadUShort();
             entries = new FKeyConfEntry[count];
             for(int i = 0; i < count; i++)
             {
-                entries[i] = new FKeyConfEntry(ByteUtils.ToUShort(data, i * 24 + 2), ByteUtils.ToString(data, i * 24 + 2 + 2, 22));
+                entries[i] = new FKeyConfEntry(buffer.ReadUShort(), buffer.ReadString(22));
             }
             return this;
         }

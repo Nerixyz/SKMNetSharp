@@ -11,7 +11,7 @@ namespace SKMNET.Util
 {
     class SKMUdpClient
     {
-        IPEndPoint endPoint;
+        readonly IPEndPoint endPoint;
         UdpClient baseClient;
         Thread readThread;
         public bool local;

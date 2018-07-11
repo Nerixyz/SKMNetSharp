@@ -8,19 +8,26 @@ using System.Threading.Tasks;
 namespace SKMNET.Client.Stromkreise
 {
     [Serializable]
-    class SK
+    public class SK
     {
         public ushort Number { get; }
         public List<MLParameter> Parameters { get; set; }
-        public byte Intensity { get; set; }
+        public byte Intensity { get { return _intensity; } set {
+                if(Parameters.Count > 0 && Parameters[0].ParNo == 0)
+                {
+                    Parameters[0].Value = value << 8;
+                }
+                _intensity = value;
+            } }
+        private byte _intensity;
         public byte Attrib { get; set; }
 
         public SK(ushort Number, byte Intensity = 0)
         {
             this.Number = Number;
+            Parameters = new List<MLParameter>();
             this.Intensity = Intensity;
             Attrib = 0;
-            Parameters = new List<MLParameter>();
         }
 
         public bool Anwahl() { return (Attrib & 0x01) != 0; }

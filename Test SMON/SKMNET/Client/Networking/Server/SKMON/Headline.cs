@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Networking.Server.SKMON
 {
-    class Headline : Header
+    class Headline : SPacket
     {
         public override int HeaderLength => 0;
 
@@ -17,7 +17,7 @@ namespace SKMNET.Networking.Server.SKMON
         /// </summary>
         public string data;
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             farbno = ByteUtils.ToUShort(data, 0);
             count = ByteUtils.ToUShort(data, 2);

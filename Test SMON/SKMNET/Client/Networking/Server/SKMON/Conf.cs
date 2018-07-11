@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace SKMNET.Networking.Server.SKMON
 {
     [Serializable]
-    class Conf : Header
+    class Conf : SPacket
     {
         public override int HeaderLength => 0;
 
         public List<Enums.OVDisp> Disp { get; } = new List<Enums.OVDisp>();
 
-        public override Header ParseHeader(byte[] data)
+        public override SPacket ParseHeader(byte[] data)
         {
             ushort count = ByteUtils.ToUShort(data, 0);
             int ptr = 2;
