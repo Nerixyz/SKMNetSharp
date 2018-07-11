@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server
+namespace SKMNET.Client.Networking.Server
 {
     /// <summary>
     /// SKMON_SCREEN_DATA - Bildschirmdaten.
@@ -35,14 +35,14 @@ namespace SKMNET.Networking.Server
         /// </summary>
         public ushort[] data;
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            this.start = ByteUtils.ToUShort(data, 0);
-            this.count = ByteUtils.ToUShort(data, 2);
+            this.start = buffer.ReadUShort();
+            this.count = buffer.ReadUShort();
             this.data = new ushort[count];
             for (int i = 0; i < count; i++)
             {
-                this.data[i] = ByteUtils.ToUShort(data, 4 + i * 2);
+                this.data[i] = buffer.ReadUShort();
             }
             return this;
         }

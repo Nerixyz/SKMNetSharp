@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.ISKMON
+namespace SKMNET.Client.Networking.Server.ISKMON
 {
     class AZ : SPacket
     {
@@ -15,7 +15,7 @@ namespace SKMNET.Networking.Server.ISKMON
         public ushort flags;
         public string linetext;
 
-        public override SPacket ParseHeader(ByteBuffer buffer)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
             command = buffer.ReadUShort();
             flags = buffer.ReadUShort();

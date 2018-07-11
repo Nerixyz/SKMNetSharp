@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.ISKMON
+namespace SKMNET.Client.Networking.Server.ISKMON
 {
     [Serializable]
     class FKeyConf : SPacket
@@ -14,7 +14,7 @@ namespace SKMNET.Networking.Server.ISKMON
         public ushort count;
         public FKeyConfEntry[] entries;
 
-        public override SPacket ParseHeader(ByteBuffer buffer)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
             count = buffer.ReadUShort();
             entries = new FKeyConfEntry[count];

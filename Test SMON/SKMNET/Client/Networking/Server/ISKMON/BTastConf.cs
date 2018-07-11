@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server
+namespace SKMNET.Client.Networking.Server
 {
     class BTastConf : SPacket
     {
@@ -13,7 +13,7 @@ namespace SKMNET.Networking.Server
         public BTastConfEntry[] entries;
         public ushort count;
 
-        public override SPacket ParseHeader(ByteBuffer buffer)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
             count = buffer.ReadUShort();
             entries = new BTastConfEntry[count];

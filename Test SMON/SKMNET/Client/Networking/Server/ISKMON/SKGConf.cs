@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.ISKMON
+namespace SKMNET.Client.Networking.Server.ISKMON
 {
     [Serializable]
     class SKGConf : SPacket
@@ -13,13 +13,13 @@ namespace SKMNET.Networking.Server.ISKMON
         public ushort count;
         public SKGConfEntry[] entries;
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            count = ByteUtils.ToUShort(data, 0);
+            count = buffer.ReadUShort();
             entries = new SKGConfEntry[count];
             for(int i = 0; i < count; i++)
             {
-                entries[i] = new SKGConfEntry(ByteUtils.ToUShort(data, i * 10 + 2), ByteUtils.ToString(data, i * 10 + 4, 8));
+                entries[i] = new SKGConfEntry(buffer.ReadUShort(), buffer.ReadString(8));
             }
             return this;
         }

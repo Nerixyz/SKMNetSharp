@@ -46,8 +46,17 @@ namespace SKMNET
             return buffer[0];
         }
 
+        public byte[] ReadByteArray(int length)
+        {
+            byte[] buffer = new byte[length];
+            memory.Read(buffer, (int)memory.Position, length);
+            return buffer;
+        }
+
         public string ReadString(int length)
         {
+            if (length == 0)
+                return string.Empty;
             byte[] buffer = new byte[length];
             memory.Read(buffer, (int)memory.Position, length);
             return ByteUtils.ToString(buffer, 0, length);
@@ -123,6 +132,15 @@ namespace SKMNET
         public void Write(byte[] arr)
         {
             memory.Write(arr, (int)memory.Position, arr.Length);
+        }
+
+        public int Length { get {
+                return (int) memory.Length;
+            } }
+
+        public void Forward(int forward)
+        {
+            memory.Position += forward;
         }
 
         public byte[] ToArray()

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.TSD
+namespace SKMNET.Client.Networking.Server.TSD
 {
     class MLPalSK : SPacket
     {
@@ -17,17 +17,17 @@ namespace SKMNET.Networking.Server.TSD
         public ushort skcount;
         public ushort[] skTable;
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            command = ByteUtils.ToUShort(data, 0);
-            palno = ByteUtils.ToUShort(data, 2);
-            mpaltype = ByteUtils.ToUShort(data, 4);
-            last = ByteUtils.ToUShort(data, 6) != 0;
-            skcount = ByteUtils.ToUShort(data, 8);
+            command = buffer.ReadUShort();
+            palno = buffer.ReadUShort();
+            mpaltype = buffer.ReadUShort();
+            last = buffer.ReadUShort() != 0;
+            skcount = buffer.ReadUShort();
             skTable = new ushort[skcount];
             for(int i = 0; i < skcount; i++)
             {
-                skTable[i] = ByteUtils.ToUShort(data, i * 2 + HeaderLength);
+                skTable[i] = buffer.ReadUShort();
             }
             return this;
         }

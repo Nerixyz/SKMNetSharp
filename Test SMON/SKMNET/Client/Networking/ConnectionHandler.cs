@@ -10,7 +10,7 @@ using SKMNET.Networking.Server.LIBRAExt;
 using SKMNET.Networking.Server.RMON;
 using SKMNET.Networking.Server.SKMON;
 using SKMNET.Networking.Server.T98;
-using SKMNET.Networking.Server.TSD;
+using SKMNET.Client.Networking.Server.TSD;
 using SKMNET.Util;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking
+namespace SKMNET.Client.Networking
 {
     public class ConnectionHandler
     {
@@ -31,6 +31,7 @@ namespace SKMNET.Networking
         private readonly LightingConsole console;
         private readonly Queue<byte[]> sendQueue;
         private readonly Thread sendThread;
+
 
         public ConnectionHandler(string ipAdress, LightingConsole parent)
         {

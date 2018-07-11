@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Client
+namespace SKMNET.Client.Networking.Client
 {
     class SKMSync : CPacket
     {

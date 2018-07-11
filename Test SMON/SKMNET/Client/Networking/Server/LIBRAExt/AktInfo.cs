@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.LIBRAExt
+namespace SKMNET.Client.Networking.Server.LIBRAExt
 {
     [Serializable]
     class AktInfo : SPacket
@@ -21,10 +21,11 @@ namespace SKMNET.Networking.Server.LIBRAExt
          * -> useless
          * */
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            register = ByteUtils.ToString(data, 4, 8);
-            listenanzeige = ByteUtils.ToString(data, 4 + 8, 8);
+            buffer.Forward(4);
+            register = buffer.ReadString(8);
+            listenanzeige = buffer.ReadString(8);
             return this;
         }
     }

@@ -51,6 +51,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SKMNET\Client\LightingConsole.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\SplittableHeader.cs" />
+    <Compile Include="SKMNET\Client\Networking\PacketDispatcher.cs" />
+    <Compile Include="SKMNET\Client\Networking\Server\RMON\ACKReset.cs" />
+    <Compile Include="SKMNET\Client\Networking\Server\RMON\Pieps.cs" />
+    <Compile Include="SKMNET\Client\Networking\Server\RMON\ReadKey.cs" />
+    <Compile Include="SKMNET\Client\Networking\Server\RMON\Sync.cs" />
     <Compile Include="SKMNET\Client\Stromkreise\ML\Flags.cs" />
     <Compile Include="SKMNET\Client\Stromkreise\ML\MLPal.cs" />
     <Compile Include="SKMNET\Client\Stromkreise\ML\MLParameter.cs" />

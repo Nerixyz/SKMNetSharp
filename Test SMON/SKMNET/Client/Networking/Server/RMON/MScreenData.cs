@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.RMON
+namespace SKMNET.Client.Networking.Server.RMON
 {
     class MScreenData : SPacket
     {
@@ -19,15 +19,15 @@ namespace SKMNET.Networking.Server.RMON
         ushort count;
         ushort[] data;
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            monitor = ByteUtils.ToUShort(data, 0);
-            start = ByteUtils.ToUShort(data, 2);
-            count = ByteUtils.ToUShort(data, 4);
+            monitor = buffer.ReadUShort();
+            start = buffer.ReadUShort();
+            count = buffer.ReadUShort();
 
             this.data = new ushort[count];
             for(int i = 0; i < count; i++){
-                this.data[i] = ByteUtils.ToUShort(data, 6 + i * 2);
+                this.data[i] = buffer.ReadUShort();
             }
 
             return this;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.TSD
+namespace SKMNET.Client.Networking.Server.TSD
 {
     [Serializable]
     class SelRange : SPacket
@@ -20,26 +20,26 @@ namespace SKMNET.Networking.Server.TSD
 
         public SelRangeData[] arr;
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            fixture = ByteUtils.ToUShort(data, 0);
-            fixpar = ByteUtils.ToUShort(data, 2);
-            val16 = ByteUtils.ToUShort(data, 4);
-            res1 = ByteUtils.ToUShort(data, 6);
-            res2 = ByteUtils.ToUShort(data, 8);
-            last = ByteUtils.ToUShort(data, 10) != 0;
-            count = ByteUtils.ToUShort(data, 12);
+            fixture = buffer.ReadUShort();
+            fixpar = buffer.ReadUShort();
+            val16 = buffer.ReadUShort();
+            res1 = buffer.ReadUShort();
+            res2 = buffer.ReadUShort();
+            last = buffer.ReadUShort() != 0;
+            count = buffer.ReadUShort();
             arr = new SelRangeData[count];
             for(int i = 0; i < count; i++)
             {
                 arr[i] = new SelRangeData(
-                    data[i * 16 + HeaderLength],
-                    data[i * 16 + HeaderLength + 1],
-                    data[i * 16 + HeaderLength + 2],
-                    data[i * 16 + HeaderLength + 3],
-                    ByteUtils.ToUShort(data, i * 16 + HeaderLength + 4),
-                    ByteUtils.ToUShort(data, i * 16 + HeaderLength + 6),
-                    ByteUtils.ToString(data, i * 16 + HeaderLength + 8, 8));
+                    buffer.ReadByte(),
+                    buffer.ReadByte(),
+                    buffer.ReadByte(),
+                    buffer.ReadByte(),
+                    buffer.ReadUShort(),
+                    buffer.ReadUShort(),
+                    buffer.ReadString(8));
             }
             return this;
         }

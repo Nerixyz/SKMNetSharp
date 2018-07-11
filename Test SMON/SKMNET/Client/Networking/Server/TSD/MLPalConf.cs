@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.TSD
+namespace SKMNET.Client.Networking.Server.TSD
 {
     [Serializable]
     class MLPalConf : SPacket
@@ -17,19 +17,19 @@ namespace SKMNET.Networking.Server.TSD
 
         public List<ConfEntry> Entries { get; } = new List<ConfEntry>();
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            absolute = ByteUtils.ToUShort(data, 0) == 0;
-            Mlpaltype = ByteUtils.ToUShort(data, 2);
-            last = ByteUtils.ToUShort(data, 4) != 0;
+            absolute = buffer.ReadUShort() == 0;
+            Mlpaltype = buffer.ReadUShort();
+            last = buffer.ReadUShort() != 0;
             int pointer = 6;
-            while(pointer < data.Length)
+            while(pointer < buffer.Length)
             {
-                short palno = ByteUtils.ToShort(data, pointer);
+                short palno = buffer.ReadShort();
                 if (palno == 0)
                     break;
-                short length = ByteUtils.ToShort(data, pointer + 2);
-                string text = ByteUtils.ToString(data, pointer + 4, length);
+                short length = buffer.ReadShort();
+                string text = buffer.ReadString(length);
                 Entries.Add(new ConfEntry(palno, text));
                 pointer += 4 + length;
             }

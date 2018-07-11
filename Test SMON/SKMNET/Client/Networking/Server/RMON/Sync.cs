@@ -4,17 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Client.Networking.Server.SKMON
+namespace SKMNET.Client.Networking.Server.RMON
 {
-    class SkCmd : SPacket
+    class Sync : SPacket
     {
-        public override int HeaderLength => 0;
-
-        Enums.SKCmd cmd;
+        public override int HeaderLength => throw new NotImplementedException();
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            cmd = (Enums.SKCmd)Enum.ToObject(typeof(Enums.SKCmd), buffer.ReadByte());
             return this;
         }
     }

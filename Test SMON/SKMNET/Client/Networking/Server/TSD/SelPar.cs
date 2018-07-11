@@ -4,35 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.TSD
+namespace SKMNET.Client.Networking.Server.TSD
 {
     [Serializable]
     class SelPar : SPacket
     {
         public override int HeaderLength => 14;
-        
+
         public ushort fixture;
         public string fixtureName;
         public bool last;
         public ushort count;
         public SelParData[] parameters;
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            fixture = ByteUtils.ToUShort(data, 0);
-            fixtureName = ByteUtils.ToString(data, 2, 8);
-            last = ByteUtils.ToUShort(data, 10) != 0;
-            count = ByteUtils.ToUShort(data, 12);
+            fixture = buffer.ReadUShort();
+            fixtureName = buffer.ReadString(8);
+            last = buffer.ReadUShort() != 0;
+            count = buffer.ReadUShort();
             parameters = new SelParData[count];
-            const byte DATA_ENTRY_LENGTH = 28;
             for(int i = 0; i < count; i++)
             {
                 parameters[i] = new SelParData(
-                    ByteUtils.ToShort(data, i * DATA_ENTRY_LENGTH + HeaderLength),
-                    ByteUtils.ToUShort(data, i * DATA_ENTRY_LENGTH + HeaderLength + 2),
-                    ByteUtils.ToString(data, i * DATA_ENTRY_LENGTH + HeaderLength + 4, 8),
-                    ByteUtils.ToString(data, i * DATA_ENTRY_LENGTH + HeaderLength + 12, 8),
-                    ByteUtils.ToString(data, i * DATA_ENTRY_LENGTH + HeaderLength + 20, 8));
+                    buffer.ReadShort(),
+                    buffer.ReadUShort(),
+                    buffer.ReadString(8),
+                    buffer.ReadString(8),
+                    buffer.ReadString(8));
 
             }
             return this;

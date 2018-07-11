@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.SKMON
+namespace SKMNET.Client.Networking.Server.SKMON
 {
     class Headline : SPacket
     {
@@ -17,11 +17,11 @@ namespace SKMNET.Networking.Server.SKMON
         /// </summary>
         public string data;
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            farbno = ByteUtils.ToUShort(data, 0);
-            count = ByteUtils.ToUShort(data, 2);
-            this.data = ByteUtils.ToString(data, 4, count);
+            farbno = buffer.ReadUShort();
+            count = buffer.ReadUShort();
+            this.data = buffer.ReadString(count);
             return this;
         }
     }

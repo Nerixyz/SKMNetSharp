@@ -1,10 +1,12 @@
 ﻿using SKMNET.Util;
 
-namespace SKMNET.Networking.Server
+namespace SKMNET.Client.Networking.Server
 {
     public abstract class SPacket
     {
-        public abstract SPacket ParseHeader(ByteBuffer buffer);
+        public abstract SPacket ParsePacket(ByteBuffer buffer);
         public abstract int HeaderLength { get; }
+
+        public abstract Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type);
     }
 }

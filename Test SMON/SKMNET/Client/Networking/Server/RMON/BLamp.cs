@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.RMON
+namespace SKMNET.Client.Networking.Server.RMON
 {
     [Serializable]
     class BLamp : SPacket
@@ -13,12 +13,12 @@ namespace SKMNET.Networking.Server.RMON
 
         public State[] lampStates;
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            lampStates = new State[data.Length];
-            for(int i = 0; i < data.Length; i++)
+            lampStates = new State[256];
+            for(int i = 0; i < 256; i++)
             {
-                lampStates[i] = (State)Enum.ToObject(typeof(State), data[i]);
+                lampStates[i] = (State)Enum.ToObject(typeof(State), buffer.ReadByte());
             }
             return this;
         }

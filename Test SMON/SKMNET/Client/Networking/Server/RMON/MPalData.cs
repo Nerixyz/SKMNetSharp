@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.RMON
+namespace SKMNET.Client.Networking.Server.RMON
 {
     class MPalData : SPacket
     {
@@ -14,14 +14,14 @@ namespace SKMNET.Networking.Server.RMON
         public ushort monitor;
         // siehe MScreenData.cs
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            monitor = ByteUtils.ToUShort(data, 0);
+            monitor = buffer.ReadUShort();
             const int farbSize = 8;
-            for (int i = 2; i < data.Length; i += farbSize)
+            for (int i = 2; i < buffer.Length; i += farbSize)
             {
                 VideoFarbe eintrag = farbeintrag[i / farbSize];
-                eintrag = new VideoFarbe(ByteUtils.ToShort(data, i), data[i + 2], data[i + 3], data[i + 4], data[i + 5], data[i + 6], data[i + 7]);
+                eintrag = new VideoFarbe(buffer.ReadShort(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte());
             }
             return this;
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.ISKMON
+namespace SKMNET.Client.Networking.Server.ISKMON
 {
     [Serializable]
     class Bed : SPacket
@@ -13,7 +13,7 @@ namespace SKMNET.Networking.Server.ISKMON
         
         public string linetext;
 
-        public override SPacket ParseHeader(ByteBuffer buffer)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
             // LENGTH = { 2, 31, 1} = 34
             // last byte is unused

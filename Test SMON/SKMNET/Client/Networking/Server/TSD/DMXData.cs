@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Server.TSD
+namespace SKMNET.Client.Networking.Server.TSD
 {
     class DMXData : SPacket
     {
@@ -15,16 +15,16 @@ namespace SKMNET.Networking.Server.TSD
         public ushort count; /* 1 or 2 lines */
         public DMXDataEntry[] dmxLines; /* 1 or 2 line data */
 
-        public override SPacket ParseHeader(byte[] data)
+        public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            command = ByteUtils.ToUShort(data, 0);
-            count = ByteUtils.ToUShort(data, 2);
+            command = buffer.ReadUShort();
+            count = buffer.ReadUShort();
             dmxLines = new DMXDataEntry[count];
             for(int i = 0; i < count; i++)
             {
-                byte[] dmxData = new byte[512];
-                Array.Copy(data, i * 514 + 6, data, 0, 512);
-                dmxLines[i] = new DMXDataEntry(ByteUtils.ToUShort(data, i * 514 + 4), dmxData);
+                ushort line = buffer.ReadUShort();
+                byte[] dmxData = buffer.ReadByteArray(512);
+                dmxLines[i] = new DMXDataEntry(line, dmxData);
             }
             return this;
         }
