@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SKMNET.Client.Stromkreise;
+using SKMNET.Client.Stromkreise.ML;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,6 +44,27 @@ namespace SKMNET.Client.Networking.Server.TSD
                     buffer.ReadString(8));
             }
             return this;
+        }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            SK sk = console.Stromkreise.Find((x) => x.Number == fixture);
+            MLParameter param = sk?.Parameters.Find((x) => x.ParNo == fixpar);
+            if (param is null)
+                return Enums.Response.BadCmd;
+
+            // TODO inspection
+            int i = 0;
+            foreach(SelRangeData data in arr)
+            {
+                param.Range = (data.start, data.end);
+                param.DefaultVal = data.defaultVal;
+                param.Flags = data.flags;
+                param.Name = data.name;
+                i++;
+                param = sk.Parameters.Find((x) => x.ParNo == fixpar + i);
+            }
+            return Enums.Response.OK;
         }
 
         [Serializable]

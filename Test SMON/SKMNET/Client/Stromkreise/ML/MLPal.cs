@@ -6,12 +6,20 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Stromkreise.ML
 {
+    [Serializable]
     public class MLPal
     {
         public MLPalFlag Type { get; set; }
         public string Name { get; set; }
         public double Number { get; set; }
+        public List<SK> BetSK { get; set; }
         
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="pal">PalType</param>
+        /// <param name="name">PalName</param>
+        /// <param name="num">PalNo is converted to double</param>
         public MLPal(MLPalFlag pal, string name, short num)
         {
             if (((ushort)pal & 0x0070) != 0)
@@ -19,6 +27,7 @@ namespace SKMNET.Client.Stromkreise.ML
             this.Type = pal;
             this.Name = name;
             this.Number = num / 10d;
+            this.BetSK = new List<SK>();
         }
 
         public enum MLPalFlag
@@ -32,6 +41,12 @@ namespace SKMNET.Client.Stromkreise.ML
             BLK = 0x0020,   /* Stimmung */
             DYN = 0x0040,   /* Dynamics */
             CUR_SEL = 0x0080,   /* Aktuelle Selektion */
+        }
+
+        public static MLPalFlag GetFlag(ushort paltype)
+        {
+            paltype &= 0x0070;
+            return (paltype & 0x0001) != 0 ? MLPalFlag.I : (paltype & 0x0002) != 0 ? MLPalFlag.F : (paltype & 0x0004) != 0 ? MLPalFlag.C : (paltype & 0x0008) != 0 ? MLPalFlag.B : (paltype & 0x0010) != 0 ? MLPalFlag.SKG : (paltype & 0x0020) != 0 ? MLPalFlag.BLK : (paltype & 0x0040) != 0 ? MLPalFlag.DYN : MLPalFlag.CUR_SEL;
         }
     }
 }

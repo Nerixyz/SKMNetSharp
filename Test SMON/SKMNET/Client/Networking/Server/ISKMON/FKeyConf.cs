@@ -25,6 +25,12 @@ namespace SKMNET.Client.Networking.Server.ISKMON
             return this;
         }
 
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            //TODO
+            return Enums.Response.OK;
+        }
+
         [Serializable]
         public class FKeyConfEntry
         {

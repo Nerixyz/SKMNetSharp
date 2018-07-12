@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Client
+namespace SKMNET.Client.Networking.Client
 {
     class SKAnwahl : CPacket
     {
         public override short Type => 15;
-        private AWType type;
+        private readonly AWType type;
         private short[] skNo;
 
         public override byte[] GetDataToSend()

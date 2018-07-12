@@ -10,14 +10,12 @@ namespace SKMNET.Client.Networking.Server.TSD
     class DMXData : SPacket
     {
         public override int HeaderLength => 4;
-
-        public ushort command; /* = SKMON_TSD_DMXDATA */
+        
         public ushort count; /* 1 or 2 lines */
         public DMXDataEntry[] dmxLines; /* 1 or 2 line data */
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            command = buffer.ReadUShort();
             count = buffer.ReadUShort();
             dmxLines = new DMXDataEntry[count];
             for(int i = 0; i < count; i++)
@@ -29,10 +27,16 @@ namespace SKMNET.Client.Networking.Server.TSD
             return this;
         }
 
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            //TODO actually idk where each SK is located
+            return Enums.Response.OK;
+        }
+
         public class DMXDataEntry
         {
             public ushort line; /* DMX-Leitungsnummer 1..64 */
-        public byte[] dmxData;
+            public byte[] dmxData;
 
             public DMXDataEntry(ushort line, byte[] dmxData)
             {

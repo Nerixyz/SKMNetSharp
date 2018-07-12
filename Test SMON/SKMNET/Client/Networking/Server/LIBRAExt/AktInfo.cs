@@ -28,5 +28,12 @@ namespace SKMNET.Client.Networking.Server.LIBRAExt
             listenanzeige = buffer.ReadString(8);
             return this;
         }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            console.AktReg = register;
+            console.AktList = listenanzeige;
+            return Enums.Response.OK;
+        }
     }
 }

@@ -11,8 +11,8 @@ namespace SKMNET.Client.Networking.Client
     {
         public override short Type => 13;
 
-        private Action action;
-        private int flags;
+        private readonly Action action;
+        private readonly int flags;
 
         public override byte[] GetDataToSend()
         {

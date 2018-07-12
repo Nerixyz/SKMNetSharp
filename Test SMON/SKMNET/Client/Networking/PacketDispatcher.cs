@@ -1,22 +1,18 @@
-﻿using SKMNET.Client.Networking.Server;
-using SKMNET.Client.Networking.Server.RMON;
-using SKMNET.Client.Networking.Server.ISKMON;
-using SKMNET.Client.Networking.Server.LIBRAExt;
-using SKMNET.Client.Networking.Server.SKMON;
+﻿using System;
+using System.Collections.Generic;
+using SKMNET.Client.Networking.Server;
 using SKMNET.Client.Networking.Server.T98;
 using SKMNET.Client.Networking.Server.TSD;
-using SKMNET.Networking.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SKMNET.Client.Networking.Server.RMON;
+using SKMNET.Client.Networking.Server.SKMON;
+using SKMNET.Client.Networking.Server.ISKMON;
+using SKMNET.Client.Networking.Server.LIBRAExt;
 
 namespace SKMNET.Client.Networking
 {
-    class PacketDispatcher
+    public class PacketDispatcher
     {
-        ConnectionHandler connection;
+        private readonly ConnectionHandler connection;
         private readonly Dictionary<int, Type> serverPacketMap;
 
         public PacketDispatcher(ConnectionHandler handler)
@@ -81,26 +77,37 @@ namespace SKMNET.Client.Networking
 
         public Enums.Response OnDataIncoming(byte[] data)
         {
-            ushort type = ByteUtils.ToUShort(data, 0);
-            bool result = serverPacketMap.TryGetValue(type, out Type pType);
-            if (!result)
+            try
             {
+                ushort type = ByteUtils.ToUShort(data, 0);
+                Enums.Type eType = (Enums.Type)Enum.ToObject(typeof(Enums.Type), type);
+                bool result = serverPacketMap.TryGetValue(type, out Type pType);
+                if (!result)
+                {
+                    return Enums.Response.BadCmd;
+                }
+
+                SPacket packet = (SPacket)Activator.CreateInstance(pType);
+                byte[] actualPacket = { };
+                if (data.Length > 2)
+                {
+                    actualPacket = new byte[data.Length - 2];
+                    Array.Copy(data, 2, actualPacket, 0, data.Length - 2);
+                }
+
+                packet.ParsePacket(new ByteBuffer(actualPacket));
+                Enums.Response code = packet.ProcessPacket(connection.console, connection, type);
+
+                if(type != 0)
+                    connection.OnPacketRecieved(this, new PacketRecievedEventArgs(eType, packet));
+
+                return code;
+
+            } catch(Exception e)
+            {
+                connection.OnErrored(this, e);
                 return Enums.Response.BadCmd;
             }
-
-            SPacket packet = (SPacket)Activator.CreateInstance(pType);
-            byte[] actualPacket = { };
-            if (data.Length > 2) {
-                actualPacket = new byte[data.Length - 2];
-                Array.Copy(data, 2, actualPacket, 0, data.Length - 2);
-            }
-
-            packet.ParsePacket(new ByteBuffer(actualPacket));
-            PacketRecieved?.Invoke(this, packet);
-
-            return Enums.Response.OK;
         }
-
-        public event EventHandler<SPacket> PacketRecieved;
     }
 }

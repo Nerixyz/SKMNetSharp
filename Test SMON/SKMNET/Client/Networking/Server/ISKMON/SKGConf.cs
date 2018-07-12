@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKMNET.Client.Stromkreise;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,26 @@ namespace SKMNET.Client.Networking.Server.ISKMON
                 entries[i] = new SKGConfEntry(buffer.ReadUShort(), buffer.ReadString(8));
             }
             return this;
+        }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            foreach(SKGConfEntry entry in entries)
+            {
+                SKG skg = console.Stromkreisgruppen.Find((x) => x.Number == entry.skgnum);
+                if(skg is null)
+                {
+                    skg = new SKG(entry.skgnum, entry.skgname);
+                    console.Stromkreisgruppen.Add(skg);
+                    continue;
+                }
+                else
+                {
+                    skg.Number = entry.skgnum;
+                    skg.Name = entry.skgname;
+                }
+            }
+            return Enums.Response.OK;
         }
 
         [Serializable]

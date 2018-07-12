@@ -1,4 +1,5 @@
-﻿using SKMNET.Util;
+﻿using SKMNET.Client.Stromkreise;
+using SKMNET.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,15 @@ namespace SKMNET.Client.Networking.Server.T98
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
+            if (clear)
+            {
+                console.Stromkreise.Clear();
+
+            }
+            for (ushort i = start; i < count + start; i++)
+            {
+                console.Stromkreise.Insert(i, new SK(data[i - start]));
+            }
             return Enums.Response.OK;
         }
     }

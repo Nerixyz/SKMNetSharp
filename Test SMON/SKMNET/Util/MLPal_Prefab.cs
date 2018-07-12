@@ -25,6 +25,11 @@ namespace SKMNET
             return (paltype & ((ushort)(flag))) != 0;
         }
 
+        public static bool GetFlag(MLPalFlag flag, ushort paltype)
+        {
+            return (paltype & ((ushort)(flag))) != 0;
+        }
+
         public enum MLPalFlag
         {
             I = 0x0001      ,   /* I-Palette */

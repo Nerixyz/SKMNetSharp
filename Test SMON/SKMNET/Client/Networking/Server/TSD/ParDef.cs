@@ -9,8 +9,7 @@ namespace SKMNET.Client.Networking.Server.TSD
     class ParDef : SPacket
     {
         public override int HeaderLength => 6;
-
-        public ushort command; /* = SKMON_MLC_PARDEF */
+        
         public bool last;
         public ushort count;
         public ParDefData[] arr;
@@ -30,6 +29,16 @@ namespace SKMNET.Client.Networking.Server.TSD
                     buffer.ReadString(8));
             }
             return this;
+        }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            console.Prefabs.Clear();
+            foreach(ParDefData data in arr)
+            {
+                console.Prefabs.Add(new Stromkreise.ML.ParPrefab(data.parno, data.dispMode, data.parName));
+            }
+            return Enums.Response.OK;
         }
 
         public class ParDefData

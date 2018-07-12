@@ -1,4 +1,5 @@
-﻿using SKMNET.Util;
+﻿using SKMNET.Client.Vorstellungen;
+using SKMNET.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,17 @@ namespace SKMNET.Client.Networking.Server.TSD
         public bool IsSave()
         {
             return job == 2;
+        }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            Vorstellung vst = console.Vorstellungen.Find((x) => par1 == x.Number);
+            if(vst is null)
+            {
+                vst = new Vorstellung((ushort)par1);
+                console.Vorstellungen.Add(vst);
+            }
+            return Enums.Response.OK;
         }
     }
 }

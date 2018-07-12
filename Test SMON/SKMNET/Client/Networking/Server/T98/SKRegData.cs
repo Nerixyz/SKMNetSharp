@@ -1,4 +1,5 @@
-﻿using SKMNET.Util;
+﻿using SKMNET.Client.Stromkreise;
+using SKMNET.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,19 @@ namespace SKMNET.Client.Networking.Server.T98
                 this.data[i] = buffer.ReadByte();
             }
             return this;
+        }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            for (int i = start; i < start + count; i++)
+            {
+                SK reg = console.Stromkreise[i];
+                if (reg != null)
+                {
+                    reg.Intensity = data[i - start];
+                }
+            }
+            return Enums.Response.OK;
         }
     }
 }

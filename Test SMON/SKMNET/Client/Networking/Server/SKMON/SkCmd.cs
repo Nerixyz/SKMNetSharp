@@ -17,5 +17,11 @@ namespace SKMNET.Client.Networking.Server.SKMON
             cmd = (Enums.SKCmd)Enum.ToObject(typeof(Enums.SKCmd), buffer.ReadByte());
             return this;
         }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            //TODO
+            return Enums.Response.OK;
+        }
     }
 }

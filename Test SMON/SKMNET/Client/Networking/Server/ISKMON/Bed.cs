@@ -21,5 +21,11 @@ namespace SKMNET.Client.Networking.Server.ISKMON
 
             return this;
         }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            console.Bedienzeile = linetext;
+            return Enums.Response.OK;
+        }
     }
 }

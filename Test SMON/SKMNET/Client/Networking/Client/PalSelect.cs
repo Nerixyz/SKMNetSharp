@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Client
+namespace SKMNET.Client.Networking.Client
 {
     class PalSelect : CPacket
     {
         public override short Type => 24;
-        private short PalMask;
+        private readonly short PalMask;
         private const short BsStNo = 0;
         private const short SubCmd = 0;
 

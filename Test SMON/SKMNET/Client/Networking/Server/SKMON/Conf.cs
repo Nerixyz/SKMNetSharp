@@ -24,5 +24,11 @@ namespace SKMNET.Client.Networking.Server.SKMON
             }
             return this;
         }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            console.DisplayMode = Disp[0];
+            return Enums.Response.OK;
+        }
     }
 }

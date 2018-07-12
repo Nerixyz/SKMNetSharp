@@ -9,8 +9,7 @@ namespace SKMNET.Client.Networking.Server.ISKMON
     class Meld : SPacket
     {
         public override int HeaderLength => 0;
-
-        public ushort cmd;
+        
         public string linetext;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
@@ -20,6 +19,12 @@ namespace SKMNET.Client.Networking.Server.ISKMON
             linetext = buffer.ReadString(31);
 
             return this;
+        }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            console.Meldezeile = linetext;
+            return Enums.Response.OK;
         }
     }
 }

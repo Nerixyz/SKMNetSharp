@@ -14,5 +14,10 @@ namespace SKMNET.Client.Networking.Server.RMON
         {
             return this;
         }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            return Enums.Response.OK;
+        }
     }
 }

@@ -24,6 +24,12 @@ namespace SKMNET.Client.Networking.Server
             return this;
         }
 
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            //TODO
+            return Enums.Response.OK;
+        }
+
         [Serializable]
         public class BTastConfEntry
         {

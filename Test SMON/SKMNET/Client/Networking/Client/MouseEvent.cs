@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Client
+namespace SKMNET.Client.Networking.Client
 {
     class MouseEvent : Event
     {
-        byte moveX;
-        byte moveY;
-        byte buttons;
+        readonly byte moveX;
+        readonly byte moveY;
+        readonly byte buttons;
         public override int GetEventInteger()
         {
             return 0x02000000 | (moveX << (4 * 8)) | (moveY << (2 * 8)) | (buttons);

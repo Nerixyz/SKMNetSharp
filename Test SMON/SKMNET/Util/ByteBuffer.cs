@@ -21,35 +21,35 @@ namespace SKMNET
         public uint ReadUInt()
         {
             byte[] buffer = new byte[4];
-            memory.Read(buffer, (int)memory.Position, 4);
+            memory.Read(buffer, 0, 4);
             return ByteUtils.ToUInt(buffer, 0);
         }
 
         public short ReadShort()
         {
             byte[] buffer = new byte[2];
-            memory.Read(buffer, (int)memory.Position, 2);
+            memory.Read(buffer, 0, 2);
             return ByteUtils.ToShort(buffer, 0);
         }
 
         public ushort ReadUShort()
         {
             byte[] buffer = new byte[2];
-            memory.Read(buffer, (int)memory.Position, 2);
+            memory.Read(buffer, 0, 2);
             return ByteUtils.ToUShort(buffer, 0);
         }
 
         public byte ReadByte()
         {
             byte[] buffer = new byte[1];
-            memory.Read(buffer, (int)memory.Position, 1);
+            memory.Read(buffer, 0, 1);
             return buffer[0];
         }
 
         public byte[] ReadByteArray(int length)
         {
             byte[] buffer = new byte[length];
-            memory.Read(buffer, (int)memory.Position, length);
+            memory.Read(buffer, 0, length);
             return buffer;
         }
 
@@ -58,7 +58,7 @@ namespace SKMNET
             if (length == 0)
                 return string.Empty;
             byte[] buffer = new byte[length];
-            memory.Read(buffer, (int)memory.Position, length);
+            memory.Read(buffer, 0, length);
             return ByteUtils.ToString(buffer, 0, length);
         }
 
@@ -66,47 +66,47 @@ namespace SKMNET
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
-            memory.Write(data, (int)memory.Position, 2);
+            memory.Write(data, 0, 2);
         }
 
         public void Write(short value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
-            memory.Write(data, (int)memory.Position, 2);
+            memory.Write(data, 0, 2);
         }
 
         public void Write(int value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
-            memory.Write(data, (int)memory.Position, 4);
+            memory.Write(data, 0, 4);
         }
 
         public void Write(uint value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
-            memory.Write(data, (int)memory.Position, 4);
+            memory.Write(data, 0, 4);
         }
 
         public void Write(long value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
-            memory.Write(data, (int)memory.Position, 8);
+            memory.Write(data, 0, 8);
         }
 
         public void Write(byte value)
         {
-            memory.Write(new byte[] { value }, (int)memory.Position, 1);
+            memory.Write(new byte[] { value }, 0, 1);
         }
 
         public void Write(ulong value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
-            memory.Write(data, (int)memory.Position, 8);
+            memory.Write(data, 0, 8);
         }
 
         public void Write(ushort[] arr)
@@ -115,7 +115,7 @@ namespace SKMNET
             {
                 byte[] data = BitConverter.GetBytes(value);
                 Array.Reverse(data);
-                memory.Write(data, (int)memory.Position, 2);
+                memory.Write(data, 0, 2);
             }
         }
 
@@ -125,13 +125,13 @@ namespace SKMNET
             {
                 byte[] data = BitConverter.GetBytes(value);
                 Array.Reverse(data);
-                memory.Write(data, (int)memory.Position, 2);
+                memory.Write(data, 0, 2);
             }
         }
 
         public void Write(byte[] arr)
         {
-            memory.Write(arr, (int)memory.Position, arr.Length);
+            memory.Write(arr, 0, arr.Length);
         }
 
         public int Length { get {

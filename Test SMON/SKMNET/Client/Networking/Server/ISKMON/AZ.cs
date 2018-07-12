@@ -10,14 +10,12 @@ namespace SKMNET.Client.Networking.Server.ISKMON
     class AZ : SPacket
     {
         public override int HeaderLength => 0;
-
-        public ushort command;
+        
         public ushort flags;
         public string linetext;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            command = buffer.ReadUShort();
             flags = buffer.ReadUShort();
             linetext = buffer.ReadString(48);
             return this;
@@ -28,17 +26,16 @@ namespace SKMNET.Client.Networking.Server.ISKMON
             return (flags & 0x0001) != 0;
         }
 
-        public bool IST()
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            return command ==(ushort) Enums.Type.AZ_IST;
-        }
-        public bool ZIEL()
-        {
-            return command == (ushort)Enums.Type.AZ_ZIEL;
-        }
-        public bool VOR()
-        {
-            return command == (ushort)Enums.Type.AZ_VOR;
+            switch((Enums.Type)Enum.ToObject(typeof(Enums.Type), type))
+            {
+                case Enums.Type.AZ_IST: console.RegIST.Text = linetext; console.RegIST.AW = Angewaehlt(); break;
+                case Enums.Type.AZ_ZIEL: console.RegZIEL.Text = linetext; console.RegZIEL.AW = Angewaehlt(); break;
+                case Enums.Type.AZ_VOR: console.RegVOR.Text = linetext; console.RegVOR.AW = Angewaehlt(); break;
+            }
+
+            return Enums.Response.OK;
         }
     }
 }

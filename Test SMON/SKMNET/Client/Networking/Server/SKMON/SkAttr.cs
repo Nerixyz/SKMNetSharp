@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKMNET.Client.Stromkreise;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,28 @@ namespace SKMNET.Client.Networking.Server.SKMON
                 this.data[i] = buffer.ReadByte();
             }
             return this;
+        }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            console.ActiveSK.Clear();
+            for (int i = start; i < start + count; i++)
+            {
+                SK sk = console.Stromkreise[i];
+                if (sk != null)
+                {
+                    sk.Attrib = data[i - start];
+                }
+            }
+            // TODO: optimize speed
+            foreach (SK sk in console.Stromkreise)
+            {
+                if (sk.Attrib != 0 && sk.Number != 0)
+                {
+                    console.ActiveSK.Add(sk);
+                }
+            }
+            return Enums.Response.OK;
         }
     }
 }

@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SKMNET.Networking.Client
+namespace SKMNET.Client.Networking.Client
 {
     class SKGAnwahl : CPacket
     {
         public override short Type => 16;
 
-        private AWType action;
+        private readonly AWType action;
         private short[] SKGs;
 
         public override byte[] GetDataToSend()

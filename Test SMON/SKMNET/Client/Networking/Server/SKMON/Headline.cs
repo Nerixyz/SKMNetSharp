@@ -24,5 +24,11 @@ namespace SKMNET.Client.Networking.Server.SKMON
             this.data = buffer.ReadString(count);
             return this;
         }
+
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        {
+            console.Headline = data;
+            return Enums.Response.OK;
+        }
     }
 }
