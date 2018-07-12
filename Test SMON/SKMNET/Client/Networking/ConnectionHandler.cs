@@ -18,6 +18,8 @@ namespace SKMNET.Client.Networking
         private readonly Queue<byte[]> sendQueue;
         private readonly Thread sendThread;
         private readonly PacketDispatcher packetDispatcher;
+        
+        private Action<byte[]> queuedAction;
 
 
         public ConnectionHandler(string ipAdress, LightingConsole parent)
@@ -70,7 +72,11 @@ namespace SKMNET.Client.Networking
             OnErrored(this, e);
         }
 
-        private void Sender_Recieve(object sender, byte[] e){}
+        private void Sender_Recieve(object sender, byte[] e)
+        {
+            queuedAction?.Invoke(e);
+            queuedAction = null;
+        }
         
         public void SendPacket(CPacket header)
         {
@@ -86,6 +92,17 @@ namespace SKMNET.Client.Networking
                 parser.Add(MAGIC_NUMBER).Add(header.Type).Add(GetLocalIPAddress()).Add(arr);
                 sendQueue.Enqueue(parser.GetArray());
             }
+        }
+
+        public void SendPacket(CPacket header, Action<byte[]> callback)
+        {
+            SendPacket(header);
+            this.queuedAction = callback;
+        }
+        public void SendPacket(SplittableHeader header, Action<byte[]> callback)
+        {
+            SendPacket(header);
+            this.queuedAction = callback;
         }
 
         public byte[] GetLocalIPAddress()

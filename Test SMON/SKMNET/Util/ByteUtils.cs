@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET
 {
-    class ByteUtils
+    public class ByteUtils
     {
         public static string ArrayToString(byte[] array)
         {

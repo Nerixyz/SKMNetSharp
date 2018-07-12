@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
-    class MonitorEvent : Event
+    public class MonitorEvent : Event
     {
         readonly byte monitor;
         readonly byte param  = 0;

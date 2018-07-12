@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading;
-using NAudio.Wave;
 using SKMNET;
 using SKMNET.Client;
-using System.Threading;
-using Test.Util;
-using NAudio.Dsp;
-using SKMNET.Util;
 using SKMNET.Client.Networking;
 using Newtonsoft.Json;
 using System.Windows.Forms;
+using SKMNET.Client.Networking.Client;
 
 namespace Test
 {
@@ -23,9 +14,52 @@ namespace Test
         static void Main(string[] args)
         {
             LightingConsole console = new LightingConsole("127.0.0.1");
+
             console.Errored += Console_Errored;
             console.Connection.PacketRecieved += Connection_PacketRecieved;
+            
             Console.ReadLine();
+
+
+            Console.WriteLine("pre");
+
+            console.Query(new SKAnwahl(SKAnwahl.AWType.Abs, new short[] { 1, 2 }), (arr) =>
+            {
+                Console.WriteLine($"Response: {ByteUtils.ArrayToString(arr)} ");
+            });
+
+            Console.WriteLine("post");
+
+            Console.ReadLine();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             string json = JsonConvert.SerializeObject(console);
             Clipboard.SetText(json);
             /*byte[] arr = new byte[] { 1, 2, 3, 4, 5, 6 };

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
-    class FixPar : SplittableHeader
+    public class FixPar : SplittableHeader
     {
         private const short BStdNo = 0; /* Bedienstelle */
         private readonly short subCmd;

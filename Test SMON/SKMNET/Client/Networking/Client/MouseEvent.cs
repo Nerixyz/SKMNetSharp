@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
-    class MouseEvent : Event
+    public class MouseEvent : Event
     {
         readonly byte moveX;
         readonly byte moveY;

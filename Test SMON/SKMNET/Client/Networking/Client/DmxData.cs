@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
-    class DmxData : CPacket, ISendable
+    public class DmxData : CPacket, ISendable
     {
         public override short Type => 21;
         private const short BdStNo = 0;

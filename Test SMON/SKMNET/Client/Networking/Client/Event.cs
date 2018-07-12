@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
-    abstract class Event : CPacket
+    public abstract class Event : CPacket
     {
         public override short Type => 14;
 

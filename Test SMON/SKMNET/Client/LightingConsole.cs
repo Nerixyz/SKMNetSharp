@@ -96,6 +96,16 @@ namespace SKMNET.Client
             Connection.SendPacket(packet);
         }
 
+        public void Query(CPacket packet, Action<byte[]> callback)
+        {
+            Connection.SendPacket(packet, callback);
+        }
+
+        public void Query(SplittableHeader packet, Action<byte[]> callback)
+        {
+            Connection.SendPacket(packet, callback);
+        }
+
         public event EventHandler<Exception> Errored;
         protected virtual void OnErrored(Exception data) { Errored?.Invoke(this, data); }
     }
