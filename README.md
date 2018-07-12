@@ -14,4 +14,4 @@ LightingConsole console = new LightingConsole(IP_ADRESSE);
 Zur Zeit muss die IP-Adresse richtig sein (sonst gibt ein Socket einen Fehler).
 
 Zum Testen empfehle ich den [NT Offline Editor](https://www.etcconnect.com/Products/Consoles/Legacy/Focus-NTX/Software.aspx).
-Es ist auch die einzige Möglichkeit mit der man sich zZt. sicher verbinden kann.
+Es ist auch die einzige Möglichkeit, mit der man sich zur Zeit sicher verbinden kann.
