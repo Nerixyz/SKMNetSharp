@@ -50,7 +50,13 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SKMNET\Client\LightingConsole.cs" />
+    <Compile Include="SKMNET\Client\Networking\Client\Event\BedienfehlermeldungEvent.cs" />
+    <Compile Include="SKMNET\Client\Networking\Client\Event\BedientasteEvent.cs" />
+    <Compile Include="SKMNET\Client\Networking\Client\Event\LastkreistasteEvent.cs" />
+    <Compile Include="SKMNET\Client\Networking\Client\Event\MacroEvent.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\SplittableHeader.cs" />
+    <Compile Include="SKMNET\Client\Networking\Client\Event\StellermeldungEvent.cs" />
+    <Compile Include="SKMNET\Client\Networking\Client\Event\TextTastEvent.cs" />
     <Compile Include="SKMNET\Client\Networking\PacketDispatcher.cs" />
     <Compile Include="SKMNET\Client\Networking\Server\RMON\ACKReset.cs" />
     <Compile Include="SKMNET\Client\Networking\Server\RMON\Pieps.cs" />
@@ -65,11 +71,11 @@
     <Compile Include="SKMNET\Client\Vorstellungen\Vorstellung.cs" />
     <Compile Include="SKMNET\Enums.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\DmxData.cs" />
-    <Compile Include="SKMNET\Client\Networking\Client\Event.cs" />
+    <Compile Include="SKMNET\Client\Networking\Client\Event\Event.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\FixPar.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\CPacket.cs" />
-    <Compile Include="SKMNET\Client\Networking\Client\MonitorEvent.cs" />
-    <Compile Include="SKMNET\Client\Networking\Client\MouseEvent.cs" />
+    <Compile Include="SKMNET\Client\Networking\Client\Event\MonitorEvent.cs" />
+    <Compile Include="SKMNET\Client\Networking\Client\Event\MouseEvent.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\PalSelect.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\SKAnwahl.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\SKGAnwahl.cs" />

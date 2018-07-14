@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 
 namespace SKMNET
 {
@@ -62,54 +61,62 @@ namespace SKMNET
             return ByteUtils.ToString(buffer, 0, length);
         }
 
-        public void Write(ushort value)
+        public ByteBuffer Write(ushort value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
             memory.Write(data, 0, 2);
+            return this;
         }
 
-        public void Write(short value)
+        public ByteBuffer Write(short value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
             memory.Write(data, 0, 2);
+            return this;
         }
 
-        public void Write(int value)
+        public ByteBuffer Write(int value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
             memory.Write(data, 0, 4);
+            return this;
         }
 
-        public void Write(uint value)
+        public ByteBuffer Write(uint value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
             memory.Write(data, 0, 4);
+            return this;
         }
 
-        public void Write(long value)
+        public ByteBuffer Write(long value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
             memory.Write(data, 0, 8);
+            return this;
         }
 
-        public void Write(byte value)
+        public ByteBuffer Write(byte value)
         {
-            memory.Write(new byte[] { value }, 0, 1);
+            memory.WriteByte(value);
+            return this;
+
         }
 
-        public void Write(ulong value)
+        public ByteBuffer Write(ulong value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
             memory.Write(data, 0, 8);
+            return this;
         }
 
-        public void Write(ushort[] arr)
+        public ByteBuffer Write(ushort[] arr)
         {
             foreach (ushort value in arr)
             {
@@ -117,9 +124,10 @@ namespace SKMNET
                 Array.Reverse(data);
                 memory.Write(data, 0, 2);
             }
+            return this;
         }
 
-        public void Write(short[] arr)
+        public ByteBuffer Write(short[] arr)
         {
             foreach (short value in arr)
             {
@@ -127,11 +135,13 @@ namespace SKMNET
                 Array.Reverse(data);
                 memory.Write(data, 0, 2);
             }
+            return this;
         }
 
-        public void Write(byte[] arr)
+        public ByteBuffer Write(byte[] arr)
         {
             memory.Write(arr, 0, arr.Length);
+            return this;
         }
 
         public int Length { get {

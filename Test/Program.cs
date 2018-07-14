@@ -2,9 +2,10 @@
 using SKMNET;
 using SKMNET.Client;
 using SKMNET.Client.Networking;
+using SKMNET.Client.Networking.Client;
 using Newtonsoft.Json;
 using System.Windows.Forms;
-using SKMNET.Client.Networking.Client;
+using System.Threading;
 
 namespace Test
 {
@@ -19,47 +20,17 @@ namespace Test
             console.Connection.PacketRecieved += Connection_PacketRecieved;
             
             Console.ReadLine();
-
-
-            Console.WriteLine("pre");
-
-            console.Query(new SKAnwahl(SKAnwahl.AWType.Abs, new short[] { 1, 2 }), (arr) =>
+            while (true)
             {
-                Console.WriteLine($"Response: {ByteUtils.ArrayToString(arr)} ");
-            });
-
-            Console.WriteLine("post");
+                Console.Write("tast: ");
+                console.Query(new TextTastEvent(1, 0), (arr) =>
+                {
+                    Console.WriteLine($"Response: {ByteUtils.ArrayToString(arr)} ");
+                });
+            }
+            /*
 
             Console.ReadLine();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             string json = JsonConvert.SerializeObject(console);
             Clipboard.SetText(json);
             /*byte[] arr = new byte[] { 1, 2, 3, 4, 5, 6 };
@@ -68,13 +39,13 @@ namespace Test
             {
                 Console.WriteLine(buffer.ReadUShort());
             }*/
-            Console.ReadLine();
+            //Console.ReadLine();
 
         }
 
         private static void Connection_PacketRecieved(object sender, PacketRecievedEventArgs args)
         {
-            Console.WriteLine("recieved " + (int)args.type + " - " + Enum.GetName(typeof(Enums.Type), args.type));
+            Console.WriteLine("recieved " + (int)args.type + " - " + args.packet.GetType().Name);
         }
 
         private static void Console_Errored(object sender, Exception e)

@@ -13,7 +13,7 @@ namespace SKMNET.Client.Networking.Client
 
         public override byte[] GetDataToSend()
         {
-            return new ByteArrayParser().Add(DateTime.Now.Millisecond).Add((short)1).Add((short)0).Add(GetEventInteger()).GetArray();
+            return new ByteArrayParser().Add((Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds).Add((short)1).Add((short)0).Add(GetEventInteger()).GetArray();
         }
 
         public abstract int GetEventInteger();

@@ -37,6 +37,7 @@ namespace SKMNET.Client.Networking.Server.TSD
             if (MLPal_Prefab.GetFlag(MLPal_Prefab.MLPalFlag.F, this.type)) listPtr = console.FPal;
             if (MLPal_Prefab.GetFlag(MLPal_Prefab.MLPalFlag.C, this.type)) listPtr = console.CPal;
             if (MLPal_Prefab.GetFlag(MLPal_Prefab.MLPalFlag.B, this.type)) listPtr = console.BPal;
+            if (MLPal_Prefab.GetFlag(MLPal_Prefab.MLPalFlag.BLK, this.type)) listPtr = console.BLK;
             else return Enums.Response.OK; // TODO inspection
             foreach (MLPal_Prefab pre in pallets)
             {

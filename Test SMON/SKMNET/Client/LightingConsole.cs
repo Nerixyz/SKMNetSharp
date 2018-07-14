@@ -46,6 +46,10 @@ namespace SKMNET.Client
         /// B-Pallettendaten
         /// </summary>
         public List<MLPal> BPal { get; set; } = new List<MLPal>();
+        /// <summary>
+        /// Stimmungen
+        /// </summary>
+        public List<MLPal> BLK { get; set; } = new List<MLPal>();
 
         /// <summary>
         /// Alle Parameter (für zB GUI)
@@ -98,6 +102,7 @@ namespace SKMNET.Client
 
         public void Query(CPacket packet, Action<byte[]> callback)
         {
+            Console.WriteLine(ByteUtils.ArrayToString(packet.GetDataToSend()));
             Connection.SendPacket(packet, callback);
         }
 

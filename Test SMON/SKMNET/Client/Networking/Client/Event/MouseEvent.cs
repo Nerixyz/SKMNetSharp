@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SKMNET.Client.Networking.Client
+﻿namespace SKMNET.Client.Networking.Client
 {
     public class MouseEvent : Event
     {
@@ -13,7 +7,7 @@ namespace SKMNET.Client.Networking.Client
         readonly byte buttons;
         public override int GetEventInteger()
         {
-            return 0x02000000 | (moveX << (4 * 8)) | (moveY << (2 * 8)) | (buttons);
+            return 0x02000000 | (moveX << (16)) | (moveY << (8)) | (buttons);
         }
         public MouseEvent(byte mouseX, byte mouseY, byte buttons)
         {

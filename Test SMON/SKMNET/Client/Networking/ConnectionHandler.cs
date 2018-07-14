@@ -47,7 +47,7 @@ namespace SKMNET.Client.Networking
             });
             sendThread.Start();
 
-            SendPacket(new SKMSync(-1));
+            SendPacket(new SKMSync((int)SKMSync.Flags.Steller));
         }
 
         private void Reciever_Errored(object sender, Exception e)

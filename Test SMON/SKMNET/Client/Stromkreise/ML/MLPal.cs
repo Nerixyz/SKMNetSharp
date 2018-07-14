@@ -22,8 +22,6 @@ namespace SKMNET.Client.Stromkreise.ML
         /// <param name="num">PalNo is converted to double</param>
         public MLPal(MLPalFlag pal, string name, short num)
         {
-            if (((ushort)pal & 0x0070) != 0)
-                throw new Exception("MLPal is only for IFCB pal");
             this.Type = pal;
             this.Name = name;
             this.Number = num / 10d;

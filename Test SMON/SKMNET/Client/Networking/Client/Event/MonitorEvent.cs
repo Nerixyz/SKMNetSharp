@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace SKMNET.Client.Networking.Client
 {
     public class MonitorEvent : Event
@@ -14,7 +9,7 @@ namespace SKMNET.Client.Networking.Client
 
         public override int GetEventInteger()
         {
-            return 0x0d000000 | (monitor << (3 * 8)) | (param << (2 * 8)) | cmd;
+            return 0x0d000000 | (monitor << (16)) | (param << (8)) | cmd;
         }
 
         public MonitorEvent(byte monitor, byte cmd)
