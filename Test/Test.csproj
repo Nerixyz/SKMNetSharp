@@ -62,7 +62,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Test SMON\SKMNet.csproj">
+    <ProjectReference Include="..\SKMNet\SKMNet.csproj">
       <Project>{5cc0eac1-c3ed-433c-a08b-3bde4618c9d5}</Project>
       <Name>SKMNet</Name>
     </ProjectReference>
