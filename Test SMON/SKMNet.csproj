@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{5CC0EAC1-C3ED-433C-A08B-3BDE4618C9D5}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Test_SMON</RootNamespace>
-    <AssemblyName>Test SMON</AssemblyName>
+    <RootNamespace>SKMNet</RootNamespace>
+    <AssemblyName>SKMNet</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
