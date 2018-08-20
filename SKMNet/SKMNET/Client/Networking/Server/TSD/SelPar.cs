@@ -52,13 +52,15 @@ namespace SKMNET.Client.Networking.Server.TSD
                         param.Value = (par.val16 & 0xff00) >> 8;
                         param.Display = par.parval;
                         param.PalName = par.palname;
+                        param.SK = sk;
                     }
                     else
                     {
                         param = new MLParameter(par.parname, par.parno, (par.val16 & 0xff00) >> 8)
                         {
                             PalName = par.palname,
-                            Display = par.parname
+                            Display = par.parname,
+                            SK = sk
                         };
                         sk.Parameters.Add(param);
                     }

@@ -6,6 +6,7 @@ using SKMNET.Client.Networking.Client;
 using Newtonsoft.Json;
 using System.Windows.Forms;
 using System.Threading;
+using SKMNET.Client.Stromkreise.ML;
 
 namespace Test
 {
@@ -18,29 +19,20 @@ namespace Test
 
             console.Errored += Console_Errored;
             console.Connection.PacketRecieved += Connection_PacketRecieved;
-            
+
             Console.ReadLine();
-            while (true)
+
+            byte[] data = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0xff};
+            console.Query(data, 24, new Action<byte[]>((arr) => 
             {
-                Console.Write("tast: ");
-                console.Query(new TextTastEvent(1, 0), (arr) =>
-                {
-                    Console.WriteLine($"Response: {ByteUtils.ArrayToString(arr)} ");
-                });
-            }
-            /*
+                Console.WriteLine($"Response: {ByteUtils.ArrayToString(arr)} ");
+            }));
 
             Console.ReadLine();
             string json = JsonConvert.SerializeObject(console);
             Clipboard.SetText(json);
-            /*byte[] arr = new byte[] { 1, 2, 3, 4, 5, 6 };
-            ByteBuffer buffer = new ByteBuffer(arr);
-            for(int i = 0; i < 3; i++)
-            {
-                Console.WriteLine(buffer.ReadUShort());
-            }*/
-            //Console.ReadLine();
-
+            Console.WriteLine("Copied!");
+            Console.ReadLine();
         }
 
         private static void Connection_PacketRecieved(object sender, PacketRecievedEventArgs args)

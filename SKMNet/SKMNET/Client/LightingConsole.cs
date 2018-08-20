@@ -85,6 +85,11 @@ namespace SKMNET.Client
             Connection.Errored += Connection_Errored;
         }
 
+        public SK GetSKByNumber(short num)
+        {
+            return ActiveSK.Find((x) => x.Number == num);
+        }
+
         private void Connection_Errored(object sender, Exception e)
         {
             OnErrored(e);
@@ -95,9 +100,24 @@ namespace SKMNET.Client
             Connection.SendPacket(packet);
         }
 
+        public void Query(byte[] data, short type)
+        {
+            Connection.SendPacket(data, type);
+        }
+
+        public void Query(byte[] data, short type, Action<byte[]> callback)
+        {
+            Connection.SendPacket(data, type, callback);
+        }
+
         public void Query(SplittableHeader packet)
         {
             Connection.SendPacket(packet);
+        }
+
+        public void SendRawData(byte[] arr)
+        {
+            Connection.SendRawData(arr);
         }
 
         public void Query(CPacket packet, Action<byte[]> callback)

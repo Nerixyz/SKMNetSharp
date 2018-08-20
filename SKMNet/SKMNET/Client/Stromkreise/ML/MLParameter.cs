@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKMNET.Client.Networking.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ namespace SKMNET.Client.Stromkreise.ML
         public double Value { get; set; }
         public string Display { get; set; }
         public string PalName { get; set; }
+        public SK SK { get; set; }
 
         public MLParameter(string name, short parNo = -1, double value = 0)
         {
@@ -25,6 +27,11 @@ namespace SKMNET.Client.Stromkreise.ML
             this.Value = value;
             this.Display = Value.ToString();
             this.PalName = string.Empty;
+        }
+
+        public ParSelect MakeTriggerMLCPacket()
+        {
+            return new ParSelect(ParNo);
         }
     }
 }

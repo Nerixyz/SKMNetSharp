@@ -90,8 +90,28 @@ namespace SKMNET.Client.Networking
             {
                 ByteArrayParser parser = new ByteArrayParser();
                 parser.Add(MAGIC_NUMBER).Add(header.Type).Add(GetLocalIPAddress()).Add(arr);
-                sendQueue.Enqueue(parser.GetArray());
+                byte[] arrOut = parser.GetArray();
+                Console.WriteLine(ByteUtils.ArrayToString(arrOut));
+                sendQueue.Enqueue(arrOut);
             }
+        }
+
+        public void SendPacket(byte[] data, short type)
+        {
+            ByteArrayParser parser = new ByteArrayParser();
+            parser.Add(MAGIC_NUMBER).Add(type).Add(GetLocalIPAddress()).Add(data);
+            sendQueue.Enqueue(parser.GetArray());
+        }
+
+        public void SendPacket(byte[] data, short type, Action<byte[]> callback)
+        {
+            SendPacket(data, type);
+            this.queuedAction = callback;
+        }
+
+        public void SendRawData(byte[] arr)
+        {
+            sendQueue.Enqueue(arr);
         }
 
         public void SendPacket(CPacket header, Action<byte[]> callback)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace SKMNET
 {
@@ -63,6 +64,11 @@ namespace SKMNET
 
         public ByteBuffer Write(ushort value)
         {
+            return WriteUshort(value);
+        }
+
+        public ByteBuffer WriteUshort(ushort value)
+        {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
             memory.Write(data, 0, 2);
@@ -70,6 +76,11 @@ namespace SKMNET
         }
 
         public ByteBuffer Write(short value)
+        {
+            return WriteShort(value);
+        }
+
+        public ByteBuffer WriteShort(short value)
         {
             byte[] data = BitConverter.GetBytes(value);
             Array.Reverse(data);
@@ -106,6 +117,22 @@ namespace SKMNET
             memory.WriteByte(value);
             return this;
 
+        }
+
+        public ByteBuffer Write(string value, int length)
+        {
+            memory.Write(Encoding.ASCII.GetBytes(value), 0, Math.Min(length, value.Length));
+            if(Math.Min(length, value.Length) < length)
+            {
+                byte[] fill = new byte[length - value.Length];
+                for(int i = 0; i < fill.Length; i++)
+                {
+                    fill[i] = 0;
+                }
+                memory.Write(fill, 0, fill.Length);
+
+            }
+            return this;
         }
 
         public ByteBuffer Write(ulong value)
