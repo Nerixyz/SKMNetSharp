@@ -18,7 +18,9 @@ namespace SKMNET.Client.Stromkreise.ML
         public double Value { get; set; }
         public string Display { get; set; }
         public string PalName { get; set; }
-        public SK SK { get; set; }
+        
+        [NonSerialized]
+        public SK SK;
 
         public MLParameter(string name, short parNo = -1, double value = 0)
         {

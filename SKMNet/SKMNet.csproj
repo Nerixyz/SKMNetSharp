@@ -75,6 +75,8 @@
     <Compile Include="SKMNET\Client\Stromkreise\ML\ParPrefab.cs" />
     <Compile Include="SKMNET\Client\Stromkreise\SK.cs" />
     <Compile Include="SKMNET\Client\Stromkreise\SKG.cs" />
+    <Compile Include="SKMNET\Client\Tasten\Taste.cs" />
+    <Compile Include="SKMNET\Client\Tasten\TastenManager.cs" />
     <Compile Include="SKMNET\Client\Vorstellungen\Vorstellung.cs" />
     <Compile Include="SKMNET\Enums.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\Ext\DmxData.cs" />
@@ -121,7 +123,6 @@
     <Compile Include="SKMNET\Util\ISplittable.cs" />
     <Compile Include="SKMNET\Util\Logger.cs" />
     <Compile Include="SKMNET\Util\MLPal_Prefab.cs" />
-    <Compile Include="SKMNET\Util\ByteArrayParser.cs" />
     <Compile Include="SKMNET\Util\ByteUtils.cs" />
     <Compile Include="SKMNET\Util\ISendable.cs" />
     <Compile Include="SKMNET\Util\MLUtil.cs" />

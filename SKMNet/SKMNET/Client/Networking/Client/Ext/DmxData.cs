@@ -18,11 +18,11 @@ namespace SKMNET.Client.Networking.Client
 
         public override byte[] GetDataToSend()
         {
-            ByteArrayParser parser = new ByteArrayParser().
-                Add(BdStNo).
-                Add(subCmd).
-                Add((short)dst).
-                Add((short)(SKs == null ? 0 : 1));
+            ByteBuffer buf = new ByteBuffer().
+                Write(BdStNo).
+                Write(subCmd).
+                Write((short)dst).
+                Write((short)(SKs == null ? 0 : 1));
             if(SKs != null)
             {
                 SKs.Sort(new Comparison<SK>((SK n1, SK n2) =>
@@ -32,22 +32,22 @@ namespace SKMNET.Client.Networking.Client
                     else return 0;
                 }));
                 // assume they are all on the same line
-                parser.Add(1);
+                buf.WriteShort(1);
                 int ptr = 0;
                 for(int i = 0; i < 512; i++)
                 {
                     if(SKs.Count > ptr && SKs[ptr].Number == i + 1)
                     {
-                        parser.Add(SKs[ptr].Intensity);
+                        buf.Write(SKs[ptr].Intensity);
                         ptr++;
                     }
                     else
                     {
-                        parser.Add((byte)0);
+                        buf.Write((byte)0);
                     }
                 }
             }
-            return parser.GetArray();
+            return buf.ToArray();
         }
         
         public DmxData(List<SK> SKs = null, Enums.FixParDst dst = Enums.FixParDst.Current)

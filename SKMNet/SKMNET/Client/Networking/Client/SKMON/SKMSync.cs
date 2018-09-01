@@ -22,10 +22,10 @@ namespace SKMNET.Client.Networking.Client
                 steckbrief[i] = (flags & (1 << i)) != 0 ? (byte)1 : (byte)0;
             }
             steckbrief[0] = 2;
-            if(action == Action.BEGIN)
-                return new ByteArrayParser().Add((short)action).Add((short)0).Add((short)10).Add(steckbrief).GetArray();
+            if (action == Action.BEGIN)
+                return new ByteBuffer().Write((short)action).WriteShort(0).WriteShort(10).Write(steckbrief).ToArray();
             else
-                return new ByteArrayParser().Add((short)action).Add((short)0).Add((short)0).GetArray();
+                return new ByteBuffer().Write((short)action).WriteShort(0).WriteShort(0).Write(steckbrief).ToArray();
         }
 
         public SKMSync(Action action)
@@ -38,6 +38,12 @@ namespace SKMNET.Client.Networking.Client
         {
             this.action = Action.BEGIN;
             this.flags = flags;
+        }
+
+        public SKMSync(Flags flags)
+        {
+            this.action = Action.BEGIN;
+            this.flags = (int)flags;
         }
 
         public enum Action

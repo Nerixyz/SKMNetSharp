@@ -15,7 +15,7 @@ namespace SKMNET.Client.Networking.Client
 
         public override byte[] GetDataToSend()
         {
-            return new ByteArrayParser().Add((short)0).Add((short)type).Add((short)skNo.Length).Add(skNo).GetArray();
+            return new ByteBuffer().WriteShort(0).Write((short)type).Write((short)skNo.Length).Write(skNo).ToArray();
         }
 
         public SKAnwahl(AWType type, short[] skNo)

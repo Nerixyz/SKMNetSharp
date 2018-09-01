@@ -16,7 +16,7 @@ namespace SKMNET.Client.Networking.Client
 
         public override byte[] GetDataToSend()
         {
-            return new ByteArrayParser().Add(BsStNo).Add(SubCmd).Add(PalMask).GetArray();
+            return new ByteBuffer().Write(BsStNo).Write(SubCmd).Write(PalMask).ToArray();
         }
 
         public PalSelect(short PalMask)

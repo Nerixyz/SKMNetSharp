@@ -18,7 +18,8 @@ namespace SKMNET.Client.Stromkreise
                     Parameters[0].Value = value << 8;
                 }
                 _intensity = value;
-            } }
+            }
+        }
         private byte _intensity;
         public byte Attrib { get; set; }
 

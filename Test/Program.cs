@@ -21,11 +21,9 @@ namespace Test
             console.Connection.PacketRecieved += Connection_PacketRecieved;
 
             Console.ReadLine();
-
-            byte[] data = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0xff};
-            console.Query(data, 24, new Action<byte[]>((arr) => 
+            console.Query(new ParSelect(1), new Action<Enums.FehlerT>((fehler) => 
             {
-                Console.WriteLine($"Response: {ByteUtils.ArrayToString(arr)} ");
+                Console.WriteLine($"Response: {fehler.ToString()} ");
             }));
 
             Console.ReadLine();

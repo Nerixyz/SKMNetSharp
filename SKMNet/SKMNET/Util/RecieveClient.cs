@@ -35,7 +35,7 @@ namespace SKMNET.Util
                         RecieveEventArgs recieveEventArgs = new RecieveEventArgs(data);
                         OnRecieve(recieveEventArgs);
 
-                        byte[] arr = new ByteArrayParser().Add((int)recieveEventArgs.ResponseCode).GetArray();
+                        byte[] arr = new ByteBuffer().Write((int)recieveEventArgs.ResponseCode).ToArray();
                         socket.SendTo(arr, endPoint);
                         Thread.Sleep(50);
                     }

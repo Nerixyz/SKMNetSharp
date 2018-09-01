@@ -7,6 +7,7 @@ using SKMNET.Client.Networking.Server.RMON;
 using SKMNET.Client.Networking.Server.SKMON;
 using SKMNET.Client.Networking.Server.ISKMON;
 using SKMNET.Client.Networking.Server.LIBRAExt;
+using Newtonsoft.Json;
 
 namespace SKMNET.Client.Networking
 {
@@ -97,6 +98,7 @@ namespace SKMNET.Client.Networking
 
                 packet.ParsePacket(new ByteBuffer(actualPacket));
                 Enums.Response code = packet.ProcessPacket(connection.console, connection, type);
+                
 
                 if(type != 0)
                     connection.OnPacketRecieved(this, new PacketRecievedEventArgs(eType, packet));

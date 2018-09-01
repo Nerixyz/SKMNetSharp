@@ -2,6 +2,7 @@
 using SKMNET.Client.Networking.Client;
 using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
+using SKMNET.Client.Tasten;
 using SKMNET.Client.Vorstellungen;
 using SKMNET.Util;
 using System;
@@ -79,10 +80,14 @@ namespace SKMNET.Client
         [NonSerialized]
         public readonly ConnectionHandler Connection;
 
+        public TastenManager TastenManager { get; }
+
         public LightingConsole(string ip)
         {
             Connection = new ConnectionHandler(ip, this);
             Connection.Errored += Connection_Errored;
+
+            TastenManager = new TastenManager(this);
         }
 
         public SK GetSKByNumber(short num)
@@ -105,7 +110,7 @@ namespace SKMNET.Client
             Connection.SendPacket(data, type);
         }
 
-        public void Query(byte[] data, short type, Action<byte[]> callback)
+        public void Query(byte[] data, short type, Action<Enums.FehlerT> callback)
         {
             Connection.SendPacket(data, type, callback);
         }
@@ -120,18 +125,21 @@ namespace SKMNET.Client
             Connection.SendRawData(arr);
         }
 
-        public void Query(CPacket packet, Action<byte[]> callback)
+        public void Query(CPacket packet, Action<Enums.FehlerT> callback)
         {
             Console.WriteLine(ByteUtils.ArrayToString(packet.GetDataToSend()));
             Connection.SendPacket(packet, callback);
         }
 
-        public void Query(SplittableHeader packet, Action<byte[]> callback)
+        public void Query(SplittableHeader packet, Action<Enums.FehlerT> callback)
         {
             Connection.SendPacket(packet, callback);
         }
 
         public event EventHandler<Exception> Errored;
         protected virtual void OnErrored(Exception data) { Errored?.Invoke(this, data); }
+
+        public event EventHandler Pieps;
+        public virtual void OnPieps(object sender) { Pieps?.Invoke(sender, new EventArgs()); }
     }
 }

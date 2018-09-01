@@ -16,6 +16,7 @@ namespace SKMNET.Client.Networking.Server
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
             count = buffer.ReadUShort();
+            Logger.Log(count);
             entries = new BTastConfEntry[count];
             for(int i = 0; i < count; i++)
             {
@@ -26,7 +27,10 @@ namespace SKMNET.Client.Networking.Server
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            //TODO
+            foreach(BTastConfEntry entry in entries)
+            {
+                console.TastenManager.Add(new Tasten.Taste(entry.Tastnr, entry.Name));
+            }
             return Enums.Response.OK;
         }
 
