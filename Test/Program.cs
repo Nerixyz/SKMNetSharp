@@ -21,7 +21,16 @@ namespace Test
             console.Connection.PacketRecieved += Connection_PacketRecieved;
 
             Console.ReadLine();
-            console.Query(new MonitorSelect(1), new Action<Enums.FehlerT>((fehler) => 
+            console.Query(new PalEdit(
+                new PalEdit.PalEditEntry(
+                    SKMNET.Util.MLUtil.MLPalFlag.BLK,
+                    40,
+                    0,
+                    PalEdit.Param.All,
+                    PalEdit.SkSelect.All,
+                    PalEdit.SMode.All,
+                    "neue Szene"),
+                PalEdit.Cmd.Create), new Action<Enums.FehlerT>((fehler) => 
             {
                 Console.WriteLine($"Response: {fehler.ToString()} ");
             }));

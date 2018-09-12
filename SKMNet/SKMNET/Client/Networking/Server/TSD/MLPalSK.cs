@@ -49,7 +49,15 @@ namespace SKMNET.Client.Networking.Server.TSD
         private void Handle(List<MLPal> pals, LightingConsole console)
         {
             MLPal pal = pals.Find((x) => x.Number == palno);
-            pal.BetSK.Clear();
+            if (pal == null)
+            {
+                pal = new MLPal((MLPal.MLPalFlag)GetPalType(mpaltype), string.Empty, (short)palno);
+                pals.Add(pal);
+            }
+            else
+            {
+                pal.BetSK.Clear();
+            }
             foreach (ushort item in skTable)
             {
                 SK sk = console.Stromkreise.Find((x) => x.Number == item);

@@ -81,7 +81,8 @@ namespace SKMNET.Client
         [NonSerialized]
         public readonly ConnectionHandler Connection;
 
-        public ScreenManager ScreenManager { get; private set; }
+        [NonSerialized]
+        public readonly ScreenManager ScreenManager;
 
         public TastenManager TastenManager { get; }
 

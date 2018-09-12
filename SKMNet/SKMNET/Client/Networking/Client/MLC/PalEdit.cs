@@ -26,7 +26,7 @@ namespace SKMNET.Client.Networking.Client
 
         public PalEdit(PalEditEntry entry, Cmd cmd, short bdstno = 0, short subcmd = 0)
         {
-            List<PalEditEntry> entries = new List<PalEditEntry>
+            entries = new List<PalEditEntry>
             {
                 entry
             };

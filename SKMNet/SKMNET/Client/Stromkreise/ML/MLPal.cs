@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SKMNET.Util;
 
 namespace SKMNET.Client.Stromkreise.ML
 {
     [Serializable]
     public class MLPal
     {
+
         public MLPalFlag Type { get; set; }
         public string Name { get; set; }
         public double Number { get; set; }
