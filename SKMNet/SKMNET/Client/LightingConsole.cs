@@ -1,5 +1,6 @@
 ﻿using SKMNET.Client.Networking;
 using SKMNET.Client.Networking.Client;
+using SKMNET.Client.Rendering;
 using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Client.Tasten;
@@ -80,12 +81,16 @@ namespace SKMNET.Client
         [NonSerialized]
         public readonly ConnectionHandler Connection;
 
+        public ScreenManager ScreenManager { get; private set; }
+
         public TastenManager TastenManager { get; }
 
         public LightingConsole(string ip)
         {
             Connection = new ConnectionHandler(ip, this);
             Connection.Errored += Connection_Errored;
+
+            ScreenManager = new ScreenManager(this);
 
             TastenManager = new TastenManager(this);
         }

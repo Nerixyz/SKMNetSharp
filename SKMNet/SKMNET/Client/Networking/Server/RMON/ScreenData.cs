@@ -13,7 +13,7 @@ namespace SKMNET.Client.Networking.Server
     /// aus dem Monitorbild. Die Daten werden zeichenweise,
     /// von oben nach und und von links nach rechts übertragen.
     /// </summary>
-    class ScreenData : SPacket
+    public class ScreenData : SPacket
     {
 
         public override int HeaderLength => 4;
@@ -49,7 +49,7 @@ namespace SKMNET.Client.Networking.Server
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            //TODO MonitorHandler
+            console.ScreenManager.HandleData(this);
             return Enums.Response.OK;
         }
     }

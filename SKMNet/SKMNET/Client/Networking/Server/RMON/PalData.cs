@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKMNET.Client.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server
 {
-    class PalData : SPacket
+    public class PalData : SPacket
     {
         public override int HeaderLength => 0;
 

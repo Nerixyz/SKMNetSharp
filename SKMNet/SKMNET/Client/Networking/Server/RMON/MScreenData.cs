@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.RMON
 {
-    class MScreenData : SPacket
+    public class MScreenData : SPacket
     {
         public override int HeaderLength => 6;
 
@@ -14,10 +14,10 @@ namespace SKMNET.Client.Networking.Server.RMON
         public const ushort MON_HM_FLAG = 0x8000;
         public const byte MON_MAX = 4;
 
-        ushort monitor;
-        ushort start;
-        ushort count;
-        ushort[] data;
+        public ushort monitor;
+        public ushort start;
+        public ushort count;
+        public ushort[] data;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
@@ -35,7 +35,7 @@ namespace SKMNET.Client.Networking.Server.RMON
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            //TODO MonitorHandler
+            console.ScreenManager.HandleData(this);
             return Enums.Response.OK;
         }
     }

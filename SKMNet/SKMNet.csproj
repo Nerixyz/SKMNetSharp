@@ -70,6 +70,10 @@
     <Compile Include="SKMNET\Client\Networking\Server\RMON\ReadKey.cs" />
     <Compile Include="SKMNET\Client\Networking\Server\RMON\Sync.cs" />
     <Compile Include="SKMNET\Client\Register\Register.cs" />
+    <Compile Include="SKMNET\Client\Rendering\Color.cs" />
+    <Compile Include="SKMNET\Client\Rendering\Screen.cs" />
+    <Compile Include="SKMNET\Client\Rendering\ScreenManager.cs" />
+    <Compile Include="SKMNET\Client\Rendering\VideoFarbe.cs" />
     <Compile Include="SKMNET\Client\Stromkreise\ML\MLPal.cs" />
     <Compile Include="SKMNET\Client\Stromkreise\ML\MLParameter.cs" />
     <Compile Include="SKMNET\Client\Stromkreise\ML\ParPrefab.cs" />
@@ -128,7 +132,6 @@
     <Compile Include="SKMNET\Util\MLUtil.cs" />
     <Compile Include="SKMNET\Util\RecieveClient.cs" />
     <Compile Include="SKMNET\Util\SKMUdpClient.cs" />
-    <Compile Include="SKMNET\VideoFarbe.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
