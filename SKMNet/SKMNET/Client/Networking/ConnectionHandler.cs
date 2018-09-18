@@ -108,7 +108,6 @@ namespace SKMNET.Client.Networking
                 ByteBuffer buf = new ByteBuffer();
                 buf.Write(MAGIC_NUMBER).Write(header.Type).Write(GetLocalIPAddress()).Write(arr);
                 byte[] arrOut = buf.ToArray();
-                Console.WriteLine(ByteUtils.ArrayToString(arrOut));
                 sendQueue.Enqueue(arrOut);
             }
         }

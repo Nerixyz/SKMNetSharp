@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Windows.Forms;
 using System.Threading;
 using SKMNET.Client.Stromkreise.ML;
+using SKMNET.Client.Networking.Server.TSD;
 
 namespace Test
 {
@@ -21,19 +22,9 @@ namespace Test
             console.Connection.PacketRecieved += Connection_PacketRecieved;
 
             Console.ReadLine();
-            console.Query(new PalEdit(
-                new PalEdit.PalEditEntry(
-                    SKMNET.Util.MLUtil.MLPalFlag.BLK,
-                    40,
-                    0,
-                    PalEdit.Param.All,
-                    PalEdit.SkSelect.All,
-                    PalEdit.SMode.All,
-                    "neue Szene"),
-                PalEdit.Cmd.Create), new Action<Enums.FehlerT>((fehler) => 
-            {
-                Console.WriteLine($"Response: {fehler.ToString()} ");
-            }));
+
+            console.CreateScene("LTX", 18.8, BASIC_CALLBACK);
+
 
             Console.ReadLine();
             string json = JsonConvert.SerializeObject(console);
@@ -45,11 +36,21 @@ namespace Test
         private static void Connection_PacketRecieved(object sender, PacketRecievedEventArgs args)
         {
             Console.WriteLine("recieved " + (int)args.type + " - " + args.packet.GetType().Name);
+            if(args.type == Enums.Type.TSD_MPalSelect)
+            {
+                TSD_MLPal pal = (TSD_MLPal)args.packet;
+                Console.WriteLine(JsonConvert.SerializeObject(pal));
+            }
         }
 
         private static void Console_Errored(object sender, Exception e)
         {
-            Console.WriteLine("!ERROR!\n" + e.Message + "\n" + e.Source + "\n" + e.StackTrace);
+            Console.WriteLine("ERROR:\n" + e.Message + "\n" + e.Source + "\n" + e.StackTrace);
         }
+
+        private static Action<Enums.FehlerT> BASIC_CALLBACK = new Action<Enums.FehlerT>((fehler) =>
+        {
+            Console.WriteLine($"Response: {fehler.ToString()} ");
+        });
     }
 }

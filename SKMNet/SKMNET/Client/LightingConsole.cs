@@ -15,137 +15,76 @@ using System.Threading.Tasks;
 namespace SKMNET.Client
 {
     [Serializable]
-    public class LightingConsole
+    public partial class LightingConsole
     {
-        [NonSerialized]
-        public List<SK> Stromkreise = new List<SK>();
-        public List<SK> ActiveSK { get; set; } = new List<SK>();
+        public SK   GetSKByNumber(short num)                                               => ActiveSK.Find((x) => x.Number == num);
+       
+        public void Query        (CPacket packet)                                          => Connection.SendPacket(packet);
+
+        public void Query        (byte[] data, short type)                                 => Connection.SendPacket(data, type);
+
+        public void Query        (byte[] data, short type, Action<Enums.FehlerT> callback) => Connection.SendPacket(data, type, callback);
+
+        public void Query        (SplittableHeader packet)                                 => Connection.SendPacket(packet);
+
+        public void SendRawData  (byte[] arr)                                              => Connection.SendRawData(arr);
+
+        public void Query        (CPacket packet         , Action<Enums.FehlerT> callback) => Connection.SendPacket(packet, callback);
+
+        public void Query        (SplittableHeader packet, Action<Enums.FehlerT> callback) => Connection.SendPacket(packet, callback);
 
         /// <summary>
-        /// Alle Stromkreisgruppen
+        /// Create a Scene
         /// </summary>
-        public List<SKG> Stromkreisgruppen = new List<SKG>();
-        
-        public string Headline    { get; set; }
-        public string Bedienzeile { get; set; }
-        public string Meldezeile  { get; set; }
-        public string AktReg      { get; set; }
-        public string AktList     { get; set; }
-        
-        /// <summary>
-        /// I-Pallettendaten
-        /// </summary>
-        public List<MLPal> IPal { get; set; } = new List<MLPal>();
-        /// <summary>
-        /// F-Pallettendaten
-        /// </summary>
-        public List<MLPal> FPal { get; set; } = new List<MLPal>();
-        /// <summary>
-        /// C-Pallettendaten
-        /// </summary>
-        public List<MLPal> CPal { get; set; } = new List<MLPal>();
-        /// <summary>
-        /// B-Pallettendaten
-        /// </summary>
-        public List<MLPal> BPal { get; set; } = new List<MLPal>();
-        /// <summary>
-        /// Stimmungen
-        /// </summary>
-        public List<MLPal> BLK { get; set; } = new List<MLPal>();
-
-        /// <summary>
-        /// Alle Parameter (für zB GUI)
-        /// </summary>
-        public List<ParPrefab> Prefabs { get; set; } = new List<ParPrefab>();
-
-        /// <summary>
-        /// Registerinfo IST
-        /// </summary>
-        public Register RegIST  { get; set; } = new Register("IST", "", true);
-        /// <summary>
-        /// Registerinfo ZIEL
-        /// </summary>
-        public Register RegZIEL { get; set; } = new Register("ZIEL", "", false);
-        /// <summary>
-        /// Registerinfo VOR
-        /// </summary>
-        public Register RegVOR  { get; set; } = new Register("VOR", "", false);
-
-        public List<Vorstellung> Vorstellungen { get; set; } = new List<Vorstellung>();
-
-        /// <summary>
-        /// Darstellungsmodus fuer 100% 
-        /// </summary>
-        public Enums.OVDisp DisplayMode { get; set; } = Enums.OVDisp.FL;
-
-        [NonSerialized]
-        public readonly ConnectionHandler Connection;
-
-        [NonSerialized]
-        public readonly ScreenManager ScreenManager;
-
-        public TastenManager TastenManager { get; }
-
-        public LightingConsole(string ip)
+        /// <param name="name">LTX</param>
+        /// <param name="number">BLK Nr</param>
+        /// <param name="callback">Result-Action</param>
+        public void CreateScene(string name, double number, Action<Enums.FehlerT> callback = null)
         {
-            Connection = new ConnectionHandler(ip, this);
-            Connection.Errored += Connection_Errored;
-
-            ScreenManager = new ScreenManager(this);
-
-            TastenManager = new TastenManager(this);
+            EditPal(
+                name,
+                number,
+                MLUtil.MLPalFlag.BLK,
+                PalEdit.Param.Default,
+                PalEdit.SkSelect.Default,
+                PalEdit.SMode.Default,
+                PalEdit.Cmd.Create,
+                callback);
         }
 
-        public SK GetSKByNumber(short num)
+        /// <summary>
+        /// Palettenbearbeitungskommando
+        /// </summary>
+        /// <param name="name">Palettenname</param>
+        /// <param name="number">Palettennummer</param>
+        /// <param name="type">Palettenkennung</param>
+        /// <param name="param">Parameterauswahl fuer Create Paletten und BLK</param>
+        /// <param name="select">Geraeteauswahl fuer Create BLK</param>
+        /// <param name="smode">Schreibmodus fuer Create BLK</param>
+        /// <param name="action">Das Bearbeitungskommando</param>
+        /// <param name="callback">Result-Action</param>
+        public void EditPal(
+            string                  name,
+            double                  number,
+            MLUtil.MLPalFlag        type,
+            PalEdit.Param           param  = PalEdit.Param.Default,
+            PalEdit.SkSelect        select = PalEdit.SkSelect.Default,
+            PalEdit.SMode           smode  = PalEdit.SMode.Default,
+            PalEdit.Cmd             action = PalEdit.Cmd.Create,
+            Action<Enums.FehlerT>   callback = null)
         {
-            return ActiveSK.Find((x) => x.Number == num);
+            Query(
+                new PalEdit(
+                    new PalEdit.PalEditEntry(
+                        type,
+                        (short)(number * 10),
+                        0,
+                        param,
+                        select,
+                        smode,
+                        name),
+                    action),
+                callback);
         }
-
-        private void Connection_Errored(object sender, Exception e)
-        {
-            OnErrored(e);
-        }
-
-        public void Query(CPacket packet)
-        {
-            Connection.SendPacket(packet);
-        }
-
-        public void Query(byte[] data, short type)
-        {
-            Connection.SendPacket(data, type);
-        }
-
-        public void Query(byte[] data, short type, Action<Enums.FehlerT> callback)
-        {
-            Connection.SendPacket(data, type, callback);
-        }
-
-        public void Query(SplittableHeader packet)
-        {
-            Connection.SendPacket(packet);
-        }
-
-        public void SendRawData(byte[] arr)
-        {
-            Connection.SendRawData(arr);
-        }
-
-        public void Query(CPacket packet, Action<Enums.FehlerT> callback)
-        {
-            Console.WriteLine(ByteUtils.ArrayToString(packet.GetDataToSend()));
-            Connection.SendPacket(packet, callback);
-        }
-
-        public void Query(SplittableHeader packet, Action<Enums.FehlerT> callback)
-        {
-            Connection.SendPacket(packet, callback);
-        }
-
-        public event EventHandler<Exception> Errored;
-        protected virtual void OnErrored(Exception data) { Errored?.Invoke(this, data); }
-
-        public event EventHandler Pieps;
-        public virtual void OnPieps(object sender) { Pieps?.Invoke(sender, new EventArgs()); }
     }
 }

@@ -9,7 +9,7 @@ using SKMNET.Util;
 namespace SKMNET.Client.Networking.Server.TSD
 {
     [Serializable]
-    class TSD_MLPal : SPacket
+    public class TSD_MLPal : SPacket
     {
         public override int HeaderLength => 6;
 

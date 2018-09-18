@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SKMNET
 {
     [Serializable]
-    class MLPal_Prefab
+    public class MLPal_Prefab
     {
         public ushort paltype;
         public short palno;
