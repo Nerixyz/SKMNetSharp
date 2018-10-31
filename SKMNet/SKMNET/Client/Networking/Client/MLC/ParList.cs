@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
+    /// <summary>
+    /// Anforderungsliste ML-Parameterwerte
+    /// </summary>
     public class ParList : SplittableHeader
     {
         public override short Type => 29;

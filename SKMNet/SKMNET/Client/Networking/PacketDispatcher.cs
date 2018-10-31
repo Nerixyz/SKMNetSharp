@@ -81,7 +81,7 @@ namespace SKMNET.Client.Networking
             try
             {
                 ushort type = ByteUtils.ToUShort(data, 0);
-                Enums.Type eType = (Enums.Type)Enum.ToObject(typeof(Enums.Type), type);
+                Enums.Type eType = Enums.GetEnum<Enums.Type>(type);
                 bool result = serverPacketMap.TryGetValue(type, out Type pType);
                 if (!result)
                 {
@@ -89,6 +89,7 @@ namespace SKMNET.Client.Networking
                 }
 
                 SPacket packet = (SPacket)Activator.CreateInstance(pType);
+
                 byte[] actualPacket = { };
                 if (data.Length > 2)
                 {

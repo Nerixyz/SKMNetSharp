@@ -125,15 +125,15 @@
     <Compile Include="SKMNET\Client\Networking\Server\TSD\SelPar.cs" />
     <Compile Include="SKMNET\Client\Networking\Server\TSD\SelRange.cs" />
     <Compile Include="SKMNET\Client\Networking\Server\TSD\TSD_MLPal.cs" />
-    <Compile Include="SKMNET\Util\ByteBuffer.cs" />
-    <Compile Include="SKMNET\Util\ISplittable.cs" />
+    <Compile Include="SKMNET\Util\Data\ByteBuffer.cs" />
+    <Compile Include="SKMNET\Util\Networking\ISplittable.cs" />
     <Compile Include="SKMNET\Util\Logger.cs" />
     <Compile Include="SKMNET\Util\MLPal_Prefab.cs" />
-    <Compile Include="SKMNET\Util\ByteUtils.cs" />
-    <Compile Include="SKMNET\Util\ISendable.cs" />
+    <Compile Include="SKMNET\Util\Data\ByteUtils.cs" />
+    <Compile Include="SKMNET\Util\Networking\ISendable.cs" />
     <Compile Include="SKMNET\Util\MLUtil.cs" />
-    <Compile Include="SKMNET\Util\RecieveClient.cs" />
-    <Compile Include="SKMNET\Util\SKMUdpClient.cs" />
+    <Compile Include="SKMNET\Util\Networking\RecieveClient.cs" />
+    <Compile Include="SKMNET\Util\Networking\SendClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

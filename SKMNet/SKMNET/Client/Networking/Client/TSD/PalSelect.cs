@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
+    /// <summary>
+    /// Auswahl für Palettendaten
+    /// </summary>
     public class PalSelect : CPacket
     {
         public override short Type => 24;
@@ -19,9 +22,9 @@ namespace SKMNET.Client.Networking.Client
             return new ByteBuffer().Write(BsStNo).Write(SubCmd).Write(PalMask).ToArray();
         }
 
-        public PalSelect(short PalMask)
+        public PalSelect(MLUtil.MLPalFlag PalMask)
         {
-            this.PalMask = PalMask;
+            this.PalMask = (short)PalMask;
         }
     }
 }

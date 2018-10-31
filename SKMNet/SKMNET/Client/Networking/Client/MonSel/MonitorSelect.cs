@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
+    /// <summary>
+    /// Monitore selektieren
+    /// </summary>
     public class MonitorSelect : CPacket
     {
         public override short Type => 28;

@@ -9,9 +9,11 @@ using static SKMNET.Util.MLUtil;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
+    /// <summary>
+    /// SK-Beteiligung an Paletten
+    /// </summary>
     class MLPalSK : SPacket
     {
-        public override int HeaderLength => 10;
         
         public ushort palno;
         public ushort mpaltype;

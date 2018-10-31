@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.T98
 {
+    /// <summary>
+    /// SK-Attr. in Stromkreisregister-Order
+    /// </summary>
     [Serializable]
     class SKRegAttr : SPacket
     {
         // TODO Attrib bits = SKMON_SKATTR
-        public override int HeaderLength => 6;
 
         public ushort start;
         public bool update; /* should display update */

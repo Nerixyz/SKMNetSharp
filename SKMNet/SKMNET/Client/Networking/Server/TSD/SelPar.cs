@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
+    /// <summary>
+    /// Parameter des selektierten Geraets
+    /// </summary>
     [Serializable]
     class SelPar : SPacket
     {
-        public override int HeaderLength => 14;
 
         public ushort fixture;
         public string fixtureName;

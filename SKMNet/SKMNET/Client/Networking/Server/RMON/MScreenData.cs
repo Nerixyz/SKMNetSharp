@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.RMON
 {
+    /// <summary>
+    /// Multiscreen Bildschirmdaten
+    /// </summary>
     public class MScreenData : SPacket
     {
-        public override int HeaderLength => 6;
 
         public const ushort MON_MASK = 0x000f;
         public const ushort MON_HM_FLAG = 0x8000;

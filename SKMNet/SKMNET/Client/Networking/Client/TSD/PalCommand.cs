@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
+    /// <summary>
+    /// Palettendaten-Auswahlaktion
+    /// </summary>
     public class PalCommand : SplittableHeader
     {
         public override short Type => 25;

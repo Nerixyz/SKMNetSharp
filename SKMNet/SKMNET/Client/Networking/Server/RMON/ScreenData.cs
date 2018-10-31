@@ -7,17 +7,11 @@ using System.Threading.Tasks;
 namespace SKMNET.Client.Networking.Server
 {
     /// <summary>
-    /// SKMON_SCREEN_DATA - Bildschirmdaten.
-    /// Es werden die geänderten Bildschirmdaten gesendet.
-    /// Dabei handelt es sich immer nur um einen Ausschnitt
-    /// aus dem Monitorbild. Die Daten werden zeichenweise,
-    /// von oben nach und und von links nach rechts übertragen.
+    /// Bildschirmdaten
     /// </summary>
     public class ScreenData : SPacket
     {
-
-        public override int HeaderLength => 4;
-
+        
         /// <summary>
         /// Maximale Anzahl von Bildschirmdaten (legacy)
         /// </summary>

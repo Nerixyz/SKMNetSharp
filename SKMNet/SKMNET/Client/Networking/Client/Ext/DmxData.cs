@@ -8,7 +8,10 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
-    public class DmxData : CPacket, ISendable
+    /// <summary>
+    /// DMX-orientierte Parameterwerte
+    /// </summary>
+    public class DmxData : CPacket
     {
         public override short Type => 21;
         private const short BdStNo = 0;

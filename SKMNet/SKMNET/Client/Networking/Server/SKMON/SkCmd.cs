@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.SKMON
 {
+    /// <summary>
+    /// Kommando, s.u.
+    /// </summary>
     class SkCmd : SPacket
     {
-        public override int HeaderLength => 0;
 
         Enums.SKCmd cmd;
 

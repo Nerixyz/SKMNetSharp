@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Threading;
 using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Client.Networking.Server.TSD;
+using System.Collections.Generic;
 
 namespace Test
 {
@@ -23,13 +24,13 @@ namespace Test
 
             Console.ReadLine();
 
-            console.CreateScene("LTX", 18.8, BASIC_CALLBACK);
-
+            console.Query(new PalSelect(SKMNET.Util.MLUtil.MLPalFlag.BLK), BASIC_CALLBACK);
 
             Console.ReadLine();
-            string json = JsonConvert.SerializeObject(console);
-            Clipboard.SetText(json);
-            Console.WriteLine("Copied!");
+
+            console.Query(new PalCommand(new PalCommand.PalCmdEntry(SKMNET.Util.MLUtil.MLPalFlag.BLK, 10)), BASIC_CALLBACK);
+
+            Console.ReadLine();
             Console.ReadLine();
         }
 
@@ -48,7 +49,7 @@ namespace Test
             Console.WriteLine("ERROR:\n" + e.Message + "\n" + e.Source + "\n" + e.StackTrace);
         }
 
-        private static Action<Enums.FehlerT> BASIC_CALLBACK = new Action<Enums.FehlerT>((fehler) =>
+        private readonly static Action<Enums.FehlerT> BASIC_CALLBACK = new Action<Enums.FehlerT>((fehler) =>
         {
             Console.WriteLine($"Response: {fehler.ToString()} ");
         });

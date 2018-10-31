@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.SKMON
 {
+    /// <summary>
+    /// Kopfzeile
+    /// </summary>
     class Headline : SPacket
     {
-        public override int HeaderLength => 0;
 
         public ushort farbno;
         public ushort count;

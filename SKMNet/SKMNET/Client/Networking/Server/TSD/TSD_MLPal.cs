@@ -8,10 +8,12 @@ using SKMNET.Util;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
+    /// <summary>
+    /// ML-Palettendaten
+    /// </summary>
     [Serializable]
     public class TSD_MLPal : SPacket
     {
-        public override int HeaderLength => 6;
 
         public MLPal_Prefab[] pallets;
         public bool last;

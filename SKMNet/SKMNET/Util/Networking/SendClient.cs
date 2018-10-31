@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Util
 {
-    class SKMUdpClient
+    class SendClient
     {
         readonly IPEndPoint endPoint;
         UdpClient baseClient;
         Thread readThread;
         public bool local;
         
-        public SKMUdpClient(IPEndPoint endPoint)
+        public SendClient(IPEndPoint endPoint)
         {
             byte[] adress = endPoint.Address.GetAddressBytes();
             local = adress[0] == 127 && adress[1] == 0 && adress[2] == 0 && adress[3] == 1;
@@ -25,7 +25,6 @@ namespace SKMNET.Util
             {
                 try
                 {
-                    Logger.Log(endPoint.ToString() + " -> " + baseClient.Available);
                     while (true)
                     {
                         byte[] data = baseClient.Receive(ref endPoint);

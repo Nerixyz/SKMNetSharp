@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server
 {
+    /// <summary>
+    /// Bedientasten-Konfiguration
+    /// </summary>
     class BTastConf : SPacket
     {
-        public override int HeaderLength => 4;
 
         public BTastConfEntry[] entries;
         public ushort count;

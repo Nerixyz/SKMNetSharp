@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.RMON
 {
+    /// <summary>
+    /// Synctelegramm
+    /// </summary>
     class Sync : SPacket
     {
-        public override int HeaderLength => throw new NotImplementedException();
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {

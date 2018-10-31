@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.ISKMON
 {
+    /// <summary>
+    /// Aktuellzeile
+    /// </summary>
     class AZ : SPacket
     {
-        public override int HeaderLength => 0;
         
         public ushort flags;
         public string linetext;

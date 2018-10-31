@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SKMNET.Client
@@ -17,21 +18,20 @@ namespace SKMNET.Client
     [Serializable]
     public partial class LightingConsole
     {
-        public SK   GetSKByNumber(short num)                                               => ActiveSK.Find((x) => x.Number == num);
-       
-        public void Query        (CPacket packet)                                          => Connection.SendPacket(packet);
+        public SK   GetSKByNumber(short num)                                                      => ActiveSK.Find((x) => x.Number == num);
 
-        public void Query        (byte[] data, short type)                                 => Connection.SendPacket(data, type);
+        public void Query        (byte[] data, short type, Action<Enums.FehlerT> callback = null) => Connection.SendPacket(data, type, callback);
 
-        public void Query        (byte[] data, short type, Action<Enums.FehlerT> callback) => Connection.SendPacket(data, type, callback);
+        /// <summary>
+        /// Send CPacket
+        /// </summary>
+        /// <param name="packet">Packet to send</param>
+        /// <param name="callback">Errorcode</param>
+        public void Query        (CPacket packet         , Action<Enums.FehlerT> callback = null) => Connection.SendPacket(packet, callback);
 
-        public void Query        (SplittableHeader packet)                                 => Connection.SendPacket(packet);
+        public void Query        (SplittableHeader packet, Action<Enums.FehlerT> callback = null) => Connection.SendPacket(packet, callback);
 
-        public void SendRawData  (byte[] arr)                                              => Connection.SendRawData(arr);
-
-        public void Query        (CPacket packet         , Action<Enums.FehlerT> callback) => Connection.SendPacket(packet, callback);
-
-        public void Query        (SplittableHeader packet, Action<Enums.FehlerT> callback) => Connection.SendPacket(packet, callback);
+        public void SendRawData(byte[] arr)                                                       => Connection.SendRawData(arr);
 
         /// <summary>
         /// Create a Scene

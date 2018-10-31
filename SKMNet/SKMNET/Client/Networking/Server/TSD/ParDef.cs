@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
+    /// <summary>
+    /// Parameterdefinitionen (Name usw.)
+    /// </summary>
     class ParDef : SPacket
     {
-        public override int HeaderLength => 6;
         
         public bool last;
         public ushort count;

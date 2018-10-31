@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
+    /// <summary>
+    /// Range-Daten des selektierten Parameters
+    /// </summary>
     [Serializable]
     class SelRange : SPacket
     {
-        public override int HeaderLength => 14;
         public ushort fixture;
         public ushort fixpar;
         public ushort val16;

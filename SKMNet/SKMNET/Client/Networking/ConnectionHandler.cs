@@ -13,7 +13,7 @@ namespace SKMNET.Client.Networking
     public class ConnectionHandler
     {
         public  const    ushort          MAGIC_NUMBER = 0x1fe2;
-        private          SKMUdpClient    sender;
+        private          SendClient      sender;
         private readonly RecieveClient   reciever;
         public  readonly LightingConsole console;
         private readonly Queue<byte[]> sendQueue;
@@ -26,14 +26,18 @@ namespace SKMNET.Client.Networking
         public ConnectionHandler(string ipAdress, LightingConsole parent)
         {
             this.console = parent;
-            this.sender = new SKMUdpClient(new IPEndPoint(IPAddress.Parse(ipAdress), 5063));
-            this.reciever = new RecieveClient();
+
+            this.sender = new SendClient(new IPEndPoint(IPAddress.Parse(ipAdress), 5063));
             this.sender.Recieve += Sender_Recieve;
             this.sender.Errored += Sender_Errored;
             this.sender.Start();
+
+            this.reciever = new RecieveClient();
             this.reciever.Recieve += Reciever_Recieve;
             this.reciever.Errored += Reciever_Errored;
+
             this.packetDispatcher = new PacketDispatcher(this);
+
             this.sendQueue = new Queue<byte[]>();
             sendThread = new Thread(() =>
             {
@@ -63,6 +67,7 @@ namespace SKMNET.Client.Networking
                 args.ResponseCode = packetDispatcher.OnDataIncoming(args.Data);
             }catch(Exception e)
             {
+                args.ResponseCode = Enums.Response.BadCmd;
                 OnErrored(this, e);
                 Logger.Log(e.StackTrace);
             }
@@ -90,18 +95,33 @@ namespace SKMNET.Client.Networking
             queuedAction?.Invoke(fehler);
             queuedAction = null;
         }
-        
-        public void SendPacket(CPacket header)
+
+        public void SendRawData(byte[] arr)
         {
-            if(header is SKMSync)
+            sendQueue.Enqueue(arr);
+        }
+
+        public void SendPacket(byte[] data, short type, Action<Enums.FehlerT> callback = null)
+        {
+            ByteBuffer buf = new ByteBuffer();
+            buf.Write(MAGIC_NUMBER).Write(type).Write(GetLocalIPAddress()).Write(data);
+            sendQueue.Enqueue(buf.ToArray());
+            this.queuedAction = callback;
+        }
+
+        public void SendPacket(CPacket header, Action<Enums.FehlerT> callback = null)
+        {
+            if (header is SKMSync)
             {
                 Logger.Log(ByteUtils.ArrayToString(header.GetDataToSend()));
             }
             ByteBuffer buf = new ByteBuffer();
             buf.Write(MAGIC_NUMBER).Write(header.Type).Write(GetLocalIPAddress()).Write(header.GetDataToSend());
             sendQueue.Enqueue(buf.ToArray());
+            this.queuedAction = callback;
         }
-        public void SendPacket(SplittableHeader header)
+
+        public void SendPacket(SplittableHeader header, Action<Enums.FehlerT> callback = null)
         {
             foreach (byte[] arr in header.GetData())
             {
@@ -110,34 +130,6 @@ namespace SKMNET.Client.Networking
                 byte[] arrOut = buf.ToArray();
                 sendQueue.Enqueue(arrOut);
             }
-        }
-
-        public void SendPacket(byte[] data, short type)
-        {
-            ByteBuffer buf = new ByteBuffer();
-            buf.Write(MAGIC_NUMBER).Write(type).Write(GetLocalIPAddress()).Write(data);
-            sendQueue.Enqueue(buf.ToArray());
-        }
-
-        public void SendPacket(byte[] data, short type, Action<Enums.FehlerT> callback)
-        {
-            SendPacket(data, type);
-            this.queuedAction = callback;
-        }
-
-        public void SendRawData(byte[] arr)
-        {
-            sendQueue.Enqueue(arr);
-        }
-
-        public void SendPacket(CPacket header, Action<Enums.FehlerT> callback)
-        {
-            SendPacket(header);
-            this.queuedAction = callback;
-        }
-        public void SendPacket(SplittableHeader header, Action<Enums.FehlerT> callback)
-        {
-            SendPacket(header);
             this.queuedAction = callback;
         }
 

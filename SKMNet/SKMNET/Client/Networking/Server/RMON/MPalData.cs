@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.RMON
 {
+    /// <summary>
+    /// Video-Multiscreen Palettendaten
+    /// </summary>
     public class MPalData : SPacket
     {
-        public override int HeaderLength => 0;
 
         public VideoFarbe[] farbeintrag;
         public ushort monitor;

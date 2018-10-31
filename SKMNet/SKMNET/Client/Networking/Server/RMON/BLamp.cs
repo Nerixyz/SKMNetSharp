@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.RMON
 {
+    /// <summary>
+    /// Lampendaten fuer Bedientasten (Komplett-Telegramm)
+    /// </summary>
     [Serializable]
     class BLamp : SPacket
     {
-        public override int HeaderLength => 0;
 
         public Taste.LampState[] lampStates;
 

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
+    /// <summary>
+    /// Leitungsauswahl für DMX-Daten
+    /// </summary>
     public class DMXSelect : CPacket
     {
         public override short Type => 23;

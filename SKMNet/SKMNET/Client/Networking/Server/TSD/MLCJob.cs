@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
+    /// <summary>
+    /// einfache Jobkommandos an MLC
+    /// </summary>
     [Serializable]
     class MLCJob : SPacket
     {
-        public override int HeaderLength => 18;
 
         public ushort job;
         public uint par1;

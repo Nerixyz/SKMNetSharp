@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 namespace SKMNET.Client.Networking.Client
 {
     // max len = 80 
+    /// <summary>
+    /// Mailbox-Aufträge
+    /// </summary>
     public class Mailbox : SplittableHeader
     {
         public override short Type => 22;

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.SKMON
 {
+    /// <summary>
+    /// Konfigurationsdaten
+    /// </summary>
     [Serializable]
     class Conf : SPacket
     {
-        public override int HeaderLength => 0;
 
         public List<Enums.OVDisp> Disp { get; } = new List<Enums.OVDisp>();
 

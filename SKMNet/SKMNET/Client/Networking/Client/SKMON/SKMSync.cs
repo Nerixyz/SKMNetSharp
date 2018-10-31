@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
+    /// <summary>
+    /// SKMON an/abmelden
+    /// </summary>
     public class SKMSync : CPacket
     {
         public override short Type => 13;

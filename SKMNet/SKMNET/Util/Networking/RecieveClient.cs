@@ -33,7 +33,7 @@ namespace SKMNET.Util
                         Array.Copy(buffer, data, dataLength);
 
                         RecieveEventArgs recieveEventArgs = new RecieveEventArgs(data);
-                        OnRecieve(recieveEventArgs);
+                        Recieve?.Invoke(this, recieveEventArgs);
 
                         byte[] arr = new ByteBuffer().Write((int)recieveEventArgs.ResponseCode).ToArray();
                         socket.SendTo(arr, endPoint);
@@ -48,7 +48,6 @@ namespace SKMNET.Util
         }
 
         public event EventHandler<RecieveEventArgs> Recieve;
-        protected virtual void OnRecieve(RecieveEventArgs args) { Recieve?.Invoke(this, args); }
 
         public event EventHandler<Exception> Errored;
         protected virtual void OnErrored(Exception data) { Errored?.Invoke(this, data); }

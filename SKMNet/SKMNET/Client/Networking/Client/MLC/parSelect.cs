@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
+    /// <summary>
+    /// ML-Parameter selektieren
+    /// </summary>
     public class ParSelect : CPacket
     {
         public override short Type => 27;

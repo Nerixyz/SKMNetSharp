@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
+    /// <summary>
+    /// Palettenkonfiguration mit langen Namen
+    /// </summary>
     [Serializable]
     class MLPalConf : SPacket
     {
-        public override int HeaderLength => 8;
         
         public bool absolute; /* Should Update the whole configuration */
         public ushort Mlpaltype { get; set; }/* MLPalFlag */
@@ -76,6 +78,7 @@ namespace SKMNET.Client.Networking.Server.TSD
                     }
                 }
             }
+            //TODO add other cases
             return Enums.Response.OK;
         }
 

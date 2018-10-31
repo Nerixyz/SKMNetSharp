@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.ISKMON
 {
+    /// <summary>
+    /// SKG-Konfiguration
+    /// </summary>
     [Serializable]
     class SKGConf : SPacket
     {
-        public override int HeaderLength => 4;
         public ushort count;
         public SKGConfEntry[] entries;
 

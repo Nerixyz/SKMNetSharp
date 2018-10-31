@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.ISKMON
 {
+    /// <summary>
+    /// Bedienzeile
+    /// </summary>
     [Serializable]
     class Bed : SPacket
     {
-        public override int HeaderLength => 0;
         
         public string linetext;
 

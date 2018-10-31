@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.ISKMON
 {
+    /// <summary>
+    /// Funktionstasten-Konfiguration
+    /// </summary>
     [Serializable]
     class FKeyConf : SPacket
     {
-        public override int HeaderLength => 4;
         
         public ushort count;
         public FKeyConfEntry[] entries;

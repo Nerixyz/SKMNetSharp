@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
+    /// <summary>
+    /// Geräte-orientierte Parameterwerte
+    /// </summary>
     public class FixPar : SplittableHeader
     {
         private const short BStdNo = 0; /* Bedienstelle */

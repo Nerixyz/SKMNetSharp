@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
+    /// <summary>
+    /// SK-Anwahl-Telegramm
+    /// </summary>
     public class SKAnwahl : CPacket
     {
         public override short Type => 15;

@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.T98
 {
+    /// <summary>
+    /// Stromkreisregister-Aufbau
+    /// </summary>
     [Serializable]
     class SKRegConf : SPacket
     {
-        public override int HeaderLength => 0;
 
         public ushort start;
         public bool clear; /* should clear */

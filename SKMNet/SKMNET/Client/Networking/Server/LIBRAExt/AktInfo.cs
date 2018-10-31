@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.LIBRAExt
 {
+    /// <summary>
+    /// aktuelle Liste und Register
+    /// </summary>
     [Serializable]
     class AktInfo : SPacket
     {
-        public override int HeaderLength => 4;
         public string register;
         public string listenanzeige;
         /*

@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.RMON
 {
+    /// <summary>
+    /// Auf das RESET wurde ein vollständiges Update gesendet
+    /// </summary>
     class ACKReset : SPacket
     {
-        public override int HeaderLength => throw new NotImplementedException();
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
@@ -17,7 +19,7 @@ namespace SKMNET.Client.Networking.Server.RMON
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            //TODO
+            //TODO clear data
             return Enums.Response.OK;
         }
     }

@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.SKMON
 {
+    /// <summary>
+    /// Stromkreis-Attribute (1..999)
+    /// </summary>
     class SkAttr : SPacket
     {
-        public override int HeaderLength => 0;
 
         public ushort start;
         public ushort count;

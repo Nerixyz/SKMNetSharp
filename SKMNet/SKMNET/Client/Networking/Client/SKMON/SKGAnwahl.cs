@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
+    /// <summary>
+    /// SKG-Anwahl-Telegramm
+    /// </summary>
     public class SKGAnwahl : CPacket
     {
         public override short Type => 16;

@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.T98
 {
+    /// <summary>
+    /// SK-Werte in Stromkreisregister-Order
+    /// </summary>
     [Serializable]
     class SKRegData : SPacket
     {
-        public override int HeaderLength => 6;
 
         public ushort start;
         public bool update; /* should display update */

@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
+    /// <summary>
+    /// DMX-orientierte Kreiswerte
+    /// </summary>
     class DMXData : SPacket
     {
-        public override int HeaderLength => 4;
         
         public ushort count; /* 1 or 2 lines */
         public DMXDataEntry[] dmxLines; /* 1 or 2 line data */

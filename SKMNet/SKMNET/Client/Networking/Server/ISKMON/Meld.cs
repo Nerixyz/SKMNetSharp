@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.ISKMON
 {
+    /// <summary>
+    /// Meldezeile
+    /// </summary>
     class Meld : SPacket
     {
-        public override int HeaderLength => 0;
         
         public string linetext;
 
