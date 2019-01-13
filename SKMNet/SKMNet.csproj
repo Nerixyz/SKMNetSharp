@@ -53,6 +53,7 @@
     <Compile Include="SKMNET\Client\LightingConsoleEvents.cs" />
     <Compile Include="SKMNET\Client\LightingConsolePropField.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\Ext\DMXSelect.cs" />
+    <Compile Include="SKMNET\Client\Networking\Client\Ext\FixParNative.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\Ext\Mailbox.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\MLC\PalEdit.cs" />
     <Compile Include="SKMNET\Client\Networking\Client\MLC\ParList.cs" />

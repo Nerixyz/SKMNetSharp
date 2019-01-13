@@ -23,12 +23,12 @@ namespace Test
             console.Connection.PacketRecieved += Connection_PacketRecieved;
 
             Console.ReadLine();
-
+            
             console.Query(new PalSelect(SKMNET.Util.MLUtil.MLPalFlag.BLK), BASIC_CALLBACK);
 
             Console.ReadLine();
 
-            console.Query(new PalCommand(new PalCommand.PalCmdEntry(SKMNET.Util.MLUtil.MLPalFlag.BLK, 10)), BASIC_CALLBACK);
+            Clipboard.SetText(JsonConvert.SerializeObject(console));
 
             Console.ReadLine();
             Console.ReadLine();

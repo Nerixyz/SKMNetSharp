@@ -68,6 +68,7 @@ namespace SKMNET.Client.Networking
             }catch(Exception e)
             {
                 args.ResponseCode = Enums.Response.BadCmd;
+                Console.WriteLine(ByteUtils.ArrayToString(args.Data));
                 OnErrored(this, e);
                 Logger.Log(e.StackTrace);
             }
@@ -80,14 +81,6 @@ namespace SKMNET.Client.Networking
 
         private void Sender_Recieve(object sender, byte[] e)
         {
-            bool ret = true;
-            foreach (byte b in e) ret = ret && b == 0;
-            if (ret)
-            {
-                queuedAction?.Invoke(Enums.FehlerT.FT_OK);
-                queuedAction = null;
-                return;
-            }
 
             ByteBuffer buf = new ByteBuffer(e);
             Enums.FehlerT fehler = Enums.GetEnum<Enums.FehlerT>(buf.ReadUInt());
@@ -117,7 +110,10 @@ namespace SKMNET.Client.Networking
             }
             ByteBuffer buf = new ByteBuffer();
             buf.Write(MAGIC_NUMBER).Write(header.Type).Write(GetLocalIPAddress()).Write(header.GetDataToSend());
-            sendQueue.Enqueue(buf.ToArray());
+            byte[] arr = buf.ToArray();
+            Console.WriteLine(ByteUtils.ArrayToString(arr));
+
+            sendQueue.Enqueue(arr);
             this.queuedAction = callback;
         }
 

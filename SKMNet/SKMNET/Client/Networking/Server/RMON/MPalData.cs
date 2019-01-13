@@ -17,13 +17,14 @@ namespace SKMNET.Client.Networking.Server.RMON
         public ushort monitor;
         // siehe MScreenData.cs
 
+        private const int N_HW_PALETTE = 64;
+
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
             monitor = buffer.ReadUShort();
-            const int farbSize = 8;
-            for (int i = 2; i < buffer.Length; i += farbSize)
+            for (int i = 0; i < 64; i += 1)
             {
-                VideoFarbe eintrag = farbeintrag[i / farbSize];
+                VideoFarbe eintrag = farbeintrag[i];
                 eintrag = new VideoFarbe(buffer.ReadShort(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte());
             }
             return this;

@@ -26,5 +26,10 @@ namespace SKMNET.Client.Networking.Client
         {
             this.PalMask = (short)PalMask;
         }
+
+        public PalSelect(short mask)
+        {
+            this.PalMask = mask;
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace SKMNET.Client.Networking.Server.TSD
     {
         
         public ushort palno;
-        public ushort mpaltype;
+        public ushort mlpaltype;
         public bool last;
         public ushort skcount;
         public ushort[] skTable;
@@ -24,7 +24,7 @@ namespace SKMNET.Client.Networking.Server.TSD
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
             palno = buffer.ReadUShort();
-            mpaltype = buffer.ReadUShort();
+            mlpaltype = buffer.ReadUShort();
             last = buffer.ReadUShort() != 0;
             skcount = buffer.ReadUShort();
             skTable = new ushort[skcount];
@@ -37,14 +37,11 @@ namespace SKMNET.Client.Networking.Server.TSD
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            switch (GetPalType(mpaltype))
-            {
-                case MLPalFlag.I: Handle(console.IPal, console); break;
-                case MLPalFlag.F: Handle(console.FPal, console); break;
-                case MLPalFlag.C: Handle(console.CPal, console); break;
-                case MLPalFlag.B: Handle(console.BPal, console); break;
-                default: break;
-            }
+            if (!console.Paletten.TryGetValue(Enums.GetEnum<MLPal.MLPalFlag>(mlpaltype), out List<MLPal> list))
+                return Enums.Response.BadCmd;
+
+            Handle(list, console);
+
             return Enums.Response.OK;
         }
 
@@ -53,7 +50,7 @@ namespace SKMNET.Client.Networking.Server.TSD
             MLPal pal = pals.Find((x) => x.Number == palno);
             if (pal == null)
             {
-                pal = new MLPal((MLPal.MLPalFlag)GetPalType(mpaltype), string.Empty, (short)palno);
+                pal = new MLPal((MLPal.MLPalFlag)GetPalType(mlpaltype), string.Empty, (short)palno);
                 pals.Add(pal);
             }
             else

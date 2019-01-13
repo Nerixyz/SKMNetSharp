@@ -13,11 +13,12 @@ namespace SKMNET.Client.Stromkreise
         public ushort Number { get; }
         public List<MLParameter> Parameters { get; set; }
         public byte Intensity { get { return _intensity; } set {
-                if(Parameters.Count > 0 && Parameters[0].ParNo == 0)
+                if (Parameters.Count > 0 && Parameters[0].ParNo == 0)
                 {
                     Parameters[0].Value = value << 8;
                 }
                 _intensity = value;
+                dirty = true;
             }
         }
         private byte _intensity;
@@ -31,13 +32,15 @@ namespace SKMNET.Client.Stromkreise
             Attrib = 0;
         }
 
-        public bool Anwahl() { return (Attrib & 0x01) != 0; }
-        public bool SKUErr() { return (Attrib & 0x02) != 0; }
-        public bool Maske() { return (Attrib & 0x04) != 0; }
-        public bool Bet() { return (Attrib & 0x08) != 0; }
-        public bool Modified() { return (Attrib & 0x10) != 0; }
-        public bool Sperr() { return (Attrib & 0x20) != 0; }
-        public bool Heller() { return (Attrib & 0x40) != 0; }
-        public bool Dunkler() { return (Attrib & 0x80) != 0; }
+        public bool dirty = false;
+
+        public bool Anwahl   { get { return (Attrib & 0x01) != 0; } }
+        public bool SKUErr   { get { return (Attrib & 0x02) != 0; } }
+        public bool Maske    { get { return (Attrib & 0x04) != 0; } }
+        public bool Bet      { get { return (Attrib & 0x08) != 0; } }
+        public bool Modified { get { return (Attrib & 0x10) != 0; } }
+        public bool Sperr    { get { return (Attrib & 0x20) != 0; } }
+        public bool Heller   { get { return (Attrib & 0x40) != 0; } }
+        public bool Dunkler  { get { return (Attrib & 0x80) != 0; } }
     }
 }

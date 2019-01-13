@@ -18,16 +18,17 @@ namespace SKMNET.Client.Networking.Client
         private const short subCmd = 0;
         private readonly Enums.FixParDst dst;
         private List<SK> SKs;
+        private List<byte[]> data;
 
         public override byte[] GetDataToSend()
         {
             ByteBuffer buf = new ByteBuffer().
                 Write(BdStNo).
                 Write(subCmd).
-                Write((short)dst).
-                Write((short)(SKs == null ? 0 : 1));
+                Write((short)dst);
             if(SKs != null)
             {
+                buf.WriteShort(1);
                 SKs.Sort(new Comparison<SK>((SK n1, SK n2) =>
                 {
                     if (n1.Number > n2.Number) return -1;
@@ -50,6 +51,20 @@ namespace SKMNET.Client.Networking.Client
                     }
                 }
             }
+            else if(data != null)
+            {
+                buf.Write(data.Count);
+
+                for(int i = 0; i < data.Count; i++)
+                {
+                    buf.WriteShort((short)i);
+                    buf.Write(data[i]);
+                }
+            }
+            else
+            {
+                buf.WriteShort(0);
+            }
             return buf.ToArray();
         }
         
@@ -57,7 +72,31 @@ namespace SKMNET.Client.Networking.Client
         {
             this.SKs = SKs;
             this.dst = dst;
-            throw new NotImplementedException("sknum != dmxout");
+            //throw new NotImplementedException("sknum != dmxout");
+        }
+
+        public DmxData(List<byte[]> data, Enums.FixParDst dst = Enums.FixParDst.Current)
+        {
+            this.dst = dst;
+            if (data.Count == 0)
+                return;
+            if (data.Count > 8)
+                throw new NotSupportedException("Cannot send more than 8 arrays at once");
+
+            for(int i = 0; i < data.Count; i++)
+            {
+                if (data[i] == null)
+                {
+                    data.Remove(data[i]);
+                    continue;
+                }
+                if(data[i].Length != 512)
+                {
+                    byte[] holder = new byte[512];
+                    Array.Copy(data[i], holder, Math.Min(data[i].Length, 512));
+                }
+            }
+            this.data = data;
         }
     }
 }

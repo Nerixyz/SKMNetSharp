@@ -18,11 +18,9 @@ namespace SKMNET.Client.Networking.Server.SKMON
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
             ushort count = buffer.ReadUShort();
-            int ptr = 2;
-            while(ptr < buffer.Length)
+            for(int i = 0; i < count; i++)
             {
-                Disp.Add((Enums.OVDisp)Enum.ToObject(typeof(Enums.OVDisp), buffer.ReadUShort()));
-                ptr += 2;
+                Disp.Add(Enums.GetEnum<Enums.OVDisp>(buffer.ReadUShort()));
             }
             return this;
         }

@@ -171,9 +171,11 @@ namespace SKMNET
             return this;
         }
 
-        public int Length { get {
+        public int Length {
+            get {
                 return (int) memory.Length;
-            } }
+            }
+        }
 
         public void Forward(int forward)
         {
@@ -183,6 +185,12 @@ namespace SKMNET
         public byte[] ToArray()
         {
             return memory.ToArray();
+        }
+
+        public long Position {
+            get {
+                return memory.Position;
+            }
         }
     }
 }

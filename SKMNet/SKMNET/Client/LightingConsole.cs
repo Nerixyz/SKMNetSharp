@@ -18,8 +18,6 @@ namespace SKMNET.Client
     [Serializable]
     public partial class LightingConsole
     {
-        public SK   GetSKByNumber(short num)                                                      => ActiveSK.Find((x) => x.Number == num);
-
         public void Query        (byte[] data, short type, Action<Enums.FehlerT> callback = null) => Connection.SendPacket(data, type, callback);
 
         /// <summary>
@@ -32,6 +30,19 @@ namespace SKMNET.Client
         public void Query        (SplittableHeader packet, Action<Enums.FehlerT> callback = null) => Connection.SendPacket(packet, callback);
 
         public void SendRawData(byte[] arr)                                                       => Connection.SendRawData(arr);
+
+
+        public SK GetSKByNumber(short num, bool entireSet = false)
+        {
+            if (entireSet)
+            {
+                return Stromkreise.Find((x) => x.Number == num);
+            }
+            else
+            {
+                return ActiveSK.Find((x) => x.Number == num);
+            }
+        }
 
         /// <summary>
         /// Create a Scene
@@ -85,6 +96,23 @@ namespace SKMNET.Client
                         name),
                     action),
                 callback);
+        }
+
+        /// <summary>
+        /// Push changed intensities
+        /// </summary>
+        /// <param name="src">Can be null, either ActiveSK or AllSK</param>
+        /// <param name="dst">Destination register</param>
+        /// <param name="callback">Result-Action</param>
+        public void PushChanges(List<SK> src = null, Enums.FixParDst dst = Enums.FixParDst.Current, Action<Enums.FehlerT> callback = null)
+        {
+            if (src == null)
+                src = ActiveSK;
+
+            List<SK> changed = src.FindAll((sk) => sk.dirty);
+            changed.ForEach((sk) => sk.dirty = false);
+
+            Query(new FixParNative(changed, dst), callback);
         }
     }
 }

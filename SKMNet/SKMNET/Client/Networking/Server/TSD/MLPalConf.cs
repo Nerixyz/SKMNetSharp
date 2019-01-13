@@ -15,7 +15,7 @@ namespace SKMNET.Client.Networking.Server.TSD
     {
         
         public bool absolute; /* Should Update the whole configuration */
-        public ushort Mlpaltype { get; set; }/* MLPalFlag */
+        public ushort MLPalType { get; set; }/* MLPalFlag */
         public bool last;
 
         public List<ConfEntry> Entries { get; } = new List<ConfEntry>();
@@ -23,62 +23,33 @@ namespace SKMNET.Client.Networking.Server.TSD
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
             absolute = buffer.ReadUShort() == 0;
-            Mlpaltype = buffer.ReadUShort();
+            MLPalType = buffer.ReadUShort();
             last = buffer.ReadUShort() != 0;
-            int pointer = 6;
-            while(pointer < buffer.Length)
+            while(true)
             {
                 short palno = buffer.ReadShort();
-                if (palno == 0)
-                    break;
                 short length = buffer.ReadShort();
+
+                if (palno == 0 || length == 0)
+                    break;
+
                 string text = buffer.ReadString(length);
                 Entries.Add(new ConfEntry(palno, text));
-                pointer += 4 + length;
             }
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int packetType)
         {
+            MLPal.MLPalFlag type = MLPal.GetFlag(MLPalType);
+            if (!console.Paletten.TryGetValue(type, out List<MLPal> list))
+                return Enums.Response.BadCmd;
+
             if (absolute)
-            {
-                console.IPal.Clear();
-                console.FPal.Clear();
-                console.CPal.Clear();
-                console.BPal.Clear();
-            }
-            if ((Mlpaltype & 0x0070) == 0)
-            {
-                MLPal.MLPalFlag flag = (Mlpaltype & 0x0001) != 0 ? MLPal.MLPalFlag.I : (Mlpaltype & 0x0002) != 0 ? MLPal.MLPalFlag.F : (Mlpaltype & 0x0004) != 0 ? MLPal.MLPalFlag.C : MLPal.MLPalFlag.B;
-                foreach (var pal in Entries)
-                {
-                    switch (flag)
-                    {
-                        case MLPal.MLPalFlag.I:
-                            {
-                                console.IPal.Add(new MLPal(flag, pal.Text, pal.Palno));
-                                break;
-                            }
-                        case MLPal.MLPalFlag.F:
-                            {
-                                console.FPal.Add(new MLPal(flag, pal.Text, pal.Palno));
-                                break;
-                            }
-                        case MLPal.MLPalFlag.C:
-                            {
-                                console.CPal.Add(new MLPal(flag, pal.Text, pal.Palno));
-                                break;
-                            }
-                        case MLPal.MLPalFlag.B:
-                            {
-                                console.BPal.Add(new MLPal(flag, pal.Text, pal.Palno));
-                                break;
-                            }
-                    }
-                }
-            }
-            //TODO add other cases
+                list.Clear();
+
+            foreach(ConfEntry entry in Entries) list.Add(new MLPal(type, entry.Text, entry.Palno));
+            
             return Enums.Response.OK;
         }
 

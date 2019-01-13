@@ -15,17 +15,16 @@ namespace SKMNET.Client.Networking.Server
 
         public VideoFarbe[] farbeintrag;
 
+        private const int N_HW_PALETTE = 64;
+
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            farbeintrag = new VideoFarbe[64];
-            const int farbSize = 8;
-            for (int i = 0; i < buffer.Length; i += farbSize)
-            {
-                try {
-                    VideoFarbe eintrag = farbeintrag[i / farbSize];
-                    eintrag = new VideoFarbe(buffer.ReadShort(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte());
+            farbeintrag = new VideoFarbe[N_HW_PALETTE];
 
-                }catch(IndexOutOfRangeException ignored) { }
+            for (int i = 0; i < N_HW_PALETTE; i ++)
+            {
+                    VideoFarbe eintrag = farbeintrag[i];
+                    eintrag = new VideoFarbe(buffer.ReadShort(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte());
             }
             return this;
         }

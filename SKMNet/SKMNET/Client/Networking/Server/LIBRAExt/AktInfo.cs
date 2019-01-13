@@ -25,7 +25,10 @@ namespace SKMNET.Client.Networking.Server.LIBRAExt
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            buffer.Forward(4);
+            //versno
+            buffer.ReadUShort();
+            //len
+            buffer.ReadUShort();
             register = buffer.ReadString(8);
             listenanzeige = buffer.ReadString(8);
             return this;

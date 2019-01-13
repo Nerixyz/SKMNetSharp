@@ -80,30 +80,31 @@ namespace SKMNET.Client.Networking
         {
             try
             {
-                ushort type = ByteUtils.ToUShort(data, 0);
-                Enums.Type eType = Enums.GetEnum<Enums.Type>(type);
-                bool result = serverPacketMap.TryGetValue(type, out Type pType);
-                if (!result)
+                ByteBuffer packetBuffer = new ByteBuffer(data);
+
+                Enums.Response code = Enums.Response.OK;
+
+                ushort type = 0;
+                //check if packet fits in buffer and check nullterminator
+                while (packetBuffer.Position < packetBuffer.Length - 2 && (type = packetBuffer.ReadUShort()) != 0)
                 {
-                    return Enums.Response.BadCmd;
-                }
+                    Enums.Type eType = Enums.GetEnum<Enums.Type>(type);
 
-                SPacket packet = (SPacket)Activator.CreateInstance(pType);
+                    //get PacketClass/Type
+                    if (!serverPacketMap.TryGetValue(type, out Type packetType))
+                        return Enums.Response.BadCmd;
+                    
+                    SPacket packet = (SPacket)Activator.CreateInstance(packetType);
 
-                byte[] actualPacket = { };
-                if (data.Length > 2)
-                {
-                    actualPacket = new byte[data.Length - 2];
-                    Array.Copy(data, 2, actualPacket, 0, data.Length - 2);
-                }
-
-                packet.ParsePacket(new ByteBuffer(actualPacket));
-                Enums.Response code = packet.ProcessPacket(connection.console, connection, type);
-                
-
-                if(type != 0)
+                   
+                    packet.ParsePacket(packetBuffer);
+                    code = packet.ProcessPacket(connection.console, connection, type);
+                    
                     connection.OnPacketRecieved(this, new PacketRecievedEventArgs(eType, packet));
 
+                    if (code != Enums.Response.OK)
+                        break;
+                }
                 return code;
 
             } catch(Exception e)

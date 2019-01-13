@@ -18,7 +18,6 @@ namespace SKMNET.Client.Networking.Server
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
             count = buffer.ReadUShort();
-            Logger.Log(count);
             entries = new BTastConfEntry[count];
             for(int i = 0; i < count; i++)
             {

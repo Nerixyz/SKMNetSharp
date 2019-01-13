@@ -29,26 +29,7 @@ namespace SKMNET.Client
         public string AktReg { get; set; }
         public string AktList { get; set; }
 
-        /// <summary>
-        /// I-Pallettendaten
-        /// </summary>
-        public List<MLPal> IPal { get; set; } = new List<MLPal>();
-        /// <summary>
-        /// F-Pallettendaten
-        /// </summary>
-        public List<MLPal> FPal { get; set; } = new List<MLPal>();
-        /// <summary>
-        /// C-Pallettendaten
-        /// </summary>
-        public List<MLPal> CPal { get; set; } = new List<MLPal>();
-        /// <summary>
-        /// B-Pallettendaten
-        /// </summary>
-        public List<MLPal> BPal { get; set; } = new List<MLPal>();
-        /// <summary>
-        /// Stimmungen
-        /// </summary>
-        public List<MLPal> BLK { get; set; } = new List<MLPal>();
+        public Dictionary<MLPal.MLPalFlag, List<MLPal>> Paletten { get; private set; }
 
         /// <summary>
         /// Alle Parameter (für zB GUI)
@@ -91,6 +72,18 @@ namespace SKMNET.Client
             ScreenManager = new ScreenManager(this);
 
             TastenManager = new TastenManager(this);
+
+            Paletten = new Dictionary<MLPal.MLPalFlag, List<MLPal>>()
+            {
+                { MLPal.MLPalFlag.I, new List<MLPal>() },
+                { MLPal.MLPalFlag.F, new List<MLPal>() },
+                { MLPal.MLPalFlag.C, new List<MLPal>() },
+                { MLPal.MLPalFlag.B, new List<MLPal>() },
+                { MLPal.MLPalFlag.SKG, new List<MLPal>() },
+                { MLPal.MLPalFlag.BLK, new List<MLPal>() },
+                { MLPal.MLPalFlag.DYN, new List<MLPal>() },
+                { MLPal.MLPalFlag.CUR_SEL, new List<MLPal>() },
+            };
         }
     }
 }

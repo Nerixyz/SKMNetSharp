@@ -17,8 +17,8 @@ namespace SKMNET.Client.Networking.Server.ISKMON
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
             // LENGTH = { 2, 31, 1} = 34
-            // last byte is unused
             linetext = buffer.ReadString(31);
+            buffer.ReadByte();
 
             return this;
         }
