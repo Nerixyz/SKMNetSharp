@@ -20,7 +20,6 @@ Es ist auch die einzige Möglichkeit, mit der man sich zur Zeit sicher verbinden
 
 - Die GUI hat zZt. keine Funktion
 - Nicht alle Packets sind implementiert
-- IFCB-Pal werden nicht befüllt
 - Pal- und ParSelect funktionieren noch nicht
 
 
