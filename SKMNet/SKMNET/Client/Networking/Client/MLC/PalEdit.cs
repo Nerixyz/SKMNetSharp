@@ -13,37 +13,34 @@ namespace SKMNET.Client.Networking.Client
     public class PalEdit : SplittableHeader
     {
         public override short Type => 26;
-
-        private readonly short bdstno;
+        
         private readonly short subcmd;
         private readonly short editcmd;
         private readonly List<PalEditEntry> entries;
 
-        public PalEdit(List<PalEditEntry> entries, Cmd cmd, short bdstno = 0, short subcmd = 0)
+        public PalEdit(List<PalEditEntry> entries, Cmd cmd, short subcmd = 0)
         {
             this.entries = entries;
             this.editcmd = (short)cmd;
-            this.bdstno = bdstno;
             this.subcmd = subcmd;
         }
 
-        public PalEdit(PalEditEntry entry, Cmd cmd, short bdstno = 0, short subcmd = 0)
+        public PalEdit(PalEditEntry entry, Cmd cmd, short subcmd = 0)
         {
             entries = new List<PalEditEntry>
             {
                 entry
             };
             this.editcmd = (short)cmd;
-            this.bdstno = bdstno;
             this.subcmd = subcmd;
         }
 
-        public override List<byte[]> GetData()
+        public override List<byte[]> GetData(LightingConsole console)
         {
             return Make(entries, 30, CountShort, new Action<ByteBuffer, int>((buf, total) =>
             {
                 buf
-                    .Write(bdstno)
+                    .Write(console.BdstNo)
                     .Write(subcmd)
                     .Write(editcmd);
             }), new Action<PalEditEntry, ByteBuffer>((entry, buf) =>

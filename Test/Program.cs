@@ -17,14 +17,22 @@ namespace Test
         [STAThread]
         static void Main(string[] args)
         {
-            LightingConsole console = new LightingConsole("127.0.0.1");
+            LightingConsole console = new LightingConsole("127.0.0.1", new SKMSteckbrief() {
+                Bedientasten = true,
+                AktInfo      = true,
+                AZ_Zeilen    = true,
+                BefMeldZeile = true,
+                BlockInfo    = true,
+                ExtKeys      = true,
+                FuncKeys     = true,
+                LKI          = true,
+                Steller      = true
+            }, Enums.Bedienstelle.Handtermianl1);
 
             console.Errored += Console_Errored;
             console.Connection.PacketRecieved += Connection_PacketRecieved;
 
-            Console.ReadLine();
-            
-            console.Query(new PalSelect(SKMNET.Util.MLUtil.MLPalFlag.BLK), BASIC_CALLBACK);
+            string cmd = Console.ReadLine();
 
             Console.ReadLine();
 

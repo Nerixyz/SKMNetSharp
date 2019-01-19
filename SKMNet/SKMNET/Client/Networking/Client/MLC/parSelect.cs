@@ -15,19 +15,17 @@ namespace SKMNET.Client.Networking.Client
 
         private readonly short parno;
         private readonly short subcmd;
-        private readonly short bdstno;
 
-        public ParSelect(short parNo, short subcmd = 0, short bdstno = 0)
+        public ParSelect(short parNo, short subcmd = 0)
         {
             this.parno = parNo;
             this.subcmd = subcmd;
-            this.bdstno = bdstno;
         }
 
 
-        public override byte[] GetDataToSend()
+        public override byte[] GetDataToSend(LightingConsole console)
         {
-            return new ByteBuffer().Write(parno).Write(subcmd).Write(bdstno).ToArray();
+            return new ByteBuffer().Write(parno).Write(subcmd).Write(console.BdstNo).ToArray();
         }
     }
 }

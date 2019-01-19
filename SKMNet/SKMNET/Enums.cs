@@ -159,6 +159,22 @@ namespace SKMNET
             FF,
             FL
         }
+
+        /// <summary>
+        /// Die möglichen Bedienstellen der SKM
+        /// </summary>
+        public enum Bedienstelle
+        {
+            None = -1,
+            Meistertastatur = 0,
+            Infrarot = 1,
+            Handtermianl1 = 2,
+            Handterminal2 = 3,
+            Handterminal3 = 4,
+            Handterminal4 = 5,
+            RemoteMonitor = 6
+        }
+
         public enum SKCmd
         {
             PGUp = 1,

@@ -1,9 +1,6 @@
 ﻿using SKMNET.Util;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
@@ -11,7 +8,7 @@ namespace SKMNET.Client.Networking.Client
     {
         public abstract short Type { get; }
 
-        public abstract List<byte[]> GetData();
+        public abstract List<byte[]> GetData(LightingConsole console);
 
         protected static List<byte[]> Make<T>(List<T> entries, int maxEntries, WriteCount writeCount, Action<ByteBuffer, int> addHeader_func, Action<T, ByteBuffer> addData_func)
         {

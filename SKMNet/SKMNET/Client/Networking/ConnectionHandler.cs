@@ -23,7 +23,7 @@ namespace SKMNET.Client.Networking
         private Action<Enums.FehlerT> queuedAction;
 
 
-        public ConnectionHandler(string ipAdress, LightingConsole parent)
+        public ConnectionHandler(string ipAdress, LightingConsole parent, ref SKMSteckbrief steckbrief)
         {
             this.console = parent;
 
@@ -52,7 +52,7 @@ namespace SKMNET.Client.Networking
             });
             sendThread.Start();
             
-            SendPacket(new SKMSync(SKMSync.Flags.Bedientasten));
+            SendPacket(new SKMSync(steckbrief));
         }
 
         private void Reciever_Errored(object sender, Exception e)
@@ -106,10 +106,10 @@ namespace SKMNET.Client.Networking
         {
             if (header is SKMSync)
             {
-                Logger.Log(ByteUtils.ArrayToString(header.GetDataToSend()));
+                Logger.Log(ByteUtils.ArrayToString(header.GetDataToSend(console)));
             }
             ByteBuffer buf = new ByteBuffer();
-            buf.Write(MAGIC_NUMBER).Write(header.Type).Write(GetLocalIPAddress()).Write(header.GetDataToSend());
+            buf.Write(MAGIC_NUMBER).Write(header.Type).Write(GetLocalIPAddress()).Write(header.GetDataToSend(console));
             byte[] arr = buf.ToArray();
             Console.WriteLine(ByteUtils.ArrayToString(arr));
 
@@ -119,7 +119,7 @@ namespace SKMNET.Client.Networking
 
         public void SendPacket(SplittableHeader header, Action<Enums.FehlerT> callback = null)
         {
-            foreach (byte[] arr in header.GetData())
+            foreach (byte[] arr in header.GetData(console))
             {
                 ByteBuffer buf = new ByteBuffer();
                 buf.Write(MAGIC_NUMBER).Write(header.Type).Write(GetLocalIPAddress()).Write(arr);

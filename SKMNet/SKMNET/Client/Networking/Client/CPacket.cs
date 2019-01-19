@@ -1,10 +1,4 @@
 ﻿using SKMNET.Util;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
@@ -12,6 +6,6 @@ namespace SKMNET.Client.Networking.Client
     {
         public abstract short Type { get; }
 
-        public abstract byte[] GetDataToSend();
+        public abstract byte[] GetDataToSend(LightingConsole console);
     }
 }

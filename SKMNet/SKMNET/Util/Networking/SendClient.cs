@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SKMNET.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -58,9 +59,9 @@ namespace SKMNET.Util
             baseClient.Send(data, data.Length);
         }
 
-        public void SendData(ISendable data)
+        public void SendData(ISendable data, LightingConsole console)
         {
-            SendData(data.GetDataToSend());
+            SendData(data.GetDataToSend(console));
         }
     }
 }

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SKMNET.Client;
 
 namespace SKMNET.Util
 {
     public interface ISendable
     {
-        byte[] GetDataToSend();
+        byte[] GetDataToSend(LightingConsole console);
     }
 }

@@ -17,9 +17,9 @@ namespace SKMNET.Client.Networking.Client
         private readonly AWType action;
         private short[] SKGs;
 
-        public override byte[] GetDataToSend()
+        public override byte[] GetDataToSend(LightingConsole console)
         {
-            return new ByteBuffer().WriteShort(0).WriteShort((short)action).WriteShort((short)SKGs.Length).Write(SKGs).ToArray();
+            return new ByteBuffer().WriteShort(console.BdstNo).WriteShort((short)action).WriteShort((short)SKGs.Length).Write(SKGs).ToArray();
         }
 
         public SKGAnwahl(AWType type, short[] SKGs)

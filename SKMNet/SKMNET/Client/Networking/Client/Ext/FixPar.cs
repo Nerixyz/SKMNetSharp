@@ -15,17 +15,16 @@ namespace SKMNET.Client.Networking.Client
     /// </summary>
     public class FixPar : SplittableHeader
     {
-        private const short BStdNo = 0; /* Bedienstelle */
         private readonly short subCmd;
         private readonly Enums.FixParDst dstReg;
         private readonly List<MLParameter> list;
         public override short Type => 20;
 
-        public override List<byte[]> GetData()
+        public override List<byte[]> GetData(LightingConsole console)
         {
             return Make(list, 200, CountShort, new Action<ByteBuffer, int>((buf, total) => 
             {
-                buf.Write(BStdNo).Write(subCmd).Write((short)dstReg);
+                buf.Write(console.BdstNo).Write(subCmd).Write((short)dstReg);
             }), new Action<MLParameter, ByteBuffer>((par, buf) =>
             {
                 if (par.SK == null)

@@ -10,9 +10,10 @@ namespace SKMNET.Client.Networking.Client
     public abstract class Event : CPacket
     {
         public override short Type => 14;
-
-        public override byte[] GetDataToSend()
+        
+        public override byte[] GetDataToSend(LightingConsole console)
         {
+            //no BdstNo ?!
             return new ByteBuffer()
                 .Write((Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds) // Time
                 .Write((short)1) // Count

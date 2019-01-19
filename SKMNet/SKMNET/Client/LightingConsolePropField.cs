@@ -1,4 +1,5 @@
 ﻿using SKMNET.Client.Networking;
+using SKMNET.Client.Networking.Client;
 using SKMNET.Client.Rendering;
 using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
@@ -17,6 +18,12 @@ namespace SKMNET.Client
         [NonSerialized]
         public List<SK> Stromkreise = new List<SK>();
         public List<SK> ActiveSK { get; set; } = new List<SK>();
+
+        public Enums.Bedienstelle Bedienstelle { get; }
+        internal short BdstNo { get {
+                return (short)Bedienstelle;
+            }
+        }
 
         /// <summary>
         /// Alle Stromkreisgruppen
@@ -64,10 +71,12 @@ namespace SKMNET.Client
 
         public TastenManager TastenManager { get; }
 
-        public LightingConsole(string ip)
+        public LightingConsole(string ip, SKMSteckbrief steckbrief, Enums.Bedienstelle bedienstelle = Enums.Bedienstelle.Meistertastatur)
         {
-            Connection = new ConnectionHandler(ip, this);
+            Connection = new ConnectionHandler(ip, this, ref steckbrief);
             Connection.Errored += Connection_Errored;
+
+            this.Bedienstelle = bedienstelle;
 
             ScreenManager = new ScreenManager(this);
 

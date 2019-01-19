@@ -27,12 +27,12 @@ namespace SKMNET.Client.Networking.Client
             entries.Add(entry);
         }
             
-        public override List<byte[]> GetData()
+        public override List<byte[]> GetData(LightingConsole console)
         {
             return Make(entries, 80, CountShort, new Action<ByteBuffer, int>((buf, total) => 
             {
                 buf
-                    .WriteShort(0)
+                    .WriteShort(console.BdstNo)
                     .Write(0);
             }), new Action<MailboxEntry, ByteBuffer>((entry, buf) =>
             {

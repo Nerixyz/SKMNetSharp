@@ -17,18 +17,18 @@ namespace SKMNET.Client.Networking.Client
         private readonly Action action;
         private readonly int flags;
 
-        public override byte[] GetDataToSend()
+        public override byte[] GetDataToSend(LightingConsole console)
         {
             byte[] steckbrief = new byte[10];
             for(int i = 0; i < 10; i++)
             {
                 steckbrief[i] = (flags & (1 << i)) != 0 ? (byte)1 : (byte)0;
             }
-            steckbrief[0] = 2;
+            steckbrief[0] = 3;
             if (action == Action.BEGIN)
-                return new ByteBuffer().Write((short)action).WriteShort(0).WriteShort(10).Write(steckbrief).ToArray();
+                return new ByteBuffer().Write((short)action).WriteShort(console.BdstNo).WriteShort(10).Write(steckbrief).ToArray();
             else
-                return new ByteBuffer().Write((short)action).WriteShort(0).WriteShort(0).Write(steckbrief).ToArray();
+                return new ByteBuffer().Write((short)action).WriteShort(console.BdstNo).WriteShort(0)/*count = 0 -> no array needed { .Write(steckbrief) } */.ToArray();
         }
 
         public SKMSync(Action action)
@@ -43,10 +43,16 @@ namespace SKMNET.Client.Networking.Client
             this.flags = flags;
         }
 
-        public SKMSync(Flags flags)
+        public SKMSync(SKMSteckbrief steckbrief)
         {
             this.action = Action.BEGIN;
-            this.flags = (int)flags;
+            System.Reflection.FieldInfo[] fields = steckbrief.GetType().GetFields();
+            int flags = 0;
+            for(int i = 0; i < fields.Length; i++)
+            {
+                flags |= ((bool)fields[i].GetValue(steckbrief) ? 1 : 0) << (i+1);
+            }
+            this.flags = flags;
         }
 
         public enum Action
@@ -55,18 +61,20 @@ namespace SKMNET.Client.Networking.Client
             END,
             PING
         }
+    }
 
-        public enum Flags
-        {
-            Bedientasten = (1 << 1),
-            BefMeldZeile = (1 << 2),
-            FuncKeys = (1 << 3),
-            LKI = (1 << 4),
-            BlockInfo = (1 << 5),
-            AZ_Zeilen = (1 << 6),
-            ExtKeys = (1 << 7),
-            AktInfo = (1 << 8),
-            Steller = (1 << 9),
-        }
+    // nicht alles wird verwendet?!
+    // auch wenn Bed = false werden Tastendaten gesendet
+    public struct SKMSteckbrief
+    {
+        public bool Bedientasten;
+        public bool BefMeldZeile;
+        public bool FuncKeys;
+        public bool LKI;
+        public bool BlockInfo;
+        public bool AZ_Zeilen;
+        public bool ExtKeys;
+        public bool AktInfo;
+        public bool Steller;
     }
 }

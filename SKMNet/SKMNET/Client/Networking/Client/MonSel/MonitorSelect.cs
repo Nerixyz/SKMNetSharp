@@ -20,9 +20,9 @@ namespace SKMNET.Client.Networking.Client
             this.monitor = monitor;
         }
 
-        public override byte[] GetDataToSend()
+        public override byte[] GetDataToSend(LightingConsole console)
         {
-            return new ByteBuffer().Write((short)0).Write((short)0).Write(monitor).ToArray();
+            return new ByteBuffer().Write(console.BdstNo).Write((short)0).Write(monitor).ToArray();
         }
     }
 }

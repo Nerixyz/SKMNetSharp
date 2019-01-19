@@ -14,12 +14,11 @@ namespace SKMNET.Client.Networking.Client
     {
         public override short Type => 24;
         private readonly short PalMask;
-        private const short BsStNo = 0;
         private const short SubCmd = 0;
 
-        public override byte[] GetDataToSend()
+        public override byte[] GetDataToSend(LightingConsole console)
         {
-            return new ByteBuffer().Write(BsStNo).Write(SubCmd).Write(PalMask).ToArray();
+            return new ByteBuffer().Write(console.BdstNo).Write(SubCmd).Write(PalMask).ToArray();
         }
 
         public PalSelect(MLUtil.MLPalFlag PalMask)

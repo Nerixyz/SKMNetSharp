@@ -1,13 +1,10 @@
-﻿using System;
+﻿using SKMNET.Client;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Util
 {
     public interface ISplittable
     {
-        List<byte[]> GetData();
+        List<byte[]> GetData(LightingConsole console);
     }
 }

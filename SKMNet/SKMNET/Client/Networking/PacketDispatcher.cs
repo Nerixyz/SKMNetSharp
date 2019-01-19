@@ -92,7 +92,10 @@ namespace SKMNET.Client.Networking
 
                     //get PacketClass/Type
                     if (!serverPacketMap.TryGetValue(type, out Type packetType))
+                    {
+                        Logger.Log("we dont know PepeLmap: " + type);
                         return Enums.Response.BadCmd;
+                    }
                     
                     SPacket packet = (SPacket)Activator.CreateInstance(packetType);
 

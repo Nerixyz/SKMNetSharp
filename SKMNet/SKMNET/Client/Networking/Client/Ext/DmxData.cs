@@ -14,16 +14,15 @@ namespace SKMNET.Client.Networking.Client
     public class DmxData : CPacket
     {
         public override short Type => 21;
-        private const short BdStNo = 0;
         private const short subCmd = 0;
         private readonly Enums.FixParDst dst;
         private List<SK> SKs;
         private List<byte[]> data;
 
-        public override byte[] GetDataToSend()
+        public override byte[] GetDataToSend(LightingConsole console)
         {
             ByteBuffer buf = new ByteBuffer().
-                Write(BdStNo).
+                Write(console.BdstNo).
                 Write(subCmd).
                 Write((short)dst);
             if(SKs != null)
