@@ -9,6 +9,7 @@ using System.Threading;
 using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Client.Networking.Server.TSD;
 using System.Collections.Generic;
+using SKMNET.Logging;
 
 namespace Test
 {
@@ -17,29 +18,48 @@ namespace Test
         [STAThread]
         static void Main(string[] args)
         {
-            LightingConsole console = new LightingConsole("127.0.0.1", new SKMSteckbrief() {
+            LightingConsole console = new LightingConsole("127.0.0.1", new SKMSteckbrief()
+            {
                 Bedientasten = true,
-                AktInfo      = true,
-                AZ_Zeilen    = true,
+                AktInfo = true,
+                AZ_Zeilen = true,
                 BefMeldZeile = true,
-                BlockInfo    = true,
-                ExtKeys      = true,
-                FuncKeys     = true,
-                LKI          = true,
-                Steller      = true
-            }, Enums.Bedienstelle.Handtermianl1);
+                BlockInfo = true,
+                ExtKeys = true,
+                FuncKeys = true,
+                LKI = true,
+                Steller = true
+            }, Enums.Bedienstelle.Handtermianl1)
+            {
+                Logger = new ConsoleLogger()
+            };
 
             console.Errored += Console_Errored;
             console.Connection.PacketRecieved += Connection_PacketRecieved;
 
-            string cmd = Console.ReadLine();
+            while (true)
+            {
+                string cmd = Console.ReadLine();
 
-            Console.ReadLine();
+                string[] dat = cmd.Split(':');
+
+                console.GetSKByNumber(short.Parse(dat[0]), entireSet: true).Intensity = byte.Parse(dat[1]);
+                console.PushChanges(callback: BASIC_CALLBACK, src: console.ActiveSK);
+               
+            }
 
             Clipboard.SetText(JsonConvert.SerializeObject(console));
 
             Console.ReadLine();
             Console.ReadLine();
+            
+            Console.WriteLine("start");
+            Console.ReadLine();
+        }
+
+        private static void VALUE_HANDLER(double value)
+        {
+            Console.WriteLine(value);
         }
 
         private static void Connection_PacketRecieved(object sender, PacketRecievedEventArgs args)
@@ -61,5 +81,14 @@ namespace Test
         {
             Console.WriteLine($"Response: {fehler.ToString()} ");
         });
+
+
+        private class ConsoleLogger : ILogger
+        {
+            public void Log(object toLog)
+            {
+                Console.WriteLine(toLog);
+            }
+        }
     }
 }

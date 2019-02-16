@@ -36,7 +36,7 @@ namespace SKMNET.Client.Networking.Server.SKMON
                 SK reg = console.Stromkreise[i];
                 if (reg != null)
                 {
-                    reg.Intensity = data[i - start];
+                    reg.SetDimmer(data[i - start]);
                 }
             }
             return Enums.Response.OK;

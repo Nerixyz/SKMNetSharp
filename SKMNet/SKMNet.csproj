@@ -128,7 +128,7 @@
     <Compile Include="SKMNET\Client\Networking\Server\TSD\TSD_MLPal.cs" />
     <Compile Include="SKMNET\Util\Data\ByteBuffer.cs" />
     <Compile Include="SKMNET\Util\Networking\ISplittable.cs" />
-    <Compile Include="SKMNET\Util\Logger.cs" />
+    <Compile Include="SKMNET\Util\ILogger.cs" />
     <Compile Include="SKMNET\Util\MLPal_Prefab.cs" />
     <Compile Include="SKMNET\Util\Data\ByteUtils.cs" />
     <Compile Include="SKMNET\Util\Networking\ISendable.cs" />

@@ -8,6 +8,7 @@ using SKMNET.Client.Networking.Server.SKMON;
 using SKMNET.Client.Networking.Server.ISKMON;
 using SKMNET.Client.Networking.Server.LIBRAExt;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace SKMNET.Client.Networking
 {
@@ -93,15 +94,15 @@ namespace SKMNET.Client.Networking
                     //get PacketClass/Type
                     if (!serverPacketMap.TryGetValue(type, out Type packetType))
                     {
-                        Logger.Log("we dont know PepeLmap: " + type);
+                        connection.console.Logger?.Log("we dont know PepeLmao: " + type);
                         return Enums.Response.BadCmd;
                     }
                     
                     SPacket packet = (SPacket)Activator.CreateInstance(packetType);
-
-                   
+                    
                     packet.ParsePacket(packetBuffer);
                     code = packet.ProcessPacket(connection.console, connection, type);
+
                     
                     connection.OnPacketRecieved(this, new PacketRecievedEventArgs(eType, packet));
 

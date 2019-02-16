@@ -13,23 +13,51 @@ namespace SKMNET.Client.Stromkreise
         public ushort Number { get; }
         public List<MLParameter> Parameters { get; set; }
         public byte Intensity { get { return _intensity; } set {
-                if (Parameters.Count > 0 && Parameters[0].ParNo == 0)
-                {
-                    Parameters[0].Value = value << 8;
-                }
-                _intensity = value;
+                Set(value);
                 dirty = true;
             }
         }
         private byte _intensity;
         public byte Attrib { get; set; }
+        private bool active;
 
-        public SK(ushort Number, byte Intensity = 0)
+        [NonSerialized]
+        private readonly LightingConsole console;
+
+        public SK(ushort Number, LightingConsole console, byte Intensity = 0)
         {
+            this.active = Intensity > 0;
+
+            this.console = console;
+
             this.Number = Number;
-            Parameters = new List<MLParameter>();
+            this.Parameters = new List<MLParameter>();
             this.Intensity = Intensity;
-            Attrib = 0;
+            this.Attrib = 0;
+        }
+
+        /// <summary>
+        /// Set the Dimmer value (for packets)
+        /// </summary>
+        /// <param name="val">Dimmer</param>
+        internal void SetDimmer(byte val)
+        {
+            dirty = false;
+        }
+
+        private void Set(byte val)
+        {
+            if (Parameters.Count > 0 && Parameters[0].ParNo == 0)
+            {
+                Parameters[0].Value = val << 8;
+            }
+            _intensity = val;
+            if (val > 0 && !active)
+            {
+                active = true;
+                if(!console.ActiveSK.Contains(this))
+                    console.ActiveSK.Add(this);
+            }
         }
 
         public bool dirty = false;

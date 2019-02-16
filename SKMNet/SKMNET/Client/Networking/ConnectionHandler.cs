@@ -68,9 +68,9 @@ namespace SKMNET.Client.Networking
             }catch(Exception e)
             {
                 args.ResponseCode = Enums.Response.BadCmd;
-                Console.WriteLine(ByteUtils.ArrayToString(args.Data));
+                console.Logger?.Log(ByteUtils.ArrayToString(args.Data));
                 OnErrored(this, e);
-                Logger.Log(e.StackTrace);
+                console.Logger?.Log(e.StackTrace);
             }
         }
 
@@ -106,12 +106,12 @@ namespace SKMNET.Client.Networking
         {
             if (header is SKMSync)
             {
-                Logger.Log(ByteUtils.ArrayToString(header.GetDataToSend(console)));
+                console.Logger?.Log(ByteUtils.ArrayToString(header.GetDataToSend(console)));
             }
             ByteBuffer buf = new ByteBuffer();
             buf.Write(MAGIC_NUMBER).Write(header.Type).Write(GetLocalIPAddress()).Write(header.GetDataToSend(console));
             byte[] arr = buf.ToArray();
-            Console.WriteLine(ByteUtils.ArrayToString(arr));
+            console.Logger?.Log(ByteUtils.ArrayToString(arr));
 
             sendQueue.Enqueue(arr);
             this.queuedAction = callback;

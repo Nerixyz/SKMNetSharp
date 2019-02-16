@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\Interpolation.cs" />
     <Compile Include="Util\SampleAggregator.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@ using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Client.Tasten;
 using SKMNET.Client.Vorstellungen;
+using SKMNET.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,8 @@ namespace SKMNET.Client
                 return (short)Bedienstelle;
             }
         }
+
+        public ILogger Logger { get; set; }
 
         /// <summary>
         /// Alle Stromkreisgruppen
