@@ -7,7 +7,6 @@ using SKMNET.Client.Networking.Server.RMON;
 using SKMNET.Client.Networking.Server.SKMON;
 using SKMNET.Client.Networking.Server.ISKMON;
 using SKMNET.Client.Networking.Server.LIBRAExt;
-using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace SKMNET.Client.Networking

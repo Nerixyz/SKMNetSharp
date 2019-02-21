@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using SKMNET.Client.Networking.Client;
+﻿using SKMNET.Client.Networking.Client;
 using SKMNET.Client.Networking.Server;
 using SKMNET.Util;
 using System;

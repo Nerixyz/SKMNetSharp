@@ -1,25 +1,22 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using SKMNET;
 using SKMNET.Client;
 using SKMNET.Client.Networking;
 using SKMNET.Client.Networking.Client;
-using Newtonsoft.Json;
-using System.Windows.Forms;
-using System.Threading;
-using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Client.Networking.Server.TSD;
-using System.Collections.Generic;
 using SKMNET.Logging;
+using System;
+using CoreClipboard;
 
 namespace Test
 {
     class Program
     {
+
         [STAThread]
         static void Main(string[] args)
         {
-            LightingConsole console = new LightingConsole("127.0.0.1", new SKMSteckbrief()
-            {
+            LightingConsole console = new LightingConsole("127.0.0.1", new SKMSteckbrief() {
                 Bedientasten = true,
                 AktInfo = true,
                 AZ_Zeilen = true,
@@ -40,19 +37,20 @@ namespace Test
             while (true)
             {
                 string cmd = Console.ReadLine();
+                if (cmd.Equals("end")) break;
 
                 string[] dat = cmd.Split(':');
 
                 console.GetSKByNumber(short.Parse(dat[0]), entireSet: true).Intensity = byte.Parse(dat[1]);
                 console.PushChanges(callback: BASIC_CALLBACK, src: console.ActiveSK);
-               
+
             }
 
-            Clipboard.SetText(JsonConvert.SerializeObject(console));
+            Clipboard.Default.SetText(JsonConvert.SerializeObject(console));
 
             Console.ReadLine();
             Console.ReadLine();
-            
+
             Console.WriteLine("start");
             Console.ReadLine();
         }
@@ -65,7 +63,7 @@ namespace Test
         private static void Connection_PacketRecieved(object sender, PacketRecievedEventArgs args)
         {
             Console.WriteLine("recieved " + (int)args.type + " - " + args.packet.GetType().Name);
-            if(args.type == Enums.Type.TSD_MPalSelect)
+            if (args.type == Enums.Type.TSD_MPalSelect)
             {
                 TSD_MLPal pal = (TSD_MLPal)args.packet;
                 Console.WriteLine(JsonConvert.SerializeObject(pal));
