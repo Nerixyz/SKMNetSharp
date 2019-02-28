@@ -7,15 +7,20 @@ using SKMNET.Client.Networking.Server.TSD;
 using SKMNET.Logging;
 using System;
 using CoreClipboard;
+using System.Threading;
+using System.Diagnostics;
 
 namespace Test
 {
     class Program
     {
 
+        private static Stopwatch stopwatch;
+
         [STAThread]
         static void Main(string[] args)
         {
+            stopwatch = new Stopwatch();
             LightingConsole console = new LightingConsole("127.0.0.1", new SKMSteckbrief() {
                 Bedientasten = true,
                 AktInfo = true,
@@ -32,12 +37,15 @@ namespace Test
             };
 
             console.Errored += Console_Errored;
-            console.Connection.PacketRecieved += Connection_PacketRecieved;
+            console.Connection.PacketReceived += Connection_PacketReceived;
 
             while (true)
             {
                 string cmd = Console.ReadLine();
                 if (cmd.Equals("end")) break;
+
+                stopwatch.Reset();
+                stopwatch.Start();
 
                 string[] dat = cmd.Split(':');
 
@@ -60,14 +68,9 @@ namespace Test
             Console.WriteLine(value);
         }
 
-        private static void Connection_PacketRecieved(object sender, PacketRecievedEventArgs args)
+        private static void Connection_PacketReceived(object sender, PacketRecievedEventArgs args)
         {
-            Console.WriteLine("recieved " + (int)args.type + " - " + args.packet.GetType().Name);
-            if (args.type == Enums.Type.TSD_MPalSelect)
-            {
-                TSD_MLPal pal = (TSD_MLPal)args.packet;
-                Console.WriteLine(JsonConvert.SerializeObject(pal));
-            }
+            Console.WriteLine("received " + (int)args.type + " - " + args.packet.GetType().Name);
         }
 
         private static void Console_Errored(object sender, Exception e)
@@ -77,6 +80,8 @@ namespace Test
 
         private readonly static Action<Enums.FehlerT> BASIC_CALLBACK = new Action<Enums.FehlerT>((fehler) =>
         {
+            stopwatch.Stop();
+            Console.WriteLine($"Delay: {stopwatch.Elapsed.TotalMilliseconds}ms");
             Console.WriteLine($"Response: {fehler.ToString()} ");
         });
 

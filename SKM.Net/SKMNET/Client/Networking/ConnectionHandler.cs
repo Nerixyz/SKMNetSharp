@@ -15,7 +15,6 @@ namespace SKMNET.Client.Networking
         private          SendClient      sender;
         private readonly RecieveClient   reciever;
         public  readonly LightingConsole console;
-        private readonly Queue<byte[]> sendQueue;
         private readonly Thread sendThread;
         private readonly PacketDispatcher packetDispatcher;
         
@@ -36,20 +35,6 @@ namespace SKMNET.Client.Networking
             this.reciever.Errored += Reciever_Errored;
 
             this.packetDispatcher = new PacketDispatcher(this);
-
-            this.sendQueue = new Queue<byte[]>();
-            sendThread = new Thread(() =>
-            {
-                while (true)
-                {
-                    if(sendQueue.Count > 0)
-                    {
-                        sender.SendData(sendQueue.Dequeue());
-                    }
-                    Thread.Sleep(50);
-                }
-            });
-            sendThread.Start();
             
             SendPacket(new SKMSync(steckbrief));
         }
@@ -88,16 +73,21 @@ namespace SKMNET.Client.Networking
             queuedAction = null;
         }
 
+        private void SendToConsole(byte[] data)
+        {
+            sender.SendData(data);
+        }
+
         public void SendRawData(byte[] arr)
         {
-            sendQueue.Enqueue(arr);
+            SendToConsole(arr);
         }
 
         public void SendPacket(byte[] data, short type, Action<Enums.FehlerT> callback = null)
         {
             ByteBuffer buf = new ByteBuffer();
             buf.Write(MAGIC_NUMBER).Write(type).Write(GetLocalIPAddress()).Write(data);
-            sendQueue.Enqueue(buf.ToArray());
+            SendToConsole(buf.ToArray());
             this.queuedAction = callback;
         }
 
@@ -112,7 +102,7 @@ namespace SKMNET.Client.Networking
             byte[] arr = buf.ToArray();
             console.Logger?.Log(ByteUtils.ArrayToString(arr));
 
-            sendQueue.Enqueue(arr);
+            SendToConsole(arr);
             this.queuedAction = callback;
         }
 
@@ -123,7 +113,7 @@ namespace SKMNET.Client.Networking
                 ByteBuffer buf = new ByteBuffer();
                 buf.Write(MAGIC_NUMBER).Write(header.Type).Write(GetLocalIPAddress()).Write(arr);
                 byte[] arrOut = buf.ToArray();
-                sendQueue.Enqueue(arrOut);
+                SendToConsole(arrOut);
             }
             this.queuedAction = callback;
         }
@@ -148,8 +138,8 @@ namespace SKMNET.Client.Networking
         public event EventHandler<Exception> Errored;
         public void OnErrored(object sender, Exception data) { Errored?.Invoke(this, data); }
 
-        public event EventHandler<PacketRecievedEventArgs> PacketRecieved;
-        public void OnPacketRecieved(PacketDispatcher sender, PacketRecievedEventArgs args) { PacketRecieved?.Invoke(sender, args); }
+        public event EventHandler<PacketRecievedEventArgs> PacketReceived;
+        public void OnPacketRecieved(PacketDispatcher sender, PacketRecievedEventArgs args) { PacketReceived?.Invoke(sender, args); }
 
         public enum SKMON_RES
         {
