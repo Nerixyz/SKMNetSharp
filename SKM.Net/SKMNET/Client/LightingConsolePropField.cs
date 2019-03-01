@@ -72,14 +72,33 @@ namespace SKMNET.Client
         [NonSerialized]
         public readonly ScreenManager ScreenManager;
 
-        public TastenManager TastenManager { get; }
+        [NonSerialized]
+        public readonly TastenManager TastenManager;
 
-        public LightingConsole(string ip, SKMSteckbrief steckbrief, Enums.Bedienstelle bedienstelle = Enums.Bedienstelle.Meistertastatur)
+        [NonSerialized]
+        public readonly ConsoleSettings Settings;
+
+        public LightingConsole(string ip, ConsoleSettings settings)
         {
-            Connection = new ConnectionHandler(ip, this, ref steckbrief);
+            this.Settings = settings;
+            SKMSteckbrief steckbrief = new SKMSteckbrief()
+            {
+                Bedientasten = Settings.Bedientasten,
+                BefMeldZeile = Settings.BefMeldZeile,
+                FuncKeys     = Settings.FuncKeys,
+                LKI          = Settings.LKI,
+                BlockInfo    = Settings.BlockInfo,
+                AZ_Zeilen    = Settings.AZ_Zeilen,
+                ExtKeys      = Settings.ExtKeys,
+                AktInfo      = Settings.AktInfo,
+                Steller      = Settings.Steller
+            };
+
+            Connection = new ConnectionHandler(ip, this, ref steckbrief, Settings.SKMType);
             Connection.Errored += Connection_Errored;
 
-            this.Bedienstelle = bedienstelle;
+            this.Bedienstelle = Settings.Bedienstelle;
+            this.Logger = Settings.Logger;
 
             ScreenManager = new ScreenManager(this);
 

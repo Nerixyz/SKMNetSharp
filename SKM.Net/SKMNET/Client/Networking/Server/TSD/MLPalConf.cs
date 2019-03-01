@@ -30,7 +30,7 @@ namespace SKMNET.Client.Networking.Server.TSD
                 short palno = buffer.ReadShort();
                 short length = buffer.ReadShort();
 
-                if (palno == 0 || length == 0)
+                if (palno == 0 && length == 0)
                     break;
 
                 string text = buffer.ReadString(length);

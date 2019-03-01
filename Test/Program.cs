@@ -21,20 +21,24 @@ namespace Test
         static void Main(string[] args)
         {
             stopwatch = new Stopwatch();
-            LightingConsole console = new LightingConsole("127.0.0.1", new SKMSteckbrief() {
-                Bedientasten = true,
-                AktInfo = true,
-                AZ_Zeilen = true,
-                BefMeldZeile = true,
-                BlockInfo = true,
-                ExtKeys = true,
-                FuncKeys = true,
-                LKI = true,
-                Steller = true
-            }, Enums.Bedienstelle.Handtermianl1)
-            {
-                Logger = new ConsoleLogger()
-            };
+            LightingConsole console = new LightingConsole(
+                "127.0.0.1",
+                new LightingConsole.ConsoleSettings() {
+                    Bedientasten = true,
+                    AktInfo = true,
+                    AZ_Zeilen = true,
+                    BefMeldZeile = true,
+                    BlockInfo = true,
+                    ExtKeys = true,
+                    FuncKeys = true,
+                    LKI = true,
+                    Steller = true,
+
+                    Logger = new ConsoleLogger(),
+                    Bedienstelle = Enums.Bedienstelle.Infrarot,
+                    SKMType = 2
+                }
+            );
 
             console.Errored += Console_Errored;
             console.Connection.PacketReceived += Connection_PacketReceived;
@@ -54,9 +58,10 @@ namespace Test
 
             }
 
-            Clipboard.Default.SetText(JsonConvert.SerializeObject(console));
+            console.Query(new PalCommand(new PalCommand.PalCmdEntry(SKMNET.Util.MLUtil.MLPalFlag.BLK, console.Paletten[SKMNET.Client.Stromkreise.ML.MLPal.MLPalFlag.BLK][0].PalNO)), BASIC_CALLBACK);
 
             Console.ReadLine();
+            Console.WriteLine(JsonConvert.SerializeObject(console));
             Console.ReadLine();
 
             Console.WriteLine("start");

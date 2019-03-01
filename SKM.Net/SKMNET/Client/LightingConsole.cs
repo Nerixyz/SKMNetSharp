@@ -5,6 +5,7 @@ using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Client.Tasten;
 using SKMNET.Client.Vorstellungen;
+using SKMNET.Logging;
 using SKMNET.Util;
 using System;
 using System.Collections.Generic;
@@ -113,6 +114,24 @@ namespace SKMNET.Client
             changed.ForEach((sk) => sk.dirty = false);
 
             Query(new FixParNative(changed, dst), callback);
+        }
+
+
+        public sealed class ConsoleSettings
+        {
+            public bool Bedientasten { get; set; } = false;
+            public bool BefMeldZeile { get; set; } = false;
+            public bool FuncKeys     { get; set; } = false;
+            public bool LKI          { get; set; } = false;
+            public bool BlockInfo    { get; set; } = false;
+            public bool AZ_Zeilen    { get; set; } = false;
+            public bool ExtKeys      { get; set; } = false;
+            public bool AktInfo      { get; set; } = false;
+            public bool Steller      { get; set; } = false;
+
+            public byte SKMType { get; set; } = 0;
+            public Enums.Bedienstelle Bedienstelle { get; set; } = Enums.Bedienstelle.Meistertastatur;
+            public ILogger Logger { get; set; }
         }
     }
 }

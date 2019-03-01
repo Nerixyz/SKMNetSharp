@@ -78,7 +78,7 @@ namespace CoreClipboard.Windows
         private static extern bool GlobalUnlock(IntPtr hMem);
 
         [DllImport("kernel32.dll")]
-        public static extern void CopyMemory(IntPtr dest, IntPtr src, uint count);
+        public static extern void CopyMemory(IntPtr dest, IntPtr src, uint length);
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]

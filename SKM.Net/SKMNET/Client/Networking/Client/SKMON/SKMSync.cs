@@ -16,6 +16,7 @@ namespace SKMNET.Client.Networking.Client
 
         private readonly Action action;
         private readonly int flags;
+        private readonly byte SKMType;
 
         public override byte[] GetDataToSend(LightingConsole console)
         {
@@ -24,7 +25,7 @@ namespace SKMNET.Client.Networking.Client
             {
                 steckbrief[i] = (flags & (1 << i)) != 0 ? (byte)1 : (byte)0;
             }
-            steckbrief[0] = 3;
+            steckbrief[0] = SKMType;
             if (action == Action.BEGIN)
                 return new ByteBuffer().Write((short)action).WriteShort(console.BdstNo).WriteShort(10).Write(steckbrief).ToArray();
             else
@@ -43,7 +44,7 @@ namespace SKMNET.Client.Networking.Client
             this.flags = flags;
         }
 
-        public SKMSync(SKMSteckbrief steckbrief)
+        public SKMSync(SKMSteckbrief steckbrief, byte SKMType)
         {
             this.action = Action.BEGIN;
             System.Reflection.FieldInfo[] fields = steckbrief.GetType().GetFields();
@@ -53,6 +54,7 @@ namespace SKMNET.Client.Networking.Client
                 flags |= ((bool)fields[i].GetValue(steckbrief) ? 1 : 0) << (i+1);
             }
             this.flags = flags;
+            this.SKMType = SKMType;
         }
 
         public enum Action

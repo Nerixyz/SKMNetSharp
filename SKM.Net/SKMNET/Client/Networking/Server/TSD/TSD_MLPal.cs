@@ -35,7 +35,7 @@ namespace SKMNET.Client.Networking.Server.TSD
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
 
-            if (!console.Paletten.TryGetValue(Enums.GetEnum<MLPal.MLPalFlag>(type), out List<MLPal> list))
+            if (!console.Paletten.TryGetValue(Enums.GetEnum<MLPal.MLPalFlag>(this.type), out List<MLPal> list))
                 return Enums.Response.BadCmd;
 
             foreach (MLPal_Prefab pre in pallets)

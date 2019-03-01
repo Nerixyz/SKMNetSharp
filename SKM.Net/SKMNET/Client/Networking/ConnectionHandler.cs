@@ -21,7 +21,7 @@ namespace SKMNET.Client.Networking
         private Action<Enums.FehlerT> queuedAction;
 
 
-        public ConnectionHandler(string ipAdress, LightingConsole parent, ref SKMSteckbrief steckbrief)
+        public ConnectionHandler(string ipAdress, LightingConsole parent, ref SKMSteckbrief steckbrief, byte SKMType)
         {
             this.console = parent;
 
@@ -36,7 +36,7 @@ namespace SKMNET.Client.Networking
 
             this.packetDispatcher = new PacketDispatcher(this);
             
-            SendPacket(new SKMSync(steckbrief));
+            SendPacket(new SKMSync(steckbrief, SKMType));
         }
 
         private void Reciever_Errored(object sender, Exception e)

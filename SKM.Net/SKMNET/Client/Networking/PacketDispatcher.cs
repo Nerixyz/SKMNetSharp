@@ -94,6 +94,7 @@ namespace SKMNET.Client.Networking
                     if (!serverPacketMap.TryGetValue(type, out Type packetType))
                     {
                         connection.console.Logger?.Log("we dont know PepeLmao: " + type);
+                        connection.console.Logger?.Log(ByteUtils.ArrayToString(data));
                         return Enums.Response.BadCmd;
                     }
                     

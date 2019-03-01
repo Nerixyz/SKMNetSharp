@@ -15,6 +15,7 @@ namespace SKMNET.Client.Stromkreise.ML
         public string Name { get; set; }
         public double Number { get; set; }
         public List<SK> BetSK { get; set; }
+        public short PalNO { get; }
         
         /// <summary>
         /// Constructor
@@ -28,6 +29,7 @@ namespace SKMNET.Client.Stromkreise.ML
             this.Name = name;
             this.Number = num / 10d;
             this.BetSK = new List<SK>();
+            this.PalNO = num;
         }
 
         public enum MLPalFlag
