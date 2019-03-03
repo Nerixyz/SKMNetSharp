@@ -73,7 +73,7 @@ namespace SKMNET.Client.Networking
                 /* Libra 1.8 */
                 { 158, typeof(AktInfo) },
             };
-            
+
         }
 
         public Enums.Response OnDataIncoming(byte[] data)
@@ -93,17 +93,16 @@ namespace SKMNET.Client.Networking
                     //get PacketClass/Type
                     if (!serverPacketMap.TryGetValue(type, out Type packetType))
                     {
-                        connection.console.Logger?.Log("we dont know PepeLmao: " + type);
+                        connection.console.Logger?.Log("we don't know PepeLmao: " + type);
                         connection.console.Logger?.Log(ByteUtils.ArrayToString(data));
                         return Enums.Response.BadCmd;
                     }
-                    
+
                     SPacket packet = (SPacket)Activator.CreateInstance(packetType);
-                    
+
                     packet.ParsePacket(packetBuffer);
                     code = packet.ProcessPacket(connection.console, connection, type);
 
-                    
                     connection.OnPacketRecieved(this, new PacketRecievedEventArgs(eType, packet));
 
                     if (code != Enums.Response.OK)

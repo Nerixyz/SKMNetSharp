@@ -10,9 +10,9 @@ namespace SKMNET.Client.Networking.Server.ISKMON
     /// <summary>
     /// Aktuellzeile
     /// </summary>
-    class AZ : SPacket
+    public class AZ : SPacket
     {
-        
+
         public ushort flags;
         public string linetext;
 
@@ -23,10 +23,7 @@ namespace SKMNET.Client.Networking.Server.ISKMON
             return this;
         }
 
-        public bool Angewaehlt()
-        {
-            return (flags & 0x0001) != 0;
-        }
+        public bool Angewaehlt() => (flags & 0x0001) != 0;
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {

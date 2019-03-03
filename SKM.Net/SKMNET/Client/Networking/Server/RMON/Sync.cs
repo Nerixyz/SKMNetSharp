@@ -9,17 +9,11 @@ namespace SKMNET.Client.Networking.Server.RMON
     /// <summary>
     /// Synctelegramm
     /// </summary>
-    class Sync : SPacket
+    public class Sync : SPacket
     {
 
-        public override SPacket ParsePacket(ByteBuffer buffer)
-        {
-            return this;
-        }
+        public override SPacket ParsePacket(ByteBuffer buffer) => this;
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
-        {
-            return Enums.Response.OK;
-        }
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type) => Enums.Response.OK;
     }
 }

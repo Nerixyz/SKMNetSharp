@@ -11,7 +11,7 @@ namespace SKMNET.Client.Networking.Server
     /// </summary>
     public class ScreenData : SPacket
     {
-        
+
         /// <summary>
         /// Maximale Anzahl von Bildschirmdaten (legacy)
         /// </summary>

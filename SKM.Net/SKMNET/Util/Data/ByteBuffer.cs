@@ -6,7 +6,7 @@ namespace SKMNET
 {
     public class ByteBuffer
     {
-        MemoryStream memory;
+        private readonly MemoryStream memory;
 
         public ByteBuffer()
         {
@@ -62,10 +62,7 @@ namespace SKMNET
             return ByteUtils.ToString(buffer, 0, length);
         }
 
-        public ByteBuffer Write(ushort value)
-        {
-            return WriteUshort(value);
-        }
+        public ByteBuffer Write(ushort value) => WriteUshort(value);
 
         public ByteBuffer WriteUshort(ushort value)
         {
@@ -75,10 +72,7 @@ namespace SKMNET
             return this;
         }
 
-        public ByteBuffer Write(short value)
-        {
-            return WriteShort(value);
-        }
+        public ByteBuffer Write(short value) => WriteShort(value);
 
         public ByteBuffer WriteShort(short value)
         {
@@ -116,7 +110,6 @@ namespace SKMNET
         {
             memory.WriteByte(value);
             return this;
-
         }
 
         public ByteBuffer Write(string value, int length)
@@ -177,15 +170,9 @@ namespace SKMNET
             }
         }
 
-        public void Forward(int forward)
-        {
-            memory.Position += forward;
-        }
+        public void Forward(int forward) => memory.Position += forward;
 
-        public byte[] ToArray()
-        {
-            return memory.ToArray();
-        }
+        public byte[] ToArray() => memory.ToArray();
 
         public long Position {
             get {

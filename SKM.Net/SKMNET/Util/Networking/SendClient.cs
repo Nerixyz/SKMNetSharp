@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Util
 {
-    class SendClient
+    internal class SendClient
     {
-        readonly IPEndPoint endPoint;
-        UdpClient baseClient;
-        Thread readThread;
+        private readonly IPEndPoint endPoint;
+        private UdpClient baseClient;
+        private readonly Thread readThread;
         public bool local;
-        
+
         public SendClient(IPEndPoint endPoint)
         {
             byte[] adress = endPoint.Address.GetAddressBytes();

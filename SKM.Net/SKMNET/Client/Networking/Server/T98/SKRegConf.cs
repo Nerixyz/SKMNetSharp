@@ -12,7 +12,7 @@ namespace SKMNET.Client.Networking.Server.T98
     /// Stromkreisregister-Aufbau
     /// </summary>
     [Serializable]
-    class SKRegConf : SPacket
+    public class SKRegConf : SPacket
     {
 
         public ushort start;

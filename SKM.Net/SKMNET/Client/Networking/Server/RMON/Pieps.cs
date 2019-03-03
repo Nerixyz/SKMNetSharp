@@ -9,13 +9,10 @@ namespace SKMNET.Client.Networking.Server.RMON
     /// <summary>
     /// Piepsen
     /// </summary>
-    class Pieps : SPacket
+    public class Pieps : SPacket
     {
 
-        public override SPacket ParsePacket(ByteBuffer buffer)
-        {
-            return this;
-        }
+        public override SPacket ParsePacket(ByteBuffer buffer) => this;
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {

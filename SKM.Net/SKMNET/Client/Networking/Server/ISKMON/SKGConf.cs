@@ -11,7 +11,7 @@ namespace SKMNET.Client.Networking.Server.ISKMON
     /// SKG-Konfiguration
     /// </summary>
     [Serializable]
-    class SKGConf : SPacket
+    public class SKGConf : SPacket
     {
         public ushort count;
         public SKGConfEntry[] entries;

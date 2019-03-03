@@ -10,7 +10,7 @@ namespace SKMNET.Client.Networking.Server.LIBRAExt
     /// aktuelle Liste und Register
     /// </summary>
     [Serializable]
-    class AktInfo : SPacket
+    public class AktInfo : SPacket
     {
         public string register;
         public string listenanzeige;

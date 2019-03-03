@@ -21,19 +21,10 @@ namespace SKMNET.Client.Tasten
             this.Tasten = new List<Taste>();
         }
 
-        public void Add(Taste taste)
-        {
-            Tasten.Add(taste);
-        }
+        public void Add(Taste taste)          => Tasten.Add(taste);
 
-        public Taste FindByName(string name)
-        {
-            return Tasten.Find((x) => x.Name.ToLower().Equals(name.ToLower()));
-        }
+        public Taste FindByName(string name)  => Tasten.Find((x) => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-        public Taste FindByNumber(int number)
-        {
-            return Tasten.Find((x) => x.TastNR == number);
-        }
+        public Taste FindByNumber(int number) => Tasten.Find((x) => x.TastNR == number);
     }
 }

@@ -8,11 +8,11 @@ namespace SKMNET.Client.Rendering
     public class Screen
     {
         public MBlock[] Data { get; private set; }
-        public bool Init { get; private set; }
-        public byte Num { get; private set; }
+        public bool Init { get; }
+        public byte Num { get; }
 
-        const int HORIZONTAL_LINES = 37;
-        const int VERTICAL_LINES = 72;
+        private const int HORIZONTAL_LINES = 37;
+        private const int VERTICAL_LINES = 72;
 
         [NonSerialized]
         private readonly ScreenManager manager;
@@ -33,11 +33,11 @@ namespace SKMNET.Client.Rendering
                 MBlock block = new MBlock((byte)((point & 0xff00) >> 8), (char) (point & 0x00ff));
                 Data[start + i] = block;
             }
-        } 
+        }
 
         public MBlock GetBlock(int x, int y)
         {
-            return Data[(x) * VERTICAL_LINES + y];
+            return Data[(x * VERTICAL_LINES) + y];
         }
 
         private void Setup()

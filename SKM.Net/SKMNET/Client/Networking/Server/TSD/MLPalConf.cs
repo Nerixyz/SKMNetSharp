@@ -11,9 +11,9 @@ namespace SKMNET.Client.Networking.Server.TSD
     /// Palettenkonfiguration mit langen Namen
     /// </summary>
     [Serializable]
-    class MLPalConf : SPacket
+    public class MLPalConf : SPacket
     {
-        
+
         public bool absolute; /* Should Update the whole configuration */
         public ushort MLPalType { get; set; }/* MLPalFlag */
         public bool last;
@@ -39,17 +39,17 @@ namespace SKMNET.Client.Networking.Server.TSD
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int packetType)
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            MLPal.MLPalFlag type = MLPal.GetFlag(MLPalType);
-            if (!console.Paletten.TryGetValue(type, out List<MLPal> list))
+            MLPal.MLPalFlag mlType = MLPal.GetFlag(MLPalType);
+            if (!console.Paletten.TryGetValue(mlType, out List<MLPal> list))
                 return Enums.Response.BadCmd;
 
             if (absolute)
                 list.Clear();
 
-            foreach(ConfEntry entry in Entries) list.Add(new MLPal(type, entry.Text, entry.Palno));
-            
+            foreach(ConfEntry entry in Entries) list.Add(new MLPal(mlType, entry.Text, entry.Palno));
+
             return Enums.Response.OK;
         }
 

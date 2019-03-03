@@ -42,6 +42,7 @@ namespace SKMNET.Client.Stromkreise
         /// <param name="val">Dimmer</param>
         internal void SetDimmer(byte val)
         {
+            _intensity = val;
             dirty = false;
         }
 

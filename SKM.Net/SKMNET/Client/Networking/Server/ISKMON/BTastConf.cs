@@ -9,7 +9,7 @@ namespace SKMNET.Client.Networking.Server
     /// <summary>
     /// Bedientasten-Konfiguration
     /// </summary>
-    class BTastConf : SPacket
+    public class BTastConf : SPacket
     {
 
         public BTastConfEntry[] entries;

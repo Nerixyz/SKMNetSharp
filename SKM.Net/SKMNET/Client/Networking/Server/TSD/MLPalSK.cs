@@ -12,9 +12,9 @@ namespace SKMNET.Client.Networking.Server.TSD
     /// <summary>
     /// SK-Beteiligung an Paletten
     /// </summary>
-    class MLPalSK : SPacket
+    public class MLPalSK : SPacket
     {
-        
+
         public ushort palno;
         public ushort mlpaltype;
         public bool last;

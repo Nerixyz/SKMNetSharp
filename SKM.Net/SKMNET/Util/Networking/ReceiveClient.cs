@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Util
 {
-    class RecieveClient
+    internal class RecieveClient
     {
         private const int T90_TO_SKM_PORT = 5064;
         private readonly UdpClient client;
@@ -38,7 +38,6 @@ namespace SKMNET.Util
                             client.Send(arr, arr.Length, endPoint);
                         });
 
-                        
                     }
                 });
 

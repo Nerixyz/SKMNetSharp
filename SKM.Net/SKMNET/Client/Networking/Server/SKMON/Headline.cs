@@ -9,7 +9,7 @@ namespace SKMNET.Client.Networking.Server.SKMON
     /// <summary>
     /// Kopfzeile
     /// </summary>
-    class Headline : SPacket
+    public class Headline : SPacket
     {
 
         public ushort farbno;

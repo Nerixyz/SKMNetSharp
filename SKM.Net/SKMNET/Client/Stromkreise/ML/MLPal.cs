@@ -16,7 +16,7 @@ namespace SKMNET.Client.Stromkreise.ML
         public double Number { get; set; }
         public List<SK> BetSK { get; set; }
         public short PalNO { get; }
-        
+
         /// <summary>
         /// Constructor
         /// </summary>

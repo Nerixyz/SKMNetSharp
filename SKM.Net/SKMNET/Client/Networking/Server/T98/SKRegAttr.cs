@@ -12,7 +12,7 @@ namespace SKMNET.Client.Networking.Server.T98
     /// SK-Attr. in Stromkreisregister-Order
     /// </summary>
     [Serializable]
-    class SKRegAttr : SPacket
+    public class SKRegAttr : SPacket
     {
         // TODO Attrib bits = SKMON_SKATTR
 

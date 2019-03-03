@@ -9,9 +9,9 @@ namespace SKMNET.Client.Networking.Server.ISKMON
     /// <summary>
     /// Meldezeile
     /// </summary>
-    class Meld : SPacket
+    public class Meld : SPacket
     {
-        
+
         public string linetext;
 
         public override SPacket ParsePacket(ByteBuffer buffer)

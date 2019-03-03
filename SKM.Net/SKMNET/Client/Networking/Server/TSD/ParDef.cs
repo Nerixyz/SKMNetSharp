@@ -9,9 +9,9 @@ namespace SKMNET.Client.Networking.Server.TSD
     /// <summary>
     /// Parameterdefinitionen (Name usw.)
     /// </summary>
-    class ParDef : SPacket
+    public class ParDef : SPacket
     {
-        
+
         public bool last;
         public ushort count;
         public ParDefData[] arr;

@@ -18,7 +18,7 @@ namespace SKMNET.Client.Networking.Server.TSD
         public MLPal_Prefab[] pallets;
         public bool last;
         public ushort type;
-        
+
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
             type = buffer.ReadUShort();

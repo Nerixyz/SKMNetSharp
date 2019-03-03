@@ -20,15 +20,9 @@ namespace SKMNET
             this.name = name;
         }
 
-        public bool GetFlag(MLPalFlag flag)
-        {
-            return (paltype & ((ushort)(flag))) != 0;
-        }
+        public bool GetFlag(MLPalFlag flag)                        => (paltype & ((ushort)(flag))) != 0;
 
-        public static bool GetFlag(MLPalFlag flag, ushort paltype)
-        {
-            return (paltype & ((ushort)(flag))) != 0;
-        }
+        public static bool GetFlag(MLPalFlag flag, ushort paltype) => (paltype & ((ushort)(flag))) != 0;
 
         public enum MLPalFlag
         {

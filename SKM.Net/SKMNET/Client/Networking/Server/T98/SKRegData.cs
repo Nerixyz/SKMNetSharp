@@ -12,7 +12,7 @@ namespace SKMNET.Client.Networking.Server.T98
     /// SK-Werte in Stromkreisregister-Order
     /// </summary>
     [Serializable]
-    class SKRegData : SPacket
+    public class SKRegData : SPacket
     {
 
         public ushort start;
@@ -38,10 +38,7 @@ namespace SKMNET.Client.Networking.Server.T98
             for (int i = start; i < start + count; i++)
             {
                 SK reg = console.Stromkreise[i];
-                if (reg != null)
-                {
-                    reg.SetDimmer(data[i - start]);
-                }
+                reg?.SetDimmer(data[i - start]);
             }
             return Enums.Response.OK;
         }

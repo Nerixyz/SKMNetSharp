@@ -9,18 +9,13 @@ namespace SKMNET.Client.Networking.Server.RMON
     /// <summary>
     /// Keyboard Eingabe abholen
     /// </summary>
-    class ReadKey : SPacket
+    public class ReadKey : SPacket
     {
 
-        public override SPacket ParsePacket(ByteBuffer buffer)
-        {
-            return this;
-        }
+        public override SPacket ParsePacket(ByteBuffer buffer) => this;
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
-        {
+        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type) =>
             //TODO idk
-            return Enums.Response.OK;
-        }
+            Enums.Response.OK;
     }
 }

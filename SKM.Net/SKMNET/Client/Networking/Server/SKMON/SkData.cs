@@ -10,7 +10,7 @@ namespace SKMNET.Client.Networking.Server.SKMON
     /// <summary>
     /// Stromkreiswerte (1..999)
     /// </summary>
-    class SkData : SPacket
+    public class SkData : SPacket
     {
 
         public ushort start;
@@ -34,10 +34,7 @@ namespace SKMNET.Client.Networking.Server.SKMON
             for (int i = start; i < start + count; i++)
             {
                 SK reg = console.Stromkreise[i];
-                if (reg != null)
-                {
-                    reg.SetDimmer(data[i - start]);
-                }
+                reg?.SetDimmer(data[i - start]);
             }
             return Enums.Response.OK;
         }

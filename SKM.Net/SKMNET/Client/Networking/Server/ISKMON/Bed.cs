@@ -10,9 +10,9 @@ namespace SKMNET.Client.Networking.Server.ISKMON
     /// Bedienzeile
     /// </summary>
     [Serializable]
-    class Bed : SPacket
+    public class Bed : SPacket
     {
-        
+
         public string linetext;
 
         public override SPacket ParsePacket(ByteBuffer buffer)

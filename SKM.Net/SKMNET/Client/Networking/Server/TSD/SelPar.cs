@@ -8,11 +8,8 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
-    /// <summary>
-    /// Parameter des selektierten Geraets
-    /// </summary>
     [Serializable]
-    class SelPar : SPacket
+    public class SelPar : SPacket
     {
 
         public ushort fixture;
@@ -48,7 +45,7 @@ namespace SKMNET.Client.Networking.Server.TSD
             {
                 foreach (SelParData par in parameters)
                 {
-                    MLParameter param = sk.Parameters.Find((inc) => { return inc.ParNo == par.parno; });
+                    MLParameter param = sk.Parameters.Find((inc) => inc.ParNo == par.parno);
                     if (param != null)
                     {
                         param.Value = (par.val16 & 0xff00) >> 8;

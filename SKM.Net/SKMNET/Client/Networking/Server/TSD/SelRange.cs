@@ -12,7 +12,7 @@ namespace SKMNET.Client.Networking.Server.TSD
     /// Range-Daten des selektierten Parameters
     /// </summary>
     [Serializable]
-    class SelRange : SPacket
+    public class SelRange : SPacket
     {
         public ushort fixture;
         public ushort fixpar;

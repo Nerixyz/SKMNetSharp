@@ -11,8 +11,8 @@ namespace SKMNET.Client.Rendering
     [Serializable]
     public class ScreenManager
     {
-        public List<VideoFarbe> Palletten { get; private set; }
-        public Screen[] Screens { get; private set; }
+        public List<VideoFarbe> Palletten { get; }
+        public Screen[] Screens { get; }
 
         [NonSerialized]
         private readonly LightingConsole console;
@@ -31,11 +31,7 @@ namespace SKMNET.Client.Rendering
 
         public void HandleData(MScreenData packet)
         {
-            if(Screens[(packet.monitor & MScreenData.MON_MASK) - 1] == null)
-            {
-                Screens[(packet.monitor & MScreenData.MON_MASK) -1] = new Screen(this, (byte)(packet.monitor & MScreenData.MON_MASK));
-            }
-            Screens[(packet.monitor & MScreenData.MON_MASK) - 1].HandleData(packet.data, packet.start, packet.count);
+            (Screens[(packet.monitor & MScreenData.MON_MASK) - 1] ?? (Screens[(packet.monitor & MScreenData.MON_MASK) -1] = new Screen(this, (byte)(packet.monitor & MScreenData.MON_MASK)))).HandleData(packet.data, packet.start, packet.count);
         }
 
         public void HandleData(MPalData packet)

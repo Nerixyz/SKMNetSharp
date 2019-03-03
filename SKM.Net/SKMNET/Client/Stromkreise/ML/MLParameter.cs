@@ -18,7 +18,7 @@ namespace SKMNET.Client.Stromkreise.ML
         public double Value { get; set; }
         public string Display { get; set; }
         public string PalName { get; set; }
-        
+
         [NonSerialized]
         public SK SK;
 

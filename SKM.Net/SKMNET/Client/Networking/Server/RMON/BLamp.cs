@@ -11,7 +11,7 @@ namespace SKMNET.Client.Networking.Server.RMON
     /// Lampendaten fuer Bedientasten (Komplett-Telegramm)
     /// </summary>
     [Serializable]
-    class BLamp : SPacket
+    public class BLamp : SPacket
     {
 
         public Taste.LampState[] lampStates;

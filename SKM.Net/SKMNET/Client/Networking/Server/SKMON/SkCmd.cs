@@ -9,10 +9,10 @@ namespace SKMNET.Client.Networking.Server.SKMON
     /// <summary>
     /// Kommando, s.u.
     /// </summary>
-    class SkCmd : SPacket
+    public class SkCmd : SPacket
     {
 
-        Enums.SKCmd cmd;
+        public Enums.SKCmd cmd;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
@@ -22,7 +22,7 @@ namespace SKMNET.Client.Networking.Server.SKMON
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            //TODO
+            //TODO we don't know PepeLaugh
             return Enums.Response.OK;
         }
     }

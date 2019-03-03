@@ -10,9 +10,9 @@ namespace SKMNET.Client.Networking.Server.ISKMON
     /// Funktionstasten-Konfiguration
     /// </summary>
     [Serializable]
-    class FKeyConf : SPacket
+    public class FKeyConf : SPacket
     {
-        
+
         public ushort count;
         public FKeyConfEntry[] entries;
 

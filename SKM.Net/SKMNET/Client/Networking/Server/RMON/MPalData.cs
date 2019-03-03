@@ -22,7 +22,7 @@ namespace SKMNET.Client.Networking.Server.RMON
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
             monitor = buffer.ReadUShort();
-            for (int i = 0; i < 64; i += 1)
+            for (int i = 0; i < N_HW_PALETTE; i++)
             {
                 VideoFarbe eintrag = farbeintrag[i];
                 eintrag = new VideoFarbe(buffer.ReadShort(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte());

@@ -10,7 +10,7 @@ namespace SKMNET.Client.Networking.Server.SKMON
     /// Konfigurationsdaten
     /// </summary>
     [Serializable]
-    class Conf : SPacket
+    public class Conf : SPacket
     {
 
         public List<Enums.OVDisp> Disp { get; } = new List<Enums.OVDisp>();

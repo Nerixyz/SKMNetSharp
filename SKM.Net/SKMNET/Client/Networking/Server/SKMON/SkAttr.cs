@@ -10,7 +10,7 @@ namespace SKMNET.Client.Networking.Server.SKMON
     /// <summary>
     /// Stromkreis-Attribute (1..999)
     /// </summary>
-    class SkAttr : SPacket
+    public class SkAttr : SPacket
     {
 
         public ushort start;

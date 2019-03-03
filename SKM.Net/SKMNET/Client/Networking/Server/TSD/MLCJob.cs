@@ -12,7 +12,7 @@ namespace SKMNET.Client.Networking.Server.TSD
     /// einfache Jobkommandos an MLC
     /// </summary>
     [Serializable]
-    class MLCJob : SPacket
+    public class MLCJob : SPacket
     {
 
         public ushort job;
