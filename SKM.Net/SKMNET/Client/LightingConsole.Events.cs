@@ -17,7 +17,7 @@ namespace SKMNET.Client
         protected virtual void OnErrored(Exception data) { Errored?.Invoke(this, data); }
 
         public event EventHandler Pieps;
-        public virtual void OnPieps(object sender) { Pieps?.Invoke(sender, new EventArgs()); }
+        public virtual void OnPieps(object sender) { Pieps?.Invoke(sender, EventArgs.Empty); }
 
     }
 }

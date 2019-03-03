@@ -12,13 +12,14 @@ using System.Diagnostics;
 
 namespace Test
 {
-    class Program
+    internal static class Program
     {
-
         private static Stopwatch stopwatch;
 
         [STAThread]
-        static void Main(string[] args)
+#pragma warning disable RCS1163 // Unused parameter.
+        private static void Main(string[] args)
+#pragma warning restore RCS1163 // Unused parameter.
         {
             stopwatch = new Stopwatch();
             LightingConsole console = new LightingConsole(
@@ -55,7 +56,6 @@ namespace Test
 
                 console.GetSKByNumber(short.Parse(dat[0]), entireSet: true).Intensity = byte.Parse(dat[1]);
                 console.PushChanges(callback: BASIC_CALLBACK, src: console.ActiveSK);
-
             }
 
             console.Query(new PalCommand(new PalCommand.PalCmdEntry(SKMNET.Util.MLUtil.MLPalFlag.BLK, console.Paletten[SKMNET.Client.Stromkreise.ML.MLPal.MLPalFlag.BLK][0].PalNO)), BASIC_CALLBACK);
@@ -66,11 +66,6 @@ namespace Test
 
             Console.WriteLine("start");
             Console.ReadLine();
-        }
-
-        private static void VALUE_HANDLER(double value)
-        {
-            Console.WriteLine(value);
         }
 
         private static void Connection_PacketReceived(object sender, PacketRecievedEventArgs args)
@@ -89,7 +84,6 @@ namespace Test
             Console.WriteLine($"Delay: {stopwatch.Elapsed.TotalMilliseconds}ms");
             Console.WriteLine($"Response: {fehler.ToString()} ");
         });
-
 
         private class ConsoleLogger : ILogger
         {

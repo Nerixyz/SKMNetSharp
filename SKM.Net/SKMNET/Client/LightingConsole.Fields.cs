@@ -18,9 +18,11 @@ namespace SKMNET.Client
     {
         [NonSerialized]
         public List<SK> Stromkreise = new List<SK>();
+
         public List<SK> ActiveSK { get; set; } = new List<SK>();
 
         public Enums.Bedienstelle Bedienstelle { get; }
+
         internal short BdstNo { get {
                 return (short)Bedienstelle;
             }
@@ -39,7 +41,7 @@ namespace SKMNET.Client
         public string AktReg { get; set; }
         public string AktList { get; set; }
 
-        public Dictionary<MLPal.MLPalFlag, List<MLPal>> Paletten { get; private set; }
+        public Dictionary<MLPal.MLPalFlag, List<MLPal>> Paletten { get; }
 
         /// <summary>
         /// Alle Parameter (für zB GUI)
@@ -50,10 +52,12 @@ namespace SKMNET.Client
         /// Registerinfo IST
         /// </summary>
         public Register RegIST { get; set; } = new Register("IST", "", true);
+
         /// <summary>
         /// Registerinfo ZIEL
         /// </summary>
         public Register RegZIEL { get; set; } = new Register("ZIEL", "", false);
+
         /// <summary>
         /// Registerinfo VOR
         /// </summary>
@@ -62,7 +66,7 @@ namespace SKMNET.Client
         public List<Vorstellung> Vorstellungen { get; set; } = new List<Vorstellung>();
 
         /// <summary>
-        /// Darstellungsmodus fuer 100% 
+        /// Darstellungsmodus für 100% 
         /// </summary>
         public Enums.OVDisp DisplayMode { get; set; } = Enums.OVDisp.FL;
 
@@ -77,44 +81,5 @@ namespace SKMNET.Client
 
         [NonSerialized]
         public readonly ConsoleSettings Settings;
-
-        public LightingConsole(string ip, ConsoleSettings settings)
-        {
-            this.Settings = settings;
-            SKMSteckbrief steckbrief = new SKMSteckbrief()
-            {
-                Bedientasten = Settings.Bedientasten,
-                BefMeldZeile = Settings.BefMeldZeile,
-                FuncKeys     = Settings.FuncKeys,
-                LKI          = Settings.LKI,
-                BlockInfo    = Settings.BlockInfo,
-                AZ_Zeilen    = Settings.AZ_Zeilen,
-                ExtKeys      = Settings.ExtKeys,
-                AktInfo      = Settings.AktInfo,
-                Steller      = Settings.Steller
-            };
-
-            Connection = new ConnectionHandler(ip, this, ref steckbrief, Settings.SKMType);
-            Connection.Errored += Connection_Errored;
-
-            this.Bedienstelle = Settings.Bedienstelle;
-            this.Logger = Settings.Logger;
-
-            ScreenManager = new ScreenManager(this);
-
-            TastenManager = new TastenManager(this);
-
-            Paletten = new Dictionary<MLPal.MLPalFlag, List<MLPal>>()
-            {
-                { MLPal.MLPalFlag.I, new List<MLPal>() },
-                { MLPal.MLPalFlag.F, new List<MLPal>() },
-                { MLPal.MLPalFlag.C, new List<MLPal>() },
-                { MLPal.MLPalFlag.B, new List<MLPal>() },
-                { MLPal.MLPalFlag.SKG, new List<MLPal>() },
-                { MLPal.MLPalFlag.BLK, new List<MLPal>() },
-                { MLPal.MLPalFlag.DYN, new List<MLPal>() },
-                { MLPal.MLPalFlag.CUR_SEL, new List<MLPal>() },
-            };
-        }
     }
 }

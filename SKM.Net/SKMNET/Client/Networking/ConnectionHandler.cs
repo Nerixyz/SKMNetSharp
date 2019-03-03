@@ -12,12 +12,12 @@ namespace SKMNET.Client.Networking
     public class ConnectionHandler
     {
         public  const    ushort          MAGIC_NUMBER = 0x1fe2;
-        private          SendClient      sender;
+        private readonly SendClient      sender;
         private readonly RecieveClient   reciever;
         public  readonly LightingConsole console;
-        private readonly Thread sendThread;
+        //private readonly Thread sendThread;
         private readonly PacketDispatcher packetDispatcher;
-        
+
         private Action<Enums.FehlerT> queuedAction;
 
 
@@ -35,7 +35,7 @@ namespace SKMNET.Client.Networking
             this.reciever.Errored += Reciever_Errored;
 
             this.packetDispatcher = new PacketDispatcher(this);
-            
+
             SendPacket(new SKMSync(steckbrief, SKMType));
         }
 
@@ -128,9 +128,7 @@ namespace SKMNET.Client.Networking
             foreach (IPAddress ip in host.AddressList)
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
                     return ip.GetAddressBytes();
-                }
             }
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
