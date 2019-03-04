@@ -4,8 +4,8 @@ namespace SKMNET.Client.Networking.Client
 {
     public class TextTastEvent : Event
     {
-        readonly byte state;
-        readonly short scancode;
+        private readonly byte state;
+        private readonly short scancode;
 
         // TODO make Enum
         public TextTastEvent(short scancode, byte state = 0)

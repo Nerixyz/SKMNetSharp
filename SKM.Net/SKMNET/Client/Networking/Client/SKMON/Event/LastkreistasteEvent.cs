@@ -8,8 +8,8 @@ namespace SKMNET.Client.Networking.Client
 {
     public class LastkreistasteEvent : Event
     {
-        readonly byte bdst;
-        readonly short lkno;
+        private readonly byte bdst;
+        private readonly short lkno;
 
         // TODO Enum?
         public LastkreistasteEvent(short lkno, byte bdst = 0)

@@ -3,9 +3,9 @@ namespace SKMNET.Client.Networking.Client
 {
     public class BedientasteEvent : Event
     {
-        readonly byte bdst;
-        readonly byte flanke;
-        readonly byte btast;
+        private readonly byte bdst;
+        private readonly byte flanke;
+        private readonly byte btast;
 
         // TODO make Enum & TastenImpl
         public BedientasteEvent(byte btast, bool T_STEIGEND, byte bdst = 0)

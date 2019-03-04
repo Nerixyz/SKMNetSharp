@@ -10,7 +10,7 @@ namespace SKMNET.Client.Networking.Client
     public abstract class Event : CPacket
     {
         public override short Type => 14;
-        
+
         public override byte[] GetDataToSend(LightingConsole console)
         {
             //no BdstNo ?!

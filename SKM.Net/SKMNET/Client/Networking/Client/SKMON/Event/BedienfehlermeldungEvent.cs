@@ -4,8 +4,8 @@ namespace SKMNET.Client.Networking.Client
 {
     public class BedienfehlermeldungEvent : Event
     {
-        readonly byte bdst;
-        readonly short fehlNo;
+        private readonly byte bdst;
+        private readonly short fehlNo;
 
         // TODO make Enum
         public BedienfehlermeldungEvent(short fehlNo, byte bdst = 0)
