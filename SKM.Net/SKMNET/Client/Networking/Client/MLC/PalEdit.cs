@@ -13,7 +13,7 @@ namespace SKMNET.Client.Networking.Client
     public class PalEdit : SplittableHeader
     {
         public override short Type => 26;
-        
+
         private readonly short subcmd;
         private readonly short editcmd;
         private readonly List<PalEditEntry> entries;
@@ -37,7 +37,7 @@ namespace SKMNET.Client.Networking.Client
 
         public override List<byte[]> GetData(LightingConsole console)
         {
-            return Make(entries, 30, CountShort, new Action<ByteBuffer, int>((buf, total) =>
+            return Make(entries, 30, CountShort, new Action<ByteBuffer, int>((buf, _) =>
             {
                 buf
                     .Write(console.BdstNo)

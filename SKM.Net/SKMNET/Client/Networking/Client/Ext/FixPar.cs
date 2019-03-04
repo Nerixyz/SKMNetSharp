@@ -22,15 +22,18 @@ namespace SKMNET.Client.Networking.Client
 
         public override List<byte[]> GetData(LightingConsole console)
         {
-            return Make(list, 200, CountShort, new Action<ByteBuffer, int>((buf, total) => 
-            {
-                buf.Write(console.BdstNo).Write(subCmd).Write((short)dstReg);
-            }), new Action<MLParameter, ByteBuffer>((par, buf) =>
-            {
-                if (par.SK == null)
-                    throw new NullReferenceException("MLParameter.SK not set");
-                buf.Write((short)par.SK.Number).Write(par.ParNo).Write((short)((int)par.Value << 8));
-            }));
+            return Make(
+                list,
+                200,
+                CountShort,
+                new Action<ByteBuffer, int>((buf, _) => buf.Write(console.BdstNo).Write(subCmd).Write((short)dstReg)),
+                new Action<MLParameter, ByteBuffer>((par, buf) =>
+                       {
+                           if (par.SK == null)
+                               throw new NullReferenceException("MLParameter.SK not set");
+                           buf.Write((short)par.SK.Number).Write(par.ParNo).Write((short)((int)par.Value << 8));
+                       })
+            );
         }
 
         public FixPar(List<MLParameter> list, Enums.FixParDst reg = Enums.FixParDst.Current, short subCmd = 0)

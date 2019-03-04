@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
-    class MacroEvent : Event
+    public class MacroEvent : Event
     {
-        readonly byte bdst;
-        readonly byte macroNoMSB;
-        readonly byte macroNoLSB;
-        
+        private readonly byte bdst;
+        private readonly byte macroNoMSB;
+        private readonly byte macroNoLSB;
+
         public MacroEvent(byte LSB, byte MSB = 0, byte bdst = 0)
         {
             this.bdst = bdst;

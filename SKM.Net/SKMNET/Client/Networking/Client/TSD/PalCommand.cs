@@ -17,13 +17,13 @@ namespace SKMNET.Client.Networking.Client
         private readonly List<PalCmdEntry> entries;
         private readonly Cmd command;
 
-        public PalCommand(List<PalCmdEntry> entries, Cmd command = Cmd.Abs, short bdstNo = 0)
+        public PalCommand(List<PalCmdEntry> entries, Cmd command = Cmd.Abs)
         {
             this.entries = entries;
             this.command = command;
         }
 
-        public PalCommand(PalCmdEntry entry, Cmd command = Cmd.Abs, short bdstNo = 0)
+        public PalCommand(PalCmdEntry entry, Cmd command = Cmd.Abs)
         {
             this.entries = new List<PalCmdEntry>();
             entries.Add(entry);
@@ -33,13 +33,13 @@ namespace SKMNET.Client.Networking.Client
 
         public override List<byte[]> GetData(LightingConsole console)
         {
-            return Make(entries, 2, CountShort, new Action<ByteBuffer, int>((buf, total) =>
-            {
-                buf.Write(console.BdstNo).Write((short)command);
-            }), new Action<PalCmdEntry, ByteBuffer>((entry, buf) =>
-            {
-                buf.Write(entry.palkenn).Write(entry.palno);
-            }));
+            return Make(
+                entries,
+                2,
+                CountShort,
+                new Action<ByteBuffer, int>((buf, _) => buf.Write(console.BdstNo).Write((short)command)),
+                new Action<PalCmdEntry, ByteBuffer>((entry, buf) => buf.Write(entry.palkenn).Write(entry.palno))
+           );
         }
 
         public class PalCmdEntry

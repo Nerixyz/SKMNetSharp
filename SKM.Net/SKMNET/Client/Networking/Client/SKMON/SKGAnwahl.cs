@@ -15,7 +15,7 @@ namespace SKMNET.Client.Networking.Client
         public override short Type => 16;
 
         private readonly AWType action;
-        private short[] SKGs;
+        private readonly short[] SKGs;
 
         public override byte[] GetDataToSend(LightingConsole console)
         {

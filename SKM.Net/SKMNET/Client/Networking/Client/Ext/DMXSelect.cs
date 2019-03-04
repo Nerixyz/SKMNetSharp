@@ -12,9 +12,9 @@ namespace SKMNET.Client.Networking.Client
     public class DMXSelect : CPacket
     {
         public override short Type => 23;
-        
-        readonly short subCmd;
-        readonly bool[] config;
+
+        private readonly short subCmd;
+        private readonly bool[] config;
 
         public DMXSelect(bool[] data, bool MLC)
         {
@@ -24,7 +24,7 @@ namespace SKMNET.Client.Networking.Client
 
         public override byte[] GetDataToSend(LightingConsole console)
         {
-            ByteBuffer buffer = new ByteBuffer().WriteShort(console.BdstNo).WriteShort(subCmd).WriteShort((short)(config == null ? 0 : config.Length));
+            ByteBuffer buffer = new ByteBuffer().WriteShort(console.BdstNo).WriteShort(subCmd).WriteShort((short)(config?.Length ?? 0));
             if(config != null)
             {
                 foreach(bool b in config)

@@ -16,8 +16,8 @@ namespace SKMNET.Client.Networking.Client
         public override short Type => 21;
         private const short subCmd = 0;
         private readonly Enums.FixParDst dst;
-        private List<SK> SKs;
-        private List<byte[]> data;
+        private readonly List<SK> SKs;
+        private readonly List<byte[]> data;
 
         public override byte[] GetDataToSend(LightingConsole console)
         {
@@ -34,6 +34,7 @@ namespace SKMNET.Client.Networking.Client
                     else if (n2.Number > n1.Number) return 1;
                     else return 0;
                 }));
+
                 // assume they are all on the same line
                 buf.WriteShort(1);
                 int ptr = 0;
@@ -49,8 +50,7 @@ namespace SKMNET.Client.Networking.Client
                         buf.Write((byte)0);
                     }
                 }
-            }
-            else if(data != null)
+            } else if(data != null)
             {
                 buf.Write(data.Count);
 
@@ -59,14 +59,13 @@ namespace SKMNET.Client.Networking.Client
                     buf.WriteShort((short)i);
                     buf.Write(data[i]);
                 }
-            }
-            else
+            } else
             {
                 buf.WriteShort(0);
             }
             return buf.ToArray();
         }
-        
+
         public DmxData(List<SK> SKs = null, Enums.FixParDst dst = Enums.FixParDst.Current)
         {
             this.SKs = SKs;

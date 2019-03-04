@@ -26,24 +26,15 @@ namespace SKMNET.Client.Networking.Client
             this.entries = new List<MailboxEntry>();
             entries.Add(entry);
         }
-            
-        public override List<byte[]> GetData(LightingConsole console)
-        {
-            return Make(entries, 80, CountShort, new Action<ByteBuffer, int>((buf, total) => 
-            {
-                buf
-                    .WriteShort(console.BdstNo)
-                    .Write(0);
-            }), new Action<MailboxEntry, ByteBuffer>((entry, buf) =>
-            {
-                buf
-                    .Write(entry.mailboxNo)
-                    .Write(entry.pad)
-                    .Write(entry.job)
-                    .Write(entry.par1)
-                    .Write(entry.par2);
-            }));
-        }
+
+        public override List<byte[]> GetData(LightingConsole console) =>
+            Make(
+                entries,
+                80,
+                CountShort,
+                new Action<ByteBuffer, int>((buf, _) => buf.WriteShort(console.BdstNo).Write(0)),
+                new Action<MailboxEntry, ByteBuffer>((entry, buf) => buf.Write(entry.mailboxNo).Write(entry.pad).Write(entry.job).Write(entry.par1).Write(entry.par2))
+           );
 
         public class MailboxEntry
         {
@@ -62,6 +53,6 @@ namespace SKMNET.Client.Networking.Client
                 this.par2 = par2;
             }
         }
-        
+
     }
 }
