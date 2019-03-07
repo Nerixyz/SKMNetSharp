@@ -3,21 +3,19 @@ namespace SKMNET.Client.Networking.Client
 {
     public class BedientasteEvent : Event
     {
-        private readonly byte bdst;
         private readonly byte flanke;
         private readonly byte btast;
 
-        // TODO make Enum & TastenImpl
-        public BedientasteEvent(byte btast, bool T_STEIGEND, byte bdst = 0)
+        // TODO make Enum
+        public BedientasteEvent(byte btast, bool T_STEIGEND)
         {
-            this.bdst = bdst;
             this.btast = btast;
             this.flanke = (byte)( T_STEIGEND ? 1 : 0);
         }
 
-        public override int GetEventInteger()
+        public override int GetEventInteger(LightingConsole console)
         {
-            return 0x04000000 | (bdst << 16) | (flanke << 8) | btast;
+            return 0x04000000 | (((byte)console.BdstNo) << 16) | (flanke << 8) | btast;
         }
     }
 }

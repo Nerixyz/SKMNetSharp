@@ -153,6 +153,7 @@ namespace SKMNET.Client.Networking
     {
         public Enums.Type type;
         public SPacket packet;
+        public Enums.Response response = Enums.Response.OK;
 
         public PacketRecievedEventArgs(Enums.Type type, SPacket packet)
         {

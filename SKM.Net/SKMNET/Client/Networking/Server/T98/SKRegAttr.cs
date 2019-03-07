@@ -39,6 +39,9 @@ namespace SKMNET.Client.Networking.Server.T98
             console.ActiveSK.Clear();
             for (int i = start; i < start + count; i++)
             {
+                if (i >= console.Stromkreise.Count)
+                    break;
+
                 SK sk = console.Stromkreise[i];
                 if (sk != null)
                 {

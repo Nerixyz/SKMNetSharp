@@ -15,18 +15,18 @@ namespace SKMNET.Client.Networking.Client
     /// </summary>
     public class FixPar : SplittableHeader
     {
-        private readonly short subCmd;
+        private readonly ValueType valueType;
         private readonly Enums.FixParDst dstReg;
-        private readonly List<MLParameter> list;
+        private readonly MLParameter[] parameters;
         public override short Type => 20;
 
         public override List<byte[]> GetData(LightingConsole console)
         {
             return Make(
-                list,
+                parameters,
                 200,
                 CountShort,
-                new Action<ByteBuffer, int>((buf, _) => buf.Write(console.BdstNo).Write(subCmd).Write((short)dstReg)),
+                new Action<ByteBuffer, int>((buf, _) => buf.Write(console.BdstNo).Write((short)valueType).Write((short)dstReg)),
                 new Action<MLParameter, ByteBuffer>((par, buf) =>
                        {
                            if (par.SK == null)
@@ -36,39 +36,40 @@ namespace SKMNET.Client.Networking.Client
             );
         }
 
-        public FixPar(List<MLParameter> list, Enums.FixParDst reg = Enums.FixParDst.Current, short subCmd = 0)
+        public FixPar(ValueType type = ValueType.ABS, Enums.FixParDst reg = Enums.FixParDst.Current, params MLParameter[] parameters)
         {
-            this.list = list;
-            this.subCmd = subCmd;
+            this.parameters = parameters;
+            this.valueType = type;
             this.dstReg = reg;
         }
 
-        public FixPar(MLParameter par, Enums.FixParDst reg = Enums.FixParDst.Current, short subCmd = 0)
+        public FixPar(ValueType type = ValueType.ABS, Enums.FixParDst reg = Enums.FixParDst.Current, params SK[] sks)
         {
-            this.list = new List<MLParameter>
-            {
-                par
-            };
-            this.subCmd = subCmd;
-            this.dstReg = reg;
-        }
+            int estSize = 0;
+            foreach(SK s in sks) estSize += s.Parameters.Count;
 
-        public FixPar(List<SK> list, Enums.FixParDst reg = Enums.FixParDst.Current, short subCmd = 0)
-        {
-            this.list = new List<MLParameter>();
-            foreach (SK sk in list)
+            this.parameters = new MLParameter[estSize];
+            for(int i = 0, pointer = 0; i < sks.Length; i++)
             {
-                this.list.AddRange(sk.Parameters);
+                foreach(MLParameter parameter in sks[i].Parameters)
+                {
+                    this.parameters[i] = parameter;
+
+                    pointer++;
+                }
             }
-            this.subCmd = subCmd;
+            valueType = type;
             this.dstReg = reg;
         }
 
-        public FixPar(SK sk, Enums.FixParDst reg = Enums.FixParDst.Current, short subCmd = 0)
+        public enum ValueType
         {
-            this.list = new List<MLParameter>(sk.Parameters);
-            this.subCmd = subCmd;
-            this.dstReg = reg;
+            ABS,
+            REL,
+            HOME,
+            PLUS,
+            MINUS
         }
+
     }
 }

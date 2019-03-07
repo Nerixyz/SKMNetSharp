@@ -8,21 +8,19 @@ namespace SKMNET.Client.Networking.Client
 {
     public class StellermeldungEvent : Event
     {
-        private readonly byte bdst;
         private readonly byte value;
         private readonly byte stellno;
 
         // TODO make Enum
-        public StellermeldungEvent(byte stellno, byte value, byte bdst = 0)
+        public StellermeldungEvent(byte stellno, byte value)
         {
-            this.bdst = bdst;
             this.stellno = stellno;
             this.value = value;
         }
 
-        public override int GetEventInteger()
+        public override int GetEventInteger(LightingConsole console)
         {
-            return 0x06000000 | (bdst << 16) | (value << 8) | stellno;
+            return 0x06000000 | (((byte)console.BdstNo) << 16) | (value << 8) | stellno;
         }
     }
 }

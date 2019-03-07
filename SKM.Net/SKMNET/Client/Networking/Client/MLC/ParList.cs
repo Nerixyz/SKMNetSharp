@@ -14,21 +14,12 @@ namespace SKMNET.Client.Networking.Client
     {
         public override short Type => 29;
 
-        private readonly List<SK> entries;
+        private readonly SK[] entries;
         private readonly bool sendRange;
 
-        public ParList(List<SK> list, bool sendRange = true)
+        public ParList(bool sendRange = true, params SK[] sks)
         {
-            this.entries = list;
-            this.sendRange = sendRange;
-        }
-
-        public ParList(SK sk, bool sendRange = true)
-        {
-            this.entries = new List<SK>()
-            {
-                sk
-            };
+            this.entries = sks;
             this.sendRange = sendRange;
         }
 
@@ -38,7 +29,7 @@ namespace SKMNET.Client.Networking.Client
                 entries,
                 230,
                 CountShort,
-                new Action<ByteBuffer, int>((buf, total) => buf.Write(console.BdstNo).Write((short)0).Write((short)((total + 230 > entries.Count) ? 1 : 0))),
+                new Action<ByteBuffer, int>((buf, total) => buf.Write(console.BdstNo).Write((short)0).Write((short)((total + 230 > entries.Length) ? 1 : 0))),
                 new Action<SK, ByteBuffer>((sk, buf) => buf.Write(sk.Number).Write((short)-2).Write((short)(sendRange ? 0x0001 : 0)))
            );
         }

@@ -37,6 +37,9 @@ namespace SKMNET.Client.Networking.Server.T98
         {
             for (int i = start; i < start + count; i++)
             {
+                if (i >= console.Stromkreise.Count)
+                    break;
+
                 SK reg = console.Stromkreise[i];
                 reg?.SetDimmer(data[i - start]);
             }

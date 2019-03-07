@@ -16,23 +16,13 @@ namespace SKMNET.Client.Networking.Client
 
         private readonly short subcmd;
         private readonly short editcmd;
-        private readonly List<PalEditEntry> entries;
+        private readonly PalEditEntry[] entries;
 
-        public PalEdit(List<PalEditEntry> entries, Cmd cmd, short subcmd = 0)
+        public PalEdit(Cmd cmd, params PalEditEntry[] entries)
         {
             this.entries = entries;
             this.editcmd = (short)cmd;
-            this.subcmd = subcmd;
-        }
-
-        public PalEdit(PalEditEntry entry, Cmd cmd, short subcmd = 0)
-        {
-            entries = new List<PalEditEntry>
-            {
-                entry
-            };
-            this.editcmd = (short)cmd;
-            this.subcmd = subcmd;
+            this.subcmd = 0;
         }
 
         public override List<byte[]> GetData(LightingConsole console)

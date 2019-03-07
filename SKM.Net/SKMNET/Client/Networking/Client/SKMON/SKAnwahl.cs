@@ -1,9 +1,11 @@
-﻿using SKMNET.Util;
+﻿using SKMNET.Client.Stromkreise;
+using SKMNET.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static SKMNET.Enums;
 
 namespace SKMNET.Client.Networking.Client
 {
@@ -21,17 +23,16 @@ namespace SKMNET.Client.Networking.Client
             return new ByteBuffer().WriteShort(console.BdstNo).Write((short)type).Write((short)skNo.Length).Write(skNo).ToArray();
         }
 
-        public SKAnwahl(AWType type, short[] skNo)
+        public SKAnwahl(AWType type, params short[] skNo)
         {
             this.type = type;
             this.skNo = skNo;
         }
 
-        public enum AWType
+        public SKAnwahl(AWType type, params SK[] skNo)
         {
-            Abs = 1,
-            Add,
-            Sub
+            this.type = type;
+            this.skNo = skNo.Select((sk) => (short)sk.Number).ToArray();
         }
     }
 }

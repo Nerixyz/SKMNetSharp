@@ -42,7 +42,8 @@ namespace SKMNET.Client.Networking.Server.T98
             }
             for (ushort i = start; i < count + start; i++)
             {
-                console.Stromkreise.Insert(i, new SK(data[i - start], console));
+                if(i <= console.Stromkreise.Count)
+                    console.Stromkreise.Insert(i, new SK(data[i - start], console));
             }
             return Enums.Response.OK;
         }

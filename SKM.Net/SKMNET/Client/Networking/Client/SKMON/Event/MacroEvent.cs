@@ -8,20 +8,18 @@ namespace SKMNET.Client.Networking.Client
 {
     public class MacroEvent : Event
     {
-        private readonly byte bdst;
         private readonly byte macroNoMSB;
         private readonly byte macroNoLSB;
 
-        public MacroEvent(byte LSB, byte MSB = 0, byte bdst = 0)
+        public MacroEvent(byte LSB, byte MSB = 0)
         {
-            this.bdst = bdst;
             this.macroNoLSB = LSB;
             this.macroNoMSB = MSB;
         }
 
-        public override int GetEventInteger()
+        public override int GetEventInteger(LightingConsole console)
         {
-            return 0x06000000 | (bdst << 16) | (macroNoMSB << 8) | macroNoLSB;
+            return 0x06000000 | (((byte)console.BdstNo) << 16) | (macroNoMSB << 8) | macroNoLSB;
         }
     }
 }

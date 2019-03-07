@@ -14,17 +14,11 @@ namespace SKMNET.Client.Networking.Client
     {
         public override short Type => 22;
 
-        private readonly List<MailboxEntry> entries;
+        private readonly MailboxEntry[] entries;
 
-        public Mailbox(List<MailboxEntry> entries)
+        public Mailbox(params MailboxEntry[] entry)
         {
-            this.entries = entries;
-        }
-
-        public Mailbox(MailboxEntry entry)
-        {
-            this.entries = new List<MailboxEntry>();
-            entries.Add(entry);
+            this.entries = entry;
         }
 
         public override List<byte[]> GetData(LightingConsole console) =>

@@ -5,7 +5,7 @@
         private readonly byte moveX;
         private readonly byte moveY;
         private readonly byte buttons;
-        public override int GetEventInteger()
+        public override int GetEventInteger(LightingConsole console)
         {
             return 0x02000000 | (moveX << 16) | (moveY << 8) | buttons;
         }

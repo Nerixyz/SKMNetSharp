@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET
 {
-    public class Enums
+    public static class Enums
     {
         public enum Type
         {
@@ -38,7 +38,7 @@ namespace SKMNET
             AZ_IST          = 110,   /* Aktuellzeile IST */
             AZ_ZIEL              ,   /* Aktuellzeile ZIEL */
             AZ_VOR               ,   /* Aktuellzeile VOR */
-            SKG_Conf        = 115,   /* SKG-Konfiguration */ 
+            SKG_Conf        = 115,   /* SKG-Konfiguration */
 
             /* 
              * Erweiterungen für T98 
@@ -69,12 +69,12 @@ namespace SKMNET
             MLC_SelPar           ,   /* Parameter des selektierten Geraets */
             MLC_SelRange         ,   /* Range-Daten des selektierten Parameters */
             MLC_ParDef           ,   /* Parameterdefinitionen (Name usw.) */
-            MLPal_Conf           ,   /* Palettenkonfiguration mit langen Namen */ 
-            MLPal_SK             ,   /* SK-Beteiligung an Paletten */ 
+            MLPal_Conf           ,   /* Palettenkonfiguration mit langen Namen */
+            MLPal_SK             ,   /* SK-Beteiligung an Paletten */
 
             /* Für Libra 1.5 Parameterliste der Objektdarstellung */
             MLPar                ,   /* Neusenden Parameterwerte */
-            MLRange              ,   /* Neusenden Parameter-Ranges */ 
+            MLRange              ,   /* Neusenden Parameter-Ranges */
 
             /* Für Libra 1.8 Erweiterungen */
             AKTInfo              ,   /* aktuelle Liste und Register */
@@ -153,6 +153,14 @@ namespace SKMNET
             /// </summary>
             DU = 0x80
         }
+
+        public enum AWType
+        {
+            Abs = 1,
+            Add,
+            Sub
+        }
+
         public enum OVDisp
         {
             Normal,

@@ -14,19 +14,12 @@ namespace SKMNET.Client.Networking.Client
     {
         public override short Type => 25;
 
-        private readonly List<PalCmdEntry> entries;
+        private readonly PalCmdEntry[] commands;
         private readonly Cmd command;
 
-        public PalCommand(List<PalCmdEntry> entries, Cmd command = Cmd.Abs)
+        public PalCommand(Cmd command = Cmd.Abs, params PalCmdEntry[] commands)
         {
-            this.entries = entries;
-            this.command = command;
-        }
-
-        public PalCommand(PalCmdEntry entry, Cmd command = Cmd.Abs)
-        {
-            this.entries = new List<PalCmdEntry>();
-            entries.Add(entry);
+            this.commands = commands;
 
             this.command = command;
         }
@@ -34,7 +27,7 @@ namespace SKMNET.Client.Networking.Client
         public override List<byte[]> GetData(LightingConsole console)
         {
             return Make(
-                entries,
+                commands,
                 2,
                 CountShort,
                 new Action<ByteBuffer, int>((buf, _) => buf.Write(console.BdstNo).Write((short)command)),

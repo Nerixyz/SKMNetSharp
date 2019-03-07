@@ -1,34 +1,30 @@
-﻿using SKMNET;
-using SKMNET.Client.Networking.Client;
-using SKMNET.Client.Stromkreise;
+﻿using SKMNET.Client.Stromkreise;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
-    public class FixParNative : SplittableHeader
+    public class FixParDimmer : SplittableHeader
     {
         private readonly short subCmd;
         private readonly Enums.FixParDst dstReg;
-        private readonly List<SK> list;
+        private readonly SK[] sks;
         public override short Type => 20;
 
         public override List<byte[]> GetData(LightingConsole console) =>
             Make(
-                list,
+                sks,
                 200,
                 CountShort,
                 new Action<ByteBuffer, int>((buf, _) => buf.Write(console.BdstNo).Write(subCmd).Write((short)dstReg)),
                 new Action<SK, ByteBuffer>((par, buf) => buf.Write((short)par.Number).WriteShort(0).Write((short)((int)par.Intensity << 8)))
             );
 
-        public FixParNative(List<SK> list, Enums.FixParDst reg = Enums.FixParDst.Current, short subCmd = 0)
+        public FixParDimmer( Enums.FixParDst reg = Enums.FixParDst.Current, params SK[] sks)
         {
-            this.list = list;
-            this.subCmd = subCmd;
+            this.sks = sks;
+            this.subCmd = 0; //ABS
             this.dstReg = reg;
         }
     }

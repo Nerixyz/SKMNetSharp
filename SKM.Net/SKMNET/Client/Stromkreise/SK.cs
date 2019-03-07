@@ -61,7 +61,7 @@ namespace SKMNET.Client.Stromkreise
             }
         }
 
-        public bool dirty = false;
+        internal bool dirty = false;
 
         public bool Anwahl   { get { return (Attrib & 0x01) != 0; } }
         public bool SKUErr   { get { return (Attrib & 0x02) != 0; } }

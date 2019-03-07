@@ -14,7 +14,7 @@ namespace SKMNET.Client.Networking.Client
             this.scancode = scancode;
         }
 
-        public override int GetEventInteger()
+        public override int GetEventInteger(LightingConsole console)
         {
             byte[] data = BitConverter.GetBytes(scancode);
             Array.Reverse(data);

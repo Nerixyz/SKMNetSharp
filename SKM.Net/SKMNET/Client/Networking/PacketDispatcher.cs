@@ -103,7 +103,10 @@ namespace SKMNET.Client.Networking
                     packet.ParsePacket(packetBuffer);
                     code = packet.ProcessPacket(connection.console, connection, type);
 
-                    connection.OnPacketRecieved(this, new PacketRecievedEventArgs(eType, packet));
+                    PacketRecievedEventArgs consolePacket = new PacketRecievedEventArgs(eType, packet);
+                    connection.OnPacketRecieved(this, consolePacket);
+                    if (consolePacket.response != Enums.Response.OK)
+                        code = consolePacket.response;
 
                     if (code != Enums.Response.OK)
                         break;

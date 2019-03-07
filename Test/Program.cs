@@ -3,12 +3,13 @@ using SKMNET;
 using SKMNET.Client;
 using SKMNET.Client.Networking;
 using SKMNET.Client.Networking.Client;
-using SKMNET.Client.Networking.Server.TSD;
 using SKMNET.Logging;
 using System;
 using CoreClipboard;
 using System.Threading;
 using System.Diagnostics;
+using System.Collections.Generic;
+using SKMNET.Client.Stromkreise;
 
 namespace Test
 {
@@ -17,9 +18,7 @@ namespace Test
         private static Stopwatch stopwatch;
 
         [STAThread]
-#pragma warning disable RCS1163 // Unused parameter.
-        private static void Main(string[] args)
-#pragma warning restore RCS1163 // Unused parameter.
+        private static void Main(string[] _)
         {
             stopwatch = new Stopwatch();
             LightingConsole console = new LightingConsole(
@@ -36,7 +35,7 @@ namespace Test
                     Steller = true,
 
                     Logger = new ConsoleLogger(),
-                    Bedienstelle = Enums.Bedienstelle.Infrarot,
+                    Bedienstelle = Enums.Bedienstelle.Meistertastatur,
                     SKMType = 2
                 }
             );
@@ -44,24 +43,13 @@ namespace Test
             console.Errored += Console_Errored;
             console.Connection.PacketReceived += Connection_PacketReceived;
 
-            while (true)
-            {
-                string cmd = Console.ReadLine();
-                if (cmd.Equals("end")) break;
+            Console.ReadLine();
+            stopwatch.Start();
 
-                stopwatch.Reset();
-                stopwatch.Start();
-
-                string[] dat = cmd.Split(':');
-
-                console.GetSKByNumber(short.Parse(dat[0]), entireSet: true).Intensity = byte.Parse(dat[1]);
-                console.PushChanges(callback: BASIC_CALLBACK, src: console.ActiveSK);
-            }
-
-            console.Query(new PalCommand(new PalCommand.PalCmdEntry(SKMNET.Util.MLUtil.MLPalFlag.BLK, console.Paletten[SKMNET.Client.Stromkreise.ML.MLPal.MLPalFlag.BLK][0].PalNO)), BASIC_CALLBACK);
+            console.Query(new DMXSelect(new bool[] { true }, true), BASIC_CALLBACK);
 
             Console.ReadLine();
-            Console.WriteLine(JsonConvert.SerializeObject(console));
+            Console.WriteLine(JsonConvert.SerializeObject(console.TastenManager.Tasten));
             Console.ReadLine();
 
             Console.WriteLine("start");
@@ -71,6 +59,10 @@ namespace Test
         private static void Connection_PacketReceived(object sender, PacketRecievedEventArgs args)
         {
             Console.WriteLine("received " + (int)args.type + " - " + args.packet.GetType().Name);
+            if (args.packet is SKMNET.Client.Networking.Server.TSD.DMXData)
+            {
+                args.response = Enums.Response.BadCmd;
+            }
         }
 
         private static void Console_Errored(object sender, Exception e)

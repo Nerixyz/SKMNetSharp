@@ -14,7 +14,7 @@ namespace SKMNET.Client.Networking.Client
             this.fehlNo = fehlNo;
         }
 
-        public override int GetEventInteger()
+        public override int GetEventInteger(LightingConsole console)
         {
             byte[] data = BitConverter.GetBytes(fehlNo);
             Array.Reverse(data);
