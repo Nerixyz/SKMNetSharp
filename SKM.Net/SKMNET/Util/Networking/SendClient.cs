@@ -22,6 +22,10 @@ namespace SKMNET.Util
             byte[] adress = endPoint.Address.GetAddressBytes();
             local = adress[0] == 127 && adress[1] == 0 && adress[2] == 0 && adress[3] == 1;
             this.endPoint = endPoint;
+
+            baseClient = new UdpClient();
+            baseClient.EnableBroadcast = true;
+
             readThread = new Thread(() =>
             {
                 try
@@ -43,7 +47,6 @@ namespace SKMNET.Util
 
         public void Start()
         {
-            baseClient = new UdpClient();
             baseClient.Connect(endPoint);
             readThread.Start();
         }

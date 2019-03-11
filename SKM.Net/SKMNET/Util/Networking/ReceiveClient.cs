@@ -22,6 +22,7 @@ namespace SKMNET.Util
             try
             {
                 client = new UdpClient(T90_TO_SKM_PORT);
+                client.EnableBroadcast = true;
                 readThread = new Thread(() =>
                 {
                     IPEndPoint endPoint = null;
