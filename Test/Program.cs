@@ -35,7 +35,7 @@ namespace Test
                     Steller = true,
 
                     Logger = new ConsoleLogger(),
-                    Bedienstelle = Enums.Bedienstelle.Meistertastatur,
+                    Bedienstelle = Enums.Bedienstelle.Infrarot,
                     SKMType = 2
                 }
             );

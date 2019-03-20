@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using SKMNET.Exceptions;
 
 namespace SKMNET.Util
 {
@@ -47,8 +48,14 @@ namespace SKMNET.Util
 
         public void Start()
         {
-            baseClient.Connect(endPoint);
-            readThread.Start();
+            try
+            {
+                baseClient.Connect(endPoint);
+                readThread.Start();
+            }catch (Exception e)
+            {
+                throw new SKMConnectException(endPoint, "Could not connect.", e);
+            }
         }
 
         public event EventHandler<byte[]> Recieve;

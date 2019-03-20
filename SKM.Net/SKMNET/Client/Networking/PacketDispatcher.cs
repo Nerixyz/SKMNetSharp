@@ -8,6 +8,7 @@ using SKMNET.Client.Networking.Server.SKMON;
 using SKMNET.Client.Networking.Server.ISKMON;
 using SKMNET.Client.Networking.Server.LIBRAExt;
 using System.Diagnostics;
+using SKMNET.Exceptions;
 
 namespace SKMNET.Client.Networking
 {
@@ -93,8 +94,7 @@ namespace SKMNET.Client.Networking
                     //get PacketClass/Type
                     if (!serverPacketMap.TryGetValue(type, out Type packetType))
                     {
-                        connection.console.Logger?.Log("we don't know PepeLmao: " + type);
-                        connection.console.Logger?.Log(ByteUtils.ArrayToString(data));
+                        connection.OnErrored(this, new UnknownSKMPacketException(type, data, packetBuffer));
                         return Enums.Response.BadCmd;
                     }
 
