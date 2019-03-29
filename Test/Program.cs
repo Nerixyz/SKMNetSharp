@@ -10,6 +10,10 @@ using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
 using SKMNET.Client.Stromkreise;
+using SKMNET.Client.Networking.Server.T98;
+using SKMNET.Exceptions;
+using System.Reflection;
+using ConsoleUI;
 
 namespace Test
 {
@@ -35,7 +39,7 @@ namespace Test
                     Steller = true,
 
                     Logger = new ConsoleLogger(),
-                    Bedienstelle = Enums.Bedienstelle.Infrarot,
+                    Bedienstelle = Enums.Bedienstelle.Libra,
                     SKMType = 2
                 }
             );
@@ -44,12 +48,11 @@ namespace Test
             console.Connection.PacketReceived += Connection_PacketReceived;
 
             Console.ReadLine();
-            stopwatch.Start();
 
-            console.Query(new DMXSelect(new bool[] { true }, true), BASIC_CALLBACK);
+            new ConsoleInterface().StartAndBlock(console, BASIC_CALLBACK, ()=> stopwatch.Start());
 
             Console.ReadLine();
-            Console.WriteLine(JsonConvert.SerializeObject(console.TastenManager.Tasten));
+            //Console.WriteLine(JsonConvert.SerializeObject(console.TastenManager.Tasten));
             Console.ReadLine();
 
             Console.WriteLine("start");
@@ -59,15 +62,20 @@ namespace Test
         private static void Connection_PacketReceived(object sender, PacketRecievedEventArgs args)
         {
             Console.WriteLine("received " + (int)args.type + " - " + args.packet.GetType().Name);
-            if (args.packet is SKMNET.Client.Networking.Server.TSD.DMXData)
+            if (args.packet is SKRegData)
             {
-                args.response = Enums.Response.BadCmd;
+                Console.WriteLine(JsonConvert.SerializeObject(args.packet));
             }
         }
 
         private static void Console_Errored(object sender, Exception e)
         {
             Console.WriteLine("ERROR:\n" + e.Message + "\n" + e.Source + "\n" + e.StackTrace);
+            if(e is UnknownSKMPacketException)
+            {
+                UnknownSKMPacketException exception = e as UnknownSKMPacketException;
+                Console.WriteLine(ByteUtils.ArrayToString(exception.Remaining));
+            }
         }
 
         private readonly static Action<Enums.FehlerT> BASIC_CALLBACK = new Action<Enums.FehlerT>((fehler) =>
@@ -75,6 +83,8 @@ namespace Test
             stopwatch.Stop();
             Console.WriteLine($"Delay: {stopwatch.Elapsed.TotalMilliseconds}ms");
             Console.WriteLine($"Response: {fehler.ToString()} ");
+
+            stopwatch.Reset();
         });
 
         private class ConsoleLogger : ILogger

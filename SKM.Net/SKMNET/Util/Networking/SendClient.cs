@@ -14,7 +14,7 @@ namespace SKMNET.Util
     internal class SendClient
     {
         private readonly IPEndPoint endPoint;
-        private UdpClient baseClient;
+        private readonly UdpClient baseClient;
         private readonly Thread readThread;
         public bool local;
 
@@ -24,8 +24,10 @@ namespace SKMNET.Util
             local = adress[0] == 127 && adress[1] == 0 && adress[2] == 0 && adress[3] == 1;
             this.endPoint = endPoint;
 
-            baseClient = new UdpClient();
-            baseClient.EnableBroadcast = true;
+            baseClient = new UdpClient
+            {
+                EnableBroadcast = true
+            };
 
             readThread = new Thread(() =>
             {

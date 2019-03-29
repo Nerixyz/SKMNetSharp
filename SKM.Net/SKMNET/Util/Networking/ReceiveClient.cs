@@ -22,9 +22,12 @@ namespace SKMNET.Util
         {
             try
             {
-                client = new UdpClient(T90_TO_SKM_PORT);
-                client.EnableBroadcast = true;
-            }catch(Exception e)
+                client = new UdpClient(T90_TO_SKM_PORT)
+                {
+                    EnableBroadcast = true
+                };
+            }
+            catch(Exception e)
             {
                 throw new SKMConnectException(new IPEndPoint(0x0, T90_TO_SKM_PORT), "Could not bind to port " + T90_TO_SKM_PORT, e);
             }

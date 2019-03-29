@@ -70,8 +70,11 @@ namespace SKMNET.Client
             public bool AktInfo      { get; set; } = false;
             public bool Steller      { get; set; } = false;
 
+            /// <summary>
+            /// Type of SKM (0=regular, 1=tsd, 2=mlc)
+            /// </summary>
             public byte SKMType { get; set; } = 0;
-            public Enums.Bedienstelle Bedienstelle { get; set; } = Enums.Bedienstelle.Meistertastatur;
+            public Enums.Bedienstelle Bedienstelle { get; set; } = Enums.Bedienstelle.Libra;
             public ILogger Logger { get; set; }
         }
     }

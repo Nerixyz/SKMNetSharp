@@ -11,10 +11,10 @@ namespace SKMNET.Client.Networking.Client
         private readonly byte value;
         private readonly byte stellno;
 
-        // TODO make Enum
-        public StellermeldungEvent(byte stellno, byte value)
+        
+        public StellermeldungEvent(Enums.Steller steller, byte value)
         {
-            this.stellno = stellno;
+            this.stellno = (byte) steller;
             this.value = value;
         }
 

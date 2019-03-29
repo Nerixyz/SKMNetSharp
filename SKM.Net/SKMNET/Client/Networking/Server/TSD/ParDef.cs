@@ -35,10 +35,10 @@ namespace SKMNET.Client.Networking.Server.TSD
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            console.Prefabs.Clear();
+            console.MLCParameters.Clear();
             foreach(ParDefData data in arr)
             {
-                console.Prefabs.Add(new Stromkreise.ML.ParPrefab(data.parno, data.dispMode, data.parName));
+                console.MLCParameters.Add(new Stromkreise.ML.MLCParameter(data.parno, data.dispMode, data.parName));
             }
             return Enums.Response.OK;
         }

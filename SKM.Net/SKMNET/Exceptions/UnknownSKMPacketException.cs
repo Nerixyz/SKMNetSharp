@@ -4,13 +4,14 @@ using System.Text;
 
 namespace SKMNET.Exceptions
 {
+    [Serializable]
     public class UnknownSKMPacketException : Exception
     {
         public ushort Type { get; }
         public byte[] Packet { get; }
         public byte[] Remaining { get; }
         public long Position { get; }
-        public UnknownSKMPacketException(ushort type, byte[] packet, ByteBuffer buffer) : base("Packet not implemented")
+        public UnknownSKMPacketException(ushort type, byte[] packet, ByteBuffer buffer) : base("Packet not implemented (" + type + ")")
         {
             this.Type = type;
             this.Position = buffer.Position;

@@ -16,8 +16,12 @@ namespace SKMNET.Client.Networking.Server.TSD
     {
 
         public ushort job;
-        public uint par1;
-        public uint par2;
+        public uint vstNum;
+        /// <summary>
+        /// 0 = normal; 'detect' changed <cref="vstNum"/>
+        /// 1 = force; reload MLCConfig
+        /// </summary>
+        public uint modus;
         public uint par3;
         public ushort res1;
         public ushort count;
@@ -26,8 +30,8 @@ namespace SKMNET.Client.Networking.Server.TSD
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
             job = buffer.ReadUShort();
-            par1 = buffer.ReadUInt();
-            par2 = buffer.ReadUInt();
+            vstNum = buffer.ReadUInt();
+            modus = buffer.ReadUInt();
             par3 = buffer.ReadUInt();
             res1 = buffer.ReadUShort();
             count = buffer.ReadUShort();
@@ -46,10 +50,10 @@ namespace SKMNET.Client.Networking.Server.TSD
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            Vorstellung vst = console.Vorstellungen.Find((x) => par1 == x.Number);
+            Vorstellung vst = console.Vorstellungen.Find((x) => vstNum == x.Number);
             if(vst is null)
             {
-                vst = new Vorstellung((ushort)par1);
+                vst = new Vorstellung((ushort)vstNum);
                 console.Vorstellungen.Add(vst);
             }
             return Enums.Response.OK;

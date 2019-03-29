@@ -10,35 +10,35 @@ namespace SKMNET
     {
         public enum Type
         {
-            // #define SKMON_X
+            //  SKMON_X
             /* von RMON übernommene Telegramme */
-            Sync            = 0  ,   /* Synctelegramm */
-            ScreenData           ,   /* Bildschirmdaten */
-            PalData              ,   /* Palettendaten (Komplett-Telegramm) */
-            ReadKey              ,   /* Keyboard Eingabe abholen */
-            Pieps                ,   /* Piepsen */
-            BLamp                ,   /* Lampendaten fuer Bedientasten (Komplett-Telegramm) */
-            ACK_Reset            ,   /* Auf das RESET wurde ein vollständiges Update gesendet */
+            Sync = 0,   /* Synctelegramm */
+            ScreenData,   /* Bildschirmdaten */
+            PalData,   /* Palettendaten (Komplett-Telegramm) */
+            ReadKey,   /* Keyboard Eingabe abholen */
+            Pieps,   /* Piepsen */
+            BLamp,   /* Lampendaten fuer Bedientasten (Komplett-Telegramm) */
+            ACK_Reset,   /* Auf das RESET wurde ein vollständiges Update gesendet */
 
-            MScreenData     = 11 ,   /* Multiscreen Bildschirmdaten */
-            MPalData             ,   /* Multiscreen Palettendaten */
+            MScreenData = 11,   /* Multiscreen Bildschirmdaten */
+            MPalData,   /* Multiscreen Palettendaten */
 
             /* SKMON-spezifische Telegramme */
-            SkData          = 100,   /* Stromkreiswerte (1..999) */
-            SkAttr               ,   /* Stromkreis-Attribute (1..999) */
-            Headline             ,   /* Kopfzeile */
-            Conf                 ,   /* Konfigurationsdaten */
-            Cmd                  ,   /* Kommando, s.u. */
+            SkData = 100,   /* Stromkreiswerte (1..999) */
+            SkAttr,   /* Stromkreis-Attribute (1..999) */
+            Headline,   /* Kopfzeile */
+            Conf,   /* Konfigurationsdaten */
+            Cmd,   /* Kommando, s.u. */
 
             /* Erweiterungen fuer ISKMON */
-            BTastConf       = 105,   /* Bedientasten-Konfiguration */
-            FKeyConf             ,   /* Funktionstasten-Konfiguration */
-            Bedienzeile          ,   /* Bedienzeile */
-            Meldezeile           ,   /* Meldezeile */
-            AZ_IST          = 110,   /* Aktuellzeile IST */
-            AZ_ZIEL              ,   /* Aktuellzeile ZIEL */
-            AZ_VOR               ,   /* Aktuellzeile VOR */
-            SKG_Conf        = 115,   /* SKG-Konfiguration */
+            BTastConf = 105,   /* Bedientasten-Konfiguration */
+            FKeyConf,   /* Funktionstasten-Konfiguration */
+            Bedienzeile,   /* Bedienzeile */
+            Meldezeile,   /* Meldezeile */
+            AZ_IST = 110,   /* Aktuellzeile IST */
+            AZ_ZIEL,   /* Aktuellzeile ZIEL */
+            AZ_VOR,   /* Aktuellzeile VOR */
+            SKG_Conf = 115,   /* SKG-Konfiguration */
 
             /* 
              * Erweiterungen für T98 
@@ -48,10 +48,10 @@ namespace SKMNET
              * Teilpaketen den Rest des Pakets wegwerfen.
             */
             //T98Kenn       = 120,   /* ab dieser Kennung die T98-Erweiterungen */ DUPLICATE
-            SKRegSync       = 120,   /* Abfrage auf Stromkreisregister   */
-            SKRegConf            ,   /* Stromkreisregister-Aufbau */
-            SKRegData            ,   /* SK-Werte in Stromkreisregister-Order */
-            SKRegAttr            ,   /* SK-Attr. in Stromkreisregister-Order */
+            SKRegSync = 120,   /* Abfrage auf Stromkreisregister   */
+            SKRegConf,   /* Stromkreisregister-Aufbau */
+            SKRegData,   /* SK-Werte in Stromkreisregister-Order */
+            SKRegAttr,   /* SK-Attr. in Stromkreisregister-Order */
 
             /*
              * Erweiterungen für TSD
@@ -61,42 +61,42 @@ namespace SKMNET
              * Teilpaketen den Rest des Pakets wegwerfen.
              */
             //TSD_Kenn      = 130,   /* ab dieser Kennung die TSD-Erweiterungen */ DUPLICATE
-            TSD_Sync        = 130,   /* Abfrage auf TSD-Erweiterungen */
-            TSD_DMXData          ,   /* DMX-orientierte Kreiswerte */
-            TSD_MPal             ,   /* ML-Palettendaten */
-            TSD_MPalSelect       ,   /* Selektierte ML-Paletteneintraege */
-            MLC_Job         = 150,   /* einfache Jobkommandos an MLC */
-            MLC_SelPar           ,   /* Parameter des selektierten Geraets */
-            MLC_SelRange         ,   /* Range-Daten des selektierten Parameters */
-            MLC_ParDef           ,   /* Parameterdefinitionen (Name usw.) */
-            MLPal_Conf           ,   /* Palettenkonfiguration mit langen Namen */
-            MLPal_SK             ,   /* SK-Beteiligung an Paletten */
+            TSD_Sync = 130,   /* Abfrage auf TSD-Erweiterungen */
+            TSD_DMXData,   /* DMX-orientierte Kreiswerte */
+            TSD_MPal,   /* ML-Palettendaten */
+            TSD_MPalSelect,   /* Selektierte ML-Paletteneintraege */
+            MLC_Job = 150,   /* einfache Jobkommandos an MLC */
+            MLC_SelPar,   /* Parameter des selektierten Geraets */
+            MLC_SelRange,   /* Range-Daten des selektierten Parameters */
+            MLC_ParDef,   /* Parameterdefinitionen (Name usw.) */
+            MLPal_Conf,   /* Palettenkonfiguration mit langen Namen */
+            MLPal_SK,   /* SK-Beteiligung an Paletten */
 
             /* Für Libra 1.5 Parameterliste der Objektdarstellung */
-            MLPar                ,   /* Neusenden Parameterwerte */
-            MLRange              ,   /* Neusenden Parameter-Ranges */
+            MLPar,   /* Neusenden Parameterwerte */
+            MLRange,   /* Neusenden Parameter-Ranges */
 
             /* Für Libra 1.8 Erweiterungen */
-            AKTInfo              ,   /* aktuelle Liste und Register */
+            AKTInfo,   /* aktuelle Liste und Register */
 
-            MLParUpdate          ,   /* Update Neusenden Parameterwerte */
-            MlParRemove          ,   /* Entfernen Parameterwert oder Geraet */
+            MLParUpdate,   /* Update Neusenden Parameterwerte */
+            MlParRemove,   /* Entfernen Parameterwert oder Geraet */
 
             /* Für Libra 1.9 Erweiterungen */
-            Steller              ,   /* Stellerwerte */
-            FBHost               ,   /* FB-Uebernahme durch anderen Host */
+            Steller,   /* Stellerwerte */
+            FBHost,   /* FB-Uebernahme durch anderen Host */
 
             // Telegramme 200-299 reserviert fuer Libra-Kommunikation
         }
         public enum Response
         {
-            // #define SKMON_RES_X
+            //  SKMON_RES_X
             // Ergebniskennungen auf ein SKMON-Telegramm
-            OK              , /* Alles OK */
-            Reset           , /* Client wurde rückgesetzt */
-            KeyPending      , /* Client hat eine Keyboard Eingabe */
-            BadCmd          , /* Falsches Kommando */
-            Offline         , /* Client kann nicht ausgeben */
+            OK, /* Alles OK */
+            Reset, /* Client wurde rückgesetzt */
+            KeyPending, /* Client hat eine Keyboard Eingabe */
+            BadCmd, /* Falsches Kommando */
+            Offline, /* Client kann nicht ausgeben */
         }
         public enum Pal
         {
@@ -175,7 +175,7 @@ namespace SKMNET
         {
             None = -1,
             Meistertastatur = 0,
-            Infrarot = 1,
+            Libra = 1,
             Handtermianl1 = 2,
             Handterminal2 = 3,
             Handterminal3 = 4,
@@ -192,22 +192,22 @@ namespace SKMNET
         }
         public enum SelRangeFlags
         {
-            SetPoint        = 0x01,     /* nur Setwert, kein linearer Bereich */
-            EncoderSkip     = 0x02,     /* Bereich wird bei Encoder uebersprungen */
-            DMXVal          = 0x04,     /* absoluten DMX-Wert darstellen */
-            RelVal          = 0x08,     /* relativen Prozentwert darstellen */
+            SetPoint = 0x01,     /* nur Setwert, kein linearer Bereich */
+            EncoderSkip = 0x02,     /* Bereich wird bei Encoder uebersprungen */
+            DMXVal = 0x04,     /* absoluten DMX-Wert darstellen */
+            RelVal = 0x08,     /* relativen Prozentwert darstellen */
         }
         public enum SelRangeDisp
         {
-            Normal  ,       /* Standard: 0..100 (%) */
-            DMX     ,       /* DMX-Wert: 000..255 */
-            Pos     ,       /* normierte Darstellung -99.9 .. +99.9 */
-            L16     ,       /* 0..65565 */
+            Normal,       /* Standard: 0..100 (%) */
+            DMX,       /* DMX-Wert: 000..255 */
+            Pos,       /* normierte Darstellung -99.9 .. +99.9 */
+            L16,       /* 0..65565 */
         }
         public enum FixParDst
         {
             Current = 0,
-            SKMON =  1001,
+            SKMON = 1001,
             Voyager,
             ShowDesigner,
         }
@@ -498,6 +498,144 @@ namespace SKMNET
             FTEXT_DUM19 = 0x119,
             FTEXT_DUM20 = 0x11a,
             LASTFEHLNO = 0x11b,
+        }
+
+        public enum Steller
+        {
+            STELL_NONE = -1,            /* keine gueltige Stellernummer */
+
+            DIGI_SKSTELL = 0,       /* digitaler SK-Steller */
+
+            /* Gruppensteller in aufsteigender Reihenfolge */
+            ANA_GRSTELL_1,
+            ANA_GRSTELL_2,
+            ANA_GRSTELL_3,
+            ANA_GRSTELL_4,
+            ANA_GRSTELL_5,
+            ANA_GRSTELL_6,
+            ANA_GRSTELL_7,
+            ANA_GRSTELL_8,
+            ANA_GRSTELL_9,
+            ANA_GRSTELL_10,
+            ANA_GRSTELL_11,
+            ANA_GRSTELL_12,
+            ANA_GRSTELL_13,
+            ANA_GRSTELL_14,
+            ANA_GRSTELL_15,
+            ANA_GRSTELL_16,
+            ANA_GRSTELL_17,
+            ANA_GRSTELL_18,
+            ANA_GRSTELL_19,
+            ANA_GRSTELL_20,
+
+            /* Hauptsteller */
+            /// <summary>
+            /// 1. Hauptsteller (li)
+            /// </summary>
+            ANA_HSTELL_1,
+            /// <summary>
+            /// 2. Hauptsteller (re)
+            /// </summary>
+            ANA_HSTELL_2,
+
+            /// <summary>
+            /// 1. Hauptsteller (li)
+            /// </summary>
+            DIGI_HSTELL_1,
+            /// <summary>
+            /// 2. Hauptsteller (re)
+            /// </summary>
+            DIGI_HSTELL_2,
+
+            /// <summary>
+            /// 1. Überblender (li)
+            /// </summary>
+            ANA_UESTELL_A1,
+            /// <summary>
+            /// 1. Überblender (re)
+            /// </summary>
+            ANA_UESTELL_A2,
+
+            /// <summary>
+            /// 2. Überblender (li)
+            /// </summary>
+            ANA_UESTELL_B1,
+            /// <summary>
+            /// 2. Überblender (re)
+            /// </summary>
+            ANA_UESTELL_B2,
+
+            /// <summary>
+            /// 1. Überblender (li)
+            /// </summary>
+            DIGI_UESTELL_A1,
+            /// <summary>
+            /// 1. Überblender (re)
+            /// </summary>
+            DIGI_UESTELL_A2,
+
+            /// <summary>
+            /// 2. Überblender (li)
+            /// </summary>
+            DIGI_UESTELL_B1,
+            /// <summary>
+            /// 2. Überblender (re)
+            /// </summary>
+            DIGI_UESTELL_B2,
+
+            /* externe Analogsignale */
+            ANASIG_1,
+            ANASIG_2,
+            ANASIG_3,
+            ANASIG_4,
+            ANASIG_5,
+            ANASIG_6,
+            ANASIG_7,
+            ANASIG_8,
+
+            /* fuer T90-E zusaetzlich eingefuehrte interne Stellernummern */
+            /// <summary>
+            /// Trick-Hauptsteller
+            /// </summary>
+            ANA_ESTELL,
+            /// <summary>
+            /// Gruppenhauptsteller
+            /// </summary>
+            ANA_GRGENSTELL,
+
+            /// <summary>
+            /// Trackball X
+            /// </summary>
+            TRACK_X_STELL,
+            /// <summary>
+            /// Trackball Y
+            /// </summary>
+            TRACK_Y_STELL,
+
+            /// <summary>
+            /// Kennung Bedientafel-Reset
+            /// </summary>
+            BTAFEL_RESET,
+
+            /* Digitale Encoder */
+            DIGI_ENCODER_1,
+            DIGI_ENCODER_2,
+            DIGI_ENCODER_3,
+            DIGI_ENCODER_4,
+
+            /// <summary>
+            /// Überblend-Hauptsteller (li)
+            /// </summary>
+            ANA_UEGENSTELL_A,
+            /// <summary>
+            /// Überblendhauptsteller (re)
+            /// </summary>
+            ANA_UEGENSTELL_B,
+
+            /// <summary>
+            /// Digitalsteller von externen Clients
+            /// </summary>
+            DIGI_DIGI_STELL
         }
 
         public static T GetEnum<T>(object value)

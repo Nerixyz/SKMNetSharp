@@ -46,7 +46,7 @@ namespace SKMNET.Client
         /// <summary>
         /// Alle Parameter (für zB GUI)
         /// </summary>
-        public List<ParPrefab> Prefabs { get; set; } = new List<ParPrefab>();
+        public List<MLCParameter> MLCParameters { get; set; } = new List<MLCParameter>();
 
         /// <summary>
         /// Registerinfo IST

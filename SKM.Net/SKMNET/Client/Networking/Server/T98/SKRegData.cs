@@ -18,6 +18,7 @@ namespace SKMNET.Client.Networking.Server.T98
         public ushort start;
         public bool update; /* should display update */
         public ushort count;
+        [NonSerialized]
         public byte[] data;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
