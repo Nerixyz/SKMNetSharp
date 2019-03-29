@@ -70,7 +70,7 @@ namespace SKMNET.Client.Networking.Server.TSD
         }
 
         [Serializable]
-        public class SelRangeData
+        public struct SelRangeData
         {
             public byte start;
             public byte end;

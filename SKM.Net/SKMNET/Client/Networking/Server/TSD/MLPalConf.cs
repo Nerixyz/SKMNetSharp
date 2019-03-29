@@ -54,7 +54,7 @@ namespace SKMNET.Client.Networking.Server.TSD
         }
 
         [Serializable]
-        public class ConfEntry
+        public struct ConfEntry
         {
             public short Palno { get; set; }
             public string Text { get; set; }

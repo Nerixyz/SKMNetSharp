@@ -36,7 +36,7 @@ namespace SKMNET.Client.Networking.Server
         }
 
         [Serializable]
-        public class BTastConfEntry
+        public struct BTastConfEntry
         {
             public ushort Tastnr { get; }
             public string Name { get; }

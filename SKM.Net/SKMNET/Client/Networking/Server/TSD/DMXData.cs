@@ -35,7 +35,7 @@ namespace SKMNET.Client.Networking.Server.TSD
             return Enums.Response.OK;
         }
 
-        public class DMXDataEntry
+        public struct DMXDataEntry
         {
             public ushort line; /* DMX-Leitungsnummer 1..64 */
             public byte[] dmxData;

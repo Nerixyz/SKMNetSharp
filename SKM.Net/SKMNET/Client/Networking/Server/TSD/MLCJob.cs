@@ -39,19 +39,13 @@ namespace SKMNET.Client.Networking.Server.TSD
             return this;
         }
 
-        public bool IsLoad()
-        {
-            return job == 1;
-        }
-        public bool IsSave()
-        {
-            return job == 2;
-        }
+        public bool Load { get => job == 1; }
+        public bool Save { get => job == 2; }
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
             Vorstellung vst = console.Vorstellungen.Find((x) => vstNum == x.Number);
-            if(vst is null)
+            if (vst is null)
             {
                 vst = new Vorstellung((ushort)vstNum);
                 console.Vorstellungen.Add(vst);

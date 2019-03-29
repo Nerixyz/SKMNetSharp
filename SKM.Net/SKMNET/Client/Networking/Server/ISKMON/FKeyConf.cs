@@ -34,7 +34,7 @@ namespace SKMNET.Client.Networking.Server.ISKMON
         }
 
         [Serializable]
-        public class FKeyConfEntry
+        public struct FKeyConfEntry
         {
             public ushort fkeynr;
             public string label;

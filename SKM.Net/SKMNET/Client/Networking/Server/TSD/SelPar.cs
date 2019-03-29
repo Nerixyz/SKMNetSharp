@@ -73,7 +73,7 @@ namespace SKMNET.Client.Networking.Server.TSD
         }
 
         [Serializable]
-        public class SelParData
+        public struct SelParData
         {
             /// <summary>
             /// Parameternummer (0-199)

@@ -48,7 +48,7 @@ namespace SKMNET.Client.Networking.Server.ISKMON
         }
 
         [Serializable]
-        public class SKGConfEntry
+        public struct SKGConfEntry
         {
             public ushort skgnum;
             public string skgname;

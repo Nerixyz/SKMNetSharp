@@ -43,7 +43,7 @@ namespace SKMNET.Client.Networking.Server.TSD
             return Enums.Response.OK;
         }
 
-        public class ParDefData
+        public struct ParDefData
         {
             public short parno;
             public Enums.SelRangeDisp dispMode;
