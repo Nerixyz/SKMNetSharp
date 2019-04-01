@@ -35,7 +35,7 @@ namespace SKMNET.Client
                 Steller = Settings.Steller
             };
 
-            Connection = new ConnectionHandler(ip, this, ref steckbrief, Settings.SKMType);
+            Connection = new ConnectionHandler(ip, this, steckbrief, Settings.SKMType);
             Connection.Errored += Connection_Errored;
 
             this.Bedienstelle = Settings.Bedienstelle;

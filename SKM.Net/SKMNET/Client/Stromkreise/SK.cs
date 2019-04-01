@@ -36,6 +36,11 @@ namespace SKMNET.Client.Stromkreise
             this.Attrib = 0;
         }
 
+        public void SetIntensity(int intensity)
+        {
+            this.Intensity = (byte)intensity;
+        }
+
         /// <summary>
         /// Set the Dimmer value (for packets)
         /// </summary>

@@ -21,7 +21,7 @@ namespace SKMNET.Client.Networking
         private Action<Enums.FehlerT> queuedAction;
 
 
-        public ConnectionHandler(string ipAdress, LightingConsole parent, ref SKMSteckbrief steckbrief, byte SKMType)
+        public ConnectionHandler(string ipAdress, LightingConsole parent, SKMSteckbrief steckbrief, byte SKMType)
         {
             this.console = parent;
 

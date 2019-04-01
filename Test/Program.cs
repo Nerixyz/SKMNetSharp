@@ -14,6 +14,8 @@ using SKMNET.Client.Networking.Server.T98;
 using SKMNET.Exceptions;
 using System.Reflection;
 using ConsoleUI;
+using NiL.JS.Core;
+using Scripting;
 
 namespace Test
 {
@@ -48,8 +50,13 @@ namespace Test
             console.Connection.PacketReceived += Connection_PacketReceived;
 
             Console.ReadLine();
+            ScriptManager manager = new ScriptManager(ScriptManager.SetupContext(console));
+            manager.LoadScript(@"G:\Scripts\test.js", "test");
+            Console.WriteLine("loaded");
+            manager.ExecuteScript("test");
+            Console.WriteLine("postExec");
 
-            new ConsoleInterface().StartAndBlock(console, BASIC_CALLBACK, ()=> stopwatch.Start());
+            //new ConsoleInterface().StartAndBlock(console, BASIC_CALLBACK, ()=> stopwatch.Start());
 
             Console.ReadLine();
             //Console.WriteLine(JsonConvert.SerializeObject(console.TastenManager.Tasten));
