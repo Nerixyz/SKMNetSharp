@@ -39,17 +39,17 @@ namespace ConsoleUI
 
         public Action PreQuery;
 
-        public void StartAndBlock(LightingConsole console, Action<Enums.FehlerT> callback, Action preQ)
+        public void StartAndBlock(LightingConsole console, Action preQ)
         {
-            string cmd = string.Empty;
+            string cmd;
             this.PreQuery = preQ;
             while(!(cmd = Console.ReadLine()).Equals("end"))
             {
-                Loop(cmd, console, callback);
+                Loop(cmd, console);
             }
         }
 
-        public void Loop(string cmd, LightingConsole console, Action<Enums.FehlerT> callback)
+        public void Loop(string cmd, LightingConsole console)
         {
             CArgument a = ParseString(cmd);
             if (a is CText)
@@ -59,11 +59,11 @@ namespace ConsoleUI
             else
             {
                 CFunction func = a as CFunction;
-                HandleFunction(func, console, callback);
+                HandleFunction(func, console);
             }
         }
 
-        public void HandleFunction(CFunction func, LightingConsole console, Action<Enums.FehlerT> callback)
+        public void HandleFunction(CFunction func, LightingConsole console)
         {
             switch (func.Name)
             {
@@ -89,7 +89,7 @@ namespace ConsoleUI
                         }
                         object instance = constructor.Invoke(args);
                         PreQuery?.Invoke();
-                        console.Query(instance as CPacket, callback);
+                        console.QueryAsync(instance as CPacket).Wait();
 
                         break;
                     }
@@ -103,7 +103,7 @@ namespace ConsoleUI
                         SK sk = console.Stromkreise.Find((x) => x.Number == num);
                         sk.Intensity = intensity;
                         PreQuery?.Invoke();
-                        console.Query(new FixParDimmer(Enums.FixParDst.Current, sk), callback);
+                        console.QueryAsync(new FixParDimmer(Enums.FixParDst.Current, sk)).Wait();
 
                         break;
                     }

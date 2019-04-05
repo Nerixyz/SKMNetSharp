@@ -4,21 +4,31 @@ using SKMNET.Util;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SKMNET.Client
 {
     public partial class LightingConsole
     {
-        public void Query(byte[] data, short type, Action<Enums.FehlerT> callback = null) => Connection.SendPacket(data, type, callback);
+        [Obsolete("Use SendPacketAsync instead", false)]
+        public void Query(byte[] data, short type) => Connection.SendPacket(data, type);
 
+        [Obsolete("Use SendPacketAsync instead", false)]
         /// <summary>
         /// Send CPacket
         /// </summary>
         /// <param name="packet">Packet to send</param>
         /// <param name="callback">ErrorCode</param>
-        public void Query(CPacket packet, Action<Enums.FehlerT> callback = null) => Connection.SendPacket(packet, callback);
+        public void Query(CPacket packet) => Connection.SendPacket(packet);
 
-        public void Query(SplittableHeader packet, Action<Enums.FehlerT> callback = null) => Connection.SendPacket(packet, callback);
+        [Obsolete("Use SendPacketAsync instead", false)]
+        public void Query(SplittableHeader packet) => Connection.SendPacket(packet);
+
+        public async Task<Enums.FehlerT> QueryAsync(CPacket packet) => await Connection.SendPacketAsync(packet);
+
+        public async Task<Enums.FehlerT> QueryAsync(SplittableHeader header) => await Connection.SendPacketAsync(header);
+
+        public async Task<Enums.FehlerT> QueryAsync(byte[] data, short type) => await Connection.SendPacketAsync(data, type);
 
         public void SendRawData(byte[] arr) => Connection.SendRawData(arr);
 

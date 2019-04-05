@@ -45,16 +45,16 @@ namespace SKMNET.Client
 
             TastenManager = new TastenManager(this);
 
-            Paletten = new Dictionary<MLPal.MLPalFlag, List<MLPal>>()
+            Paletten = new Dictionary<MLPal.Flag, List<MLPal>>()
             {
-                { MLPal.MLPalFlag.I, new List<MLPal>() },
-                { MLPal.MLPalFlag.F, new List<MLPal>() },
-                { MLPal.MLPalFlag.C, new List<MLPal>() },
-                { MLPal.MLPalFlag.B, new List<MLPal>() },
-                { MLPal.MLPalFlag.SKG, new List<MLPal>() },
-                { MLPal.MLPalFlag.BLK, new List<MLPal>() },
-                { MLPal.MLPalFlag.DYN, new List<MLPal>() },
-                { MLPal.MLPalFlag.CUR_SEL, new List<MLPal>() },
+                { MLPal.Flag.I, new List<MLPal>() },
+                { MLPal.Flag.F, new List<MLPal>() },
+                { MLPal.Flag.C, new List<MLPal>() },
+                { MLPal.Flag.B, new List<MLPal>() },
+                { MLPal.Flag.SKG, new List<MLPal>() },
+                { MLPal.Flag.BLK, new List<MLPal>() },
+                { MLPal.Flag.DYN, new List<MLPal>() },
+                { MLPal.Flag.CUR_SEL, new List<MLPal>() },
             };
         }
 

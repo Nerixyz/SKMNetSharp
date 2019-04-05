@@ -5,11 +5,11 @@ namespace SKMNET.Client.Rendering
     [Serializable]
     public class VideoFarbe
     {
-        public readonly Color vgColor;
-        public readonly Color hgColor;
+        public readonly NTColor vgColor;
+        public readonly NTColor hgColor;
         public readonly short farbno;
 
-        public VideoFarbe(Color vg, Color hg, short farbno)
+        public VideoFarbe(NTColor vg, NTColor hg, short farbno)
         {
             this.vgColor = vg;
             this.hgColor = hg;
@@ -18,8 +18,8 @@ namespace SKMNET.Client.Rendering
 
         public VideoFarbe(short farbno, byte vg1, byte vg2, byte vg3, byte hg1, byte hg2, byte hg3)
         {
-            vgColor = new Color(vg1, vg2, vg3);
-            hgColor = new Color(hg1, hg2, hg3);
+            vgColor = new NTColor(vg1, vg2, vg3);
+            hgColor = new NTColor(hg1, hg2, hg3);
             this.farbno = farbno;
         }
     }

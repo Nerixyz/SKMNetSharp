@@ -16,6 +16,10 @@ using System.Reflection;
 using ConsoleUI;
 using NiL.JS.Core;
 using Scripting;
+using System.IO;
+using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using SKMNET.Client.Rendering;
 
 namespace Test
 {
@@ -23,13 +27,18 @@ namespace Test
     {
         private static Stopwatch stopwatch;
 
-        [STAThread]
         private static void Main(string[] _)
+        {
+            MainAsync().Wait();
+        }
+
+        private static async Task MainAsync()
         {
             stopwatch = new Stopwatch();
             LightingConsole console = new LightingConsole(
                 "127.0.0.1",
-                new LightingConsole.ConsoleSettings() {
+                new LightingConsole.ConsoleSettings()
+                {
                     Bedientasten = true,
                     AktInfo = true,
                     AZ_Zeilen = true,
@@ -49,21 +58,49 @@ namespace Test
             console.Errored += Console_Errored;
             console.Connection.PacketReceived += Connection_PacketReceived;
 
+
+
+
+            
             Console.ReadLine();
-            ScriptManager manager = new ScriptManager(ScriptManager.SetupContext(console));
-            manager.LoadScript(@"G:\Scripts\test.js", "test");
-            Console.WriteLine("loaded");
-            manager.ExecuteScript("test");
-            Console.WriteLine("postExec");
+            stopwatch.Start();
+            Print(await console.PushKeys(EnumTaste.ONE,
+                                         EnumTaste.EIGHT,
+                                         EnumTaste.SEVEN,
+                                         EnumTaste.S,
+                                         EnumTaste.S));
+            Console.ReadLine();
+            stopwatch.Start();
+            Print(await console.CreateScene("SKMNet",
+                                            187.0));
+
+
+
+
+
+
+
+
+
+
+            //ScriptManager manager = new ScriptManager(ScriptManager.SetupContext(console));
+            //manager.LoadScript(@"G:\Scripts\test.js", "test");
+            //Console.WriteLine("loaded");
+            //manager.ExecuteScript("test");
+            //Console.WriteLine("postExec");
 
             //new ConsoleInterface().StartAndBlock(console, BASIC_CALLBACK, ()=> stopwatch.Start());
 
-            Console.ReadLine();
             //Console.WriteLine(JsonConvert.SerializeObject(console.TastenManager.Tasten));
             Console.ReadLine();
-
-            Console.WriteLine("start");
             Console.ReadLine();
+        }
+
+        private static void Print(Enums.FehlerT fehler)
+        {
+            stopwatch.Stop();
+            Console.WriteLine($"Delay: {stopwatch.Elapsed.TotalMilliseconds}ms\nResponse: {fehler.ToString()}");
+            stopwatch.Reset();
         }
 
         private static void Connection_PacketReceived(object sender, PacketRecievedEventArgs args)
@@ -84,15 +121,6 @@ namespace Test
                 Console.WriteLine(ByteUtils.ArrayToString(exception.Remaining));
             }
         }
-
-        private readonly static Action<Enums.FehlerT> BASIC_CALLBACK = new Action<Enums.FehlerT>((fehler) =>
-        {
-            stopwatch.Stop();
-            Console.WriteLine($"Delay: {stopwatch.Elapsed.TotalMilliseconds}ms");
-            Console.WriteLine($"Response: {fehler.ToString()} ");
-
-            stopwatch.Reset();
-        });
 
         private class ConsoleLogger : ILogger
         {

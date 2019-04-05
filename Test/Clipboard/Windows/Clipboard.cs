@@ -64,31 +64,31 @@ namespace CoreClipboard.Windows
             }
         }
 
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32", SetLastError = true)]
         private static extern IntPtr GlobalAlloc(uint uFlags, UIntPtr dwBytes);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32", SetLastError = true)]
         private static extern IntPtr GlobalFree(IntPtr hMem);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32", SetLastError = true)]
         private static extern IntPtr GlobalLock(IntPtr hMem);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
+        [DllImport("kernel32", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool GlobalUnlock(IntPtr hMem);
 
-        [DllImport("kernel32.dll")]
+        [DllImport("kernel32", SetLastError = true, EntryPoint = "CopyMemory")]
         public static extern void CopyMemory(IntPtr dest, IntPtr src, uint length);
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool OpenClipboard(IntPtr hWndNewOwner);
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool CloseClipboard();
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32", SetLastError = true)]
         private static extern IntPtr SetClipboardData(uint uFormat, IntPtr data);
 
         private const uint CF_UNICODETEXT = 13;

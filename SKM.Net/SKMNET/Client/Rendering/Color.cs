@@ -1,12 +1,12 @@
 ﻿namespace SKMNET.Client.Rendering
 {
-    public struct Color
+    public struct NTColor
     {
         public readonly byte Red;
         public readonly byte Green;
         public readonly byte Blue;
 
-        public Color(byte red, byte green, byte blue)
+        public NTColor(byte red, byte green, byte blue)
         {
             this.Red = red;
             this.Green = green;

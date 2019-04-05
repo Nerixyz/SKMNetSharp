@@ -11,7 +11,7 @@ namespace SKMNET.Client.Rendering
     [Serializable]
     public class ScreenManager
     {
-        public List<VideoFarbe> Palletten { get; }
+        public VideoFarbe[] Paletten { get; }
         public Screen[] Screens { get; }
 
         [NonSerialized]
@@ -21,7 +21,7 @@ namespace SKMNET.Client.Rendering
         {
             this.console = console;
             Screens = new Screen[4];
-            this.Palletten = new List<VideoFarbe>();
+            this.Paletten = new VideoFarbe[64];
         }
 
         public void HandleData(ScreenData packet)
@@ -38,12 +38,7 @@ namespace SKMNET.Client.Rendering
         {
             foreach(VideoFarbe farbe in packet.farbeintrag)
             {
-                VideoFarbe ptr = GetFarbeByNumber(farbe.farbno);
-                if(!(ptr is null))
-                {
-                    Palletten.Remove(ptr);
-                }
-                Palletten.Add(farbe);
+                Paletten[farbe.farbno] = farbe;
             }
         }
 
@@ -51,19 +46,8 @@ namespace SKMNET.Client.Rendering
         {
             foreach (VideoFarbe farbe in packet.farbeintrag)
             {
-                VideoFarbe ptr = GetFarbeByNumber(farbe.farbno);
-                if (!(ptr is null))
-                {
-                    Palletten.Remove(ptr);
-                }
-                Palletten.Add(farbe);
+                Paletten[farbe.farbno] = farbe;
             }
-        }
-
-
-        public VideoFarbe GetFarbeByNumber(short number)
-        {
-            return Palletten.Find((x) => x!= null && x.farbno == number);
         }
     }
 }

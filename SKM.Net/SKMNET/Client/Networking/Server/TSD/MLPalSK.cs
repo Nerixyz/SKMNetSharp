@@ -37,7 +37,7 @@ namespace SKMNET.Client.Networking.Server.TSD
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            if (!console.Paletten.TryGetValue(Enums.GetEnum<MLPal.MLPalFlag>(mlpaltype), out List<MLPal> list))
+            if (!console.Paletten.TryGetValue(Enums.GetEnum<MLPal.Flag>(mlpaltype), out List<MLPal> list))
                 return Enums.Response.BadCmd;
 
             Handle(list, console);
@@ -50,7 +50,7 @@ namespace SKMNET.Client.Networking.Server.TSD
             MLPal pal = pals.Find((x) => x.Number == palno);
             if (pal == null)
             {
-                pal = new MLPal((MLPal.MLPalFlag)GetPalType(mlpaltype), string.Empty, (short)palno);
+                pal = new MLPal((MLPal.Flag)GetPalType(mlpaltype), string.Empty, (short)palno);
                 pals.Add(pal);
             }
             else

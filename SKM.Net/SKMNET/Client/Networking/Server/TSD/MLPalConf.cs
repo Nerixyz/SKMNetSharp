@@ -41,7 +41,7 @@ namespace SKMNET.Client.Networking.Server.TSD
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            MLPal.MLPalFlag mlType = MLPal.GetFlag(MLPalType);
+            MLPal.Flag mlType = MLPal.GetFlag(MLPalType);
             if (!console.Paletten.TryGetValue(mlType, out List<MLPal> list))
                 return Enums.Response.BadCmd;
 

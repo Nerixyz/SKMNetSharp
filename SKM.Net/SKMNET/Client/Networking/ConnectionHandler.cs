@@ -6,19 +6,20 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking
 {
     public class ConnectionHandler
     {
-        public  const    ushort          MAGIC_NUMBER = 0x1fe2;
-        private readonly SendClient      sender;
-        private readonly RecieveClient   reciever;
-        public  readonly LightingConsole console;
+        public const ushort MAGIC_NUMBER = 0x1fe2;
+        private readonly SendClient sender;
+        private readonly RecieveClient reciever;
+        public readonly LightingConsole console;
         //private readonly Thread sendThread;
         private readonly PacketDispatcher packetDispatcher;
 
-        private Action<Enums.FehlerT> queuedAction;
+        private readonly Queue<TaskCompletionSource<Enums.FehlerT>> completionQueue;
 
 
         public ConnectionHandler(string ipAdress, LightingConsole parent, SKMSteckbrief steckbrief, byte SKMType)
@@ -36,7 +37,10 @@ namespace SKMNET.Client.Networking
 
             this.packetDispatcher = new PacketDispatcher(this);
 
-            SendPacket(new SKMSync(steckbrief, SKMType));
+            this.completionQueue = new Queue<TaskCompletionSource<Enums.FehlerT>>();
+
+            var sync = new SKMSync(steckbrief, SKMType);
+            SendToConsole(MakePacket(sync.GetDataToSend(console), sync.Type));
         }
 
         private void Reciever_Errored(object sender, Exception e)
@@ -49,7 +53,8 @@ namespace SKMNET.Client.Networking
             try
             {
                 args.ResponseCode = packetDispatcher.OnDataIncoming(args.Data);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 args.ResponseCode = Enums.Response.BadCmd;
                 console.Logger?.Log(ByteUtils.ArrayToString(args.Data));
@@ -69,8 +74,11 @@ namespace SKMNET.Client.Networking
             ByteBuffer buf = new ByteBuffer(e);
             Enums.FehlerT fehler = Enums.GetEnum<Enums.FehlerT>(buf.ReadUInt());
 
-            queuedAction?.Invoke(fehler);
-            queuedAction = null;
+            if (completionQueue.TryDequeue(out TaskCompletionSource<Enums.FehlerT> res))
+            {
+                res.SetResult(fehler);
+            }
+            Console.WriteLine(fehler.ToString());
         }
 
         private void SendToConsole(byte[] data)
@@ -83,39 +91,35 @@ namespace SKMNET.Client.Networking
             SendToConsole(arr);
         }
 
-        public void SendPacket(byte[] data, short type, Action<Enums.FehlerT> callback = null)
+        [Obsolete("Use SendPacketAsync instead", false)]
+        public void SendPacket(byte[] data, short type)
         {
-            ByteBuffer buf = new ByteBuffer();
-            buf.Write(MAGIC_NUMBER).Write(type).Write(GetLocalIPAddress()).Write(data);
-            SendToConsole(buf.ToArray());
-            this.queuedAction = callback;
+            SendToConsole(MakePacket(data, type));
         }
 
-        public void SendPacket(CPacket header, Action<Enums.FehlerT> callback = null)
+        [Obsolete("Use SendPacketAsync instead", false)]
+        public void SendPacket(CPacket header)
         {
-            if (header is SKMSync)
-            {
-                console.Logger?.Log(ByteUtils.ArrayToString(header.GetDataToSend(console)));
-            }
-            ByteBuffer buf = new ByteBuffer();
-            buf.Write(MAGIC_NUMBER).Write(header.Type).Write(GetLocalIPAddress()).Write(header.GetDataToSend(console));
-            byte[] arr = buf.ToArray();
-            console.Logger?.Log(ByteUtils.ArrayToString(arr));
+            byte[] arr = MakePacket(header.GetDataToSend(console), header.Type);
 
             SendToConsole(arr);
-            this.queuedAction = callback;
         }
 
-        public void SendPacket(SplittableHeader header, Action<Enums.FehlerT> callback = null)
+        [Obsolete("Use SendPacketAsync instead", false)]
+        public void SendPacket(SplittableHeader header)
         {
             foreach (byte[] arr in header.GetData(console))
             {
-                ByteBuffer buf = new ByteBuffer();
-                buf.Write(MAGIC_NUMBER).Write(header.Type).Write(GetLocalIPAddress()).Write(arr);
-                byte[] arrOut = buf.ToArray();
+                byte[] arrOut = MakePacket(arr, header.Type);
                 SendToConsole(arrOut);
             }
-            this.queuedAction = callback;
+        }
+
+        private byte[] MakePacket(byte[] data, short type)
+        {
+            ByteBuffer buf = new ByteBuffer();
+            buf.Write(MAGIC_NUMBER).Write(type).Write(GetLocalIPAddress()).Write(data);
+            return buf.ToArray();
         }
 
         public byte[] GetLocalIPAddress()
@@ -134,10 +138,46 @@ namespace SKMNET.Client.Networking
         }
 
         public event EventHandler<Exception> Errored;
-        public void OnErrored(object sender, Exception data) { Errored?.Invoke(this, data); }
+        public void OnErrored(object sender, Exception data) { Errored?.Invoke(sender, data); }
 
         public event EventHandler<PacketRecievedEventArgs> PacketReceived;
         public void OnPacketRecieved(PacketDispatcher sender, PacketRecievedEventArgs args) { PacketReceived?.Invoke(sender, args); }
+
+        public async Task<Enums.FehlerT> SendPacketAsync(CPacket packet)
+        {
+            TaskCompletionSource<Enums.FehlerT> src = new TaskCompletionSource<Enums.FehlerT>();
+            completionQueue.Enqueue(src);
+
+            byte[] arr = MakePacket(packet.GetDataToSend(console), packet.Type);
+
+            SendToConsole(arr);
+            return await src.Task;
+        }
+
+        public async Task<Enums.FehlerT> SendPacketAsync(byte[] data, short type)
+        {
+            TaskCompletionSource<Enums.FehlerT> src = new TaskCompletionSource<Enums.FehlerT>();
+            completionQueue.Enqueue(src);
+
+            byte[] arr = MakePacket(data, type);
+
+            SendToConsole(arr);
+            return await src.Task;
+        }
+
+        public async Task<Enums.FehlerT> SendPacketAsync(SplittableHeader header)
+        {
+            TaskCompletionSource<Enums.FehlerT> src = new TaskCompletionSource<Enums.FehlerT>();
+            completionQueue.Enqueue(src);
+
+            foreach (byte[] arr in header.GetData(console))
+            {
+                byte[] arrOut = MakePacket(arr, header.Type);
+                SendToConsole(arrOut);
+            }
+
+            return await src.Task;
+        }
 
         public enum SKMON_RES
         {

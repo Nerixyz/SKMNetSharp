@@ -5,6 +5,7 @@ using SKMNET.Util;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using static SKMNET.Enums;
 
 namespace SKMNET.Client
@@ -19,17 +20,17 @@ namespace SKMNET.Client
         /// <param name="name">LTX</param>
         /// <param name="number">BLK Nr.</param>
         /// <param name="callback">Result-Action</param>
-        public void CreateScene(string name, double number, Action<Enums.FehlerT> callback = null)
+        public async Task<FehlerT> CreateScene(string name,
+                                               double number)
         {
-            EditPal(
+            return await EditPal(
                 name,
                 number,
                 MLUtil.MLPalFlag.BLK,
                 PalEdit.Param.Default,
                 PalEdit.SkSelect.Default,
                 PalEdit.SMode.Default,
-                PalEdit.Cmd.Create,
-                callback);
+                PalEdit.Cmd.Create);
         }
 
         /// <summary>
@@ -41,17 +42,20 @@ namespace SKMNET.Client
         /// <param name="skSelect">Geräteauswahl</param>
         /// <param name="saveMode">Schreibmodus</param>
         /// <param name="callback">Result-Action</param>
-        public void EditScene(string name, double number, PalEdit.Param param = PalEdit.Param.Default, PalEdit.SkSelect skSelect = PalEdit.SkSelect.Default, PalEdit.SMode saveMode = PalEdit.SMode.Default, Action<Enums.FehlerT> callback = null)
+        public async Task<FehlerT> EditScene(string name,
+                                             double number,
+                                             PalEdit.Param param = PalEdit.Param.Default,
+                                             PalEdit.SkSelect skSelect = PalEdit.SkSelect.Default,
+                                             PalEdit.SMode saveMode = PalEdit.SMode.Default)
         {
-            EditPal(
+            return await EditPal(
                 name,
                 number,
                 MLUtil.MLPalFlag.BLK,
                 param,
                 skSelect,
                 saveMode,
-                PalEdit.Cmd.Update,
-                callback
+                PalEdit.Cmd.Update
             );
         }
 
@@ -66,77 +70,67 @@ namespace SKMNET.Client
         /// <param name="smode">Schreibmodus fuer Create BLK</param>
         /// <param name="action">Das Bearbeitungskommando</param>
         /// <param name="callback">Result-Action</param>
-        public void EditPal(
-            string name,
-            double number,
-            MLUtil.MLPalFlag type,
-            PalEdit.Param param = PalEdit.Param.Default,
-            PalEdit.SkSelect select = PalEdit.SkSelect.Default,
-            PalEdit.SMode smode = PalEdit.SMode.Default,
-            PalEdit.Cmd action = PalEdit.Cmd.Create,
-            Action<Enums.FehlerT> callback = null)
+        public async Task<FehlerT> EditPal(string name,
+                                           double number,
+                                           MLUtil.MLPalFlag type,
+                                           PalEdit.Param param = PalEdit.Param.Default,
+                                           PalEdit.SkSelect select = PalEdit.SkSelect.Default,
+                                           PalEdit.SMode smode = PalEdit.SMode.Default,
+                                           PalEdit.Cmd action = PalEdit.Cmd.Create)
         {
-            Query(
-                new PalEdit(
-                    action,
-                    new PalEdit.PalEditEntry(
-                        type,
-                        (short)(number * 10),
-                        0,
-                        param,
-                        select,
-                        smode,
-                        name)),
-                callback);
+            return await QueryAsync(new PalEdit(action,
+                                                new PalEdit.PalEditEntry(type,
+                                                                         (short)(number * 10),
+                                                                         0,
+                                                                         param,
+                                                                         select,
+                                                                         smode,
+                                                                         name)));
         }
 
         #endregion PalEdit
 
         #region Anwahl
 
-        public void Select(AWType awType, SK sk, Action<FehlerT> callback = null)
-        {
-            Query(new SKAnwahl(awType, sk), callback);
-        }
+        public async Task<FehlerT> Select   (AWType awType,        SK      sk)  => await QueryAsync(new SKAnwahl (awType, sk));
+                                            
+        public async Task<FehlerT> Select   (AWType awType,        short   sk)  => await QueryAsync(new SKAnwahl (awType, sk));
+                                                                                
+        public async Task<FehlerT> Select   (AWType awType, params SK   [] sk)  => await QueryAsync(new SKAnwahl (awType, sk));
+                                                                                
+        public async Task<FehlerT> Select   (AWType awType, params short[] sk)  => await QueryAsync(new SKAnwahl (awType, sk));
 
-        public void Select(AWType awType, SKG skg, Action<FehlerT> callback = null)
-        {
-            Query(new SKGAnwahl(awType, skg), callback);
-        }
+        public async Task<FehlerT> Select   (AWType awType,        SKG     skg) => await QueryAsync(new SKGAnwahl(awType, skg));
 
-        public void Select(AWType awType, params SK[] sk)
-        {
-            Query(new SKAnwahl(awType, sk));
-        }
+        public async Task<FehlerT> Select   (AWType awType, params SKG  [] skg) => await QueryAsync(new SKGAnwahl(awType, skg));
 
-        public void Select(AWType awType, params SKG[] skg)
-        {
-            Query(new SKGAnwahl(awType, skg));
-        }
+        public async Task<FehlerT> SelectSKG(AWType awType,        short   skg) => await QueryAsync(new SKGAnwahl(awType, skg));
+
+        public async Task<FehlerT> SelectSKG(AWType awType, params short[] skg) => await QueryAsync(new SKGAnwahl(awType, skg));
 
         #endregion Anwahl
 
         #region Events
 
-        public void PushKey   (byte taste     , Action<FehlerT> callback = null) => Query(Event.Chain(new BedientasteEvent(taste, true), new BedientasteEvent(taste, false)), callback);
+        public async Task<FehlerT> PushKey   (byte taste     ) => await QueryAsync(Event.Chain(new BedientasteEvent(taste, true), new BedientasteEvent(taste, false)));
 
-        public void PushKey   (EnumTaste taste, Action<FehlerT> callback = null) => PushKey((byte)taste, callback);
+        public async Task<FehlerT> PushKey   (EnumTaste taste) => await PushKey((byte)taste);
 
-        public void PushKey   (Taste taste    , Action<FehlerT> callback = null) => PushKey((byte)taste.TastNR, callback);
+        public async Task<FehlerT> PushKey   (Taste taste    ) => await PushKey((byte)taste.TastNR);
 
-        public void HoldKey   (byte taste     , Action<FehlerT> callback = null) => Query(new BedientasteEvent(taste, true), callback);
+        public async Task<FehlerT> HoldKey   (byte taste     ) => await QueryAsync(new BedientasteEvent(taste, true));
 
-        public void HoldKey   (EnumTaste taste, Action<FehlerT> callback = null) => HoldKey((byte)taste, callback);
+        public async Task<FehlerT> HoldKey   (EnumTaste taste) => await HoldKey((byte)taste);
 
-        public void HoldKey   (Taste taste    , Action<FehlerT> callback = null) => HoldKey((byte)taste.TastNR, callback);
+        public async Task<FehlerT> HoldKey   (Taste taste    ) => await HoldKey((byte)taste.TastNR);
 
-        public void ReleaseKey(byte taste     , Action<FehlerT> callback = null) => Query(new BedientasteEvent(taste, false), callback);
+        public async Task<FehlerT> ReleaseKey(byte taste     ) => await QueryAsync(new BedientasteEvent(taste, false));
 
-        public void ReleaseKey(EnumTaste taste, Action<FehlerT> callback = null) => ReleaseKey((byte)taste, callback);
+        public async Task<FehlerT> ReleaseKey(EnumTaste taste) => await ReleaseKey((byte)taste);
 
-        public void ReleaseKey(Taste taste    , Action<FehlerT> callback = null) => ReleaseKey((byte)taste.TastNR, callback);
+        public async Task<FehlerT> ReleaseKey(Taste taste    ) => await ReleaseKey((byte)taste.TastNR);
 
-        public void PushKeys(Action<FehlerT> callback = null, params byte[] keys)
+        public async Task<FehlerT> PushKeys(params byte[] keys)
         {
             Event[] events = new Event[keys.Length * 2];
             for(int i = 0; i < keys.Length; i++)
@@ -144,11 +138,11 @@ namespace SKMNET.Client
                 events[ i * 2     ] = new BedientasteEvent(keys[i], true);
                 events[(i * 2) + 1] = new BedientasteEvent(keys[i], false);
             }
-            Query(Event.Chain(events), callback);
+            return await QueryAsync(Event.Chain(events));
         }
         //should be a lot faster than mapping [] to byte[]
 
-        public void PushKeys(Action<FehlerT> callback = null, params EnumTaste[] keys)
+        public async Task<FehlerT> PushKeys(params EnumTaste[] keys)
         {
             Event[] events = new Event[keys.Length * 2];
             for (int i = 0; i < keys.Length; i++)
@@ -156,10 +150,10 @@ namespace SKMNET.Client
                 events[ i * 2     ] = new BedientasteEvent((byte)keys[i], true);
                 events[(i * 2) + 1] = new BedientasteEvent((byte)keys[i], false);
             }
-            Query(Event.Chain(events), callback);
+            return await QueryAsync(Event.Chain(events));
         }
 
-        public void PushKey(Action<FehlerT> callback = null, params Taste[] tasten)
+        public async Task<FehlerT> PushKey(params Taste[] tasten)
         {
             Event[] events = new Event[tasten.Length * 2];
             for (int i = 0; i < tasten.Length; i++)
@@ -167,14 +161,14 @@ namespace SKMNET.Client
                 events[ i * 2     ] = new BedientasteEvent((byte)tasten[i].TastNR, true);
                 events[(i * 2) + 1] = new BedientasteEvent((byte)tasten[i].TastNR, false);
             }
-            Query(Event.Chain(events), callback);
+            return await QueryAsync(Event.Chain(events));
         }
 
 
 
-        public void MoveMouse(byte x, byte y, Action<FehlerT> callback = null)
+        public async Task<FehlerT> MoveMouse(byte x, byte y)
         {
-            Query(new MouseEvent(x, y, 0), callback);
+            return await QueryAsync(new MouseEvent(x, y, 0));
         }
 
         #endregion
@@ -185,7 +179,7 @@ namespace SKMNET.Client
         /// <param name="src">Can be null, either ActiveSK or AllSK</param>
         /// <param name="dst">Destination register</param>
         /// <param name="callback">Result-Action</param>
-        public void PushChanges(List<SK> src = null, FixParDst dst = FixParDst.Current, Action<FehlerT> callback = null)
+        public async Task<FehlerT> PushChanges(List<SK> src = null, FixParDst dst = FixParDst.Current)
         {
             if (src == null)
                 src = ActiveSK;
@@ -193,7 +187,7 @@ namespace SKMNET.Client
             List<SK> changed = src.FindAll((sk) => sk.dirty);
             changed.ForEach((sk) => sk.dirty = false);
 
-            Query(new FixParDimmer(dst, changed.ToArray()), callback);
+            return await QueryAsync(new FixParDimmer(dst, changed.ToArray()));
         }
     }
 }

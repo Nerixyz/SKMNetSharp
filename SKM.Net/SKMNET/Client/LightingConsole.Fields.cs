@@ -41,7 +41,7 @@ namespace SKMNET.Client
         public string AktReg { get; set; }
         public string AktList { get; set; }
 
-        public Dictionary<MLPal.MLPalFlag, List<MLPal>> Paletten { get; }
+        public Dictionary<MLPal.Flag, List<MLPal>> Paletten { get; }
 
         /// <summary>
         /// Alle Parameter (für zB GUI)
