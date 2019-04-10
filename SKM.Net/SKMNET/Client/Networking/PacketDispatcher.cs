@@ -70,9 +70,14 @@ namespace SKMNET.Client.Networking
                 { 153, typeof(ParDef) },
                 { 154, typeof(MLPalConf) },
                 { 155, typeof(MLPalSK) },
+                { 156, typeof(SelPar) }, // = SKMON_MLPAR
 
                 /* Libra 1.8 */
                 { 158, typeof(AktInfo) },
+
+                /* MLC 2.0 ? */
+                { 159, typeof(SelPar) }, // = SKMON_MLPAR_UPD
+                { 160, typeof(SelPar) } // = SKMON_MLPAR_REMOVE
             };
 
         }

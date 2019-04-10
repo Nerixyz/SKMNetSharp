@@ -20,6 +20,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using SKMNET.Client.Rendering;
+using SKMNET.Client.Stromkreise.ML;
+using static SKMNET.Enums;
 
 namespace Test
 {
@@ -43,7 +45,7 @@ namespace Test
 
             
             Console.ReadLine();
-            stopwatch.Start();
+            /*stopwatch.Start();
             Print(await console.PushKeys(EnumTaste.ONE,
                                          EnumTaste.EIGHT,
                                          EnumTaste.SEVEN,
@@ -52,7 +54,15 @@ namespace Test
             Console.ReadLine();
             stopwatch.Start();
             Print(await console.CreateScene("SKMNet",
-                                            187.0));
+                                            187.0));*/
+
+            FehlerT fehler = await console.QueryAsync(new ParList(true, console.ActiveSK.ToArray()));
+            Console.WriteLine(fehler);
+            Console.ReadLine();
+            foreach (MLCParameter p in console.MLCParameters)
+            {
+                Console.WriteLine(JsonConvert.SerializeObject(p));
+            }
 
 
 

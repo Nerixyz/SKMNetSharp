@@ -40,11 +40,29 @@ namespace SKMNET.Client.Networking.Server.TSD
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
+            //Apply to SK
             SK sk = console.ActiveSK.Find((inc) => inc.Number == fixture);
             if (sk != null)
             {
+                if(type == 160 /* SKMON_MLPAR_REMOVE */)
+                {
+                    sk.Parameters.Clear();
+                    return Enums.Response.OK;
+                }
+
+                // load MLCParams
                 foreach (SelParData par in parameters)
                 {
+                    MLCParameter mlcParameter = console.MLCParameters.Find((x) => x.Number == par.parno);
+                    if(mlcParameter == null)
+                    {
+                        MLCParameter parameter = new MLCParameter(par.parno, Enums.SelRangeDisp.Normal, par.parname);
+                        console.MLCParameters.Add(parameter);
+                    }
+                    else
+                    {
+                        mlcParameter.Name = par.parname;
+                    }
                     MLParameter param = sk.Parameters.Find((inc) => inc.ParNo == par.parno);
                     if (param != null)
                     {
