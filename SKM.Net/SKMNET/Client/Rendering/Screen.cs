@@ -37,7 +37,7 @@ namespace SKMNET.Client.Rendering
 
         public MBlock GetBlock(int x, int y)
         {
-            return Data[(x * VERTICAL_LINES) + y];
+            return Data[Math.Min((x * VERTICAL_LINES) + y, Data.Length - 1)];
         }
 
         private void Setup()

@@ -35,31 +35,11 @@ namespace Test
         private static async Task MainAsync()
         {
             stopwatch = new Stopwatch();
-            LightingConsole console = new LightingConsole(
-                "127.0.0.1",
-                new LightingConsole.ConsoleSettings()
-                {
-                    Bedientasten = true,
-                    AktInfo = true,
-                    AZ_Zeilen = true,
-                    BefMeldZeile = true,
-                    BlockInfo = true,
-                    ExtKeys = true,
-                    FuncKeys = true,
-                    LKI = true,
-                    Steller = true,
-
-                    Logger = new ConsoleLogger(),
-                    Bedienstelle = Enums.Bedienstelle.Libra,
-                    SKMType = 2
-                }
-            );
+            LightingConsole console = new LightingConsole("127.0.0.1",
+                                                          LightingConsole.ConsoleSettings.All(logger: new ConsoleLogger()));
 
             console.Errored += Console_Errored;
             console.Connection.PacketReceived += Connection_PacketReceived;
-
-
-
 
             
             Console.ReadLine();

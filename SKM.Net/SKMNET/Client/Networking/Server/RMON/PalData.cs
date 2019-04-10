@@ -13,18 +13,15 @@ namespace SKMNET.Client.Networking.Server
     public class PalData : SPacket
     {
 
-        public VideoFarbe[] farbeintrag;
+        public List<VideoFarbe> farbeintrag;
 
         private const int N_HW_PALETTE = 64;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            farbeintrag = new VideoFarbe[N_HW_PALETTE];
-
             for (int i = 0; i < N_HW_PALETTE; i ++)
             {
-                    VideoFarbe eintrag = farbeintrag[i];
-                    eintrag = new VideoFarbe(buffer.ReadShort(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte());
+                 farbeintrag.Add(new VideoFarbe(buffer.ReadShort(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte(), buffer.ReadByte()));
             }
             return this;
         }
@@ -32,12 +29,13 @@ namespace SKMNET.Client.Networking.Server
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
             //TODO MonitorHandler
+            console.ScreenManager.HandleData(this);
             return Enums.Response.OK;
         }
 
         public PalData()
         {
-            farbeintrag = new VideoFarbe[64];
+            farbeintrag = new List<VideoFarbe>(64);
         }
     }
 }

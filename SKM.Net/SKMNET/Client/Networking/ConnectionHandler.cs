@@ -74,8 +74,10 @@ namespace SKMNET.Client.Networking
             ByteBuffer buf = new ByteBuffer(e);
             Enums.FehlerT fehler = Enums.GetEnum<Enums.FehlerT>(buf.ReadUInt());
 
-            if (completionQueue.TryDequeue(out TaskCompletionSource<Enums.FehlerT> res))
+
+            if (completionQueue.Count > 0)
             {
+                TaskCompletionSource<Enums.FehlerT> res = completionQueue.Dequeue();
                 res.SetResult(fehler);
             }
             Console.WriteLine(fehler.ToString());

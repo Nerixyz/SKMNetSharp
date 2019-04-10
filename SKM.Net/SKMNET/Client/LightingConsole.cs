@@ -75,7 +75,27 @@ namespace SKMNET.Client
             /// </summary>
             public byte SKMType { get; set; } = 0;
             public Enums.Bedienstelle Bedienstelle { get; set; } = Enums.Bedienstelle.Libra;
-            public ILogger Logger { get; set; }
+            public ILogger Logger { get; set; } = null;
+
+            public static ConsoleSettings All(byte SKMType = 2, Enums.Bedienstelle bedienstelle = Enums.Bedienstelle.Libra, ILogger logger = null, bool state = true)
+            {
+                return new ConsoleSettings()
+                {
+                    Bedientasten = state,
+                    AktInfo      = state,
+                    AZ_Zeilen    = state,
+                    BefMeldZeile = state,
+                    BlockInfo    = state,
+                    ExtKeys      = state,
+                    FuncKeys     = state,
+                    LKI          = state,
+                    Steller      = state,
+
+                    Logger       = logger,
+                    Bedienstelle = bedienstelle,
+                    SKMType      = SKMType
+                };
+            }
         }
     }
 }
