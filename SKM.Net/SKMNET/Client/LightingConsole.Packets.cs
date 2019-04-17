@@ -4,6 +4,7 @@ using SKMNET.Client.Tasten;
 using SKMNET.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static SKMNET.Enums;
@@ -12,7 +13,6 @@ namespace SKMNET.Client
 {
     public partial class LightingConsole
     {
-
         #region PalEdit
         /// <summary>
         /// Create a Scene
@@ -30,7 +30,7 @@ namespace SKMNET.Client
                 PalEdit.Param.Default,
                 PalEdit.SkSelect.Default,
                 PalEdit.SMode.Default,
-                PalEdit.Cmd.Create);
+                PalEdit.Cmd.Create).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace SKMNET.Client
                 skSelect,
                 saveMode,
                 PalEdit.Cmd.Update
-            );
+            ).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -85,50 +85,44 @@ namespace SKMNET.Client
                                                                          param,
                                                                          select,
                                                                          smode,
-                                                                         name)));
+                                                                         name))).ConfigureAwait(false);
         }
 
         #endregion PalEdit
 
         #region Anwahl
 
-        public async Task<FehlerT> Select   (AWType awType,        SK      sk)  => await QueryAsync(new SKAnwahl (awType, sk));
-                                            
-        public async Task<FehlerT> Select   (AWType awType,        short   sk)  => await QueryAsync(new SKAnwahl (awType, sk));
-                                                                                
-        public async Task<FehlerT> Select   (AWType awType, params SK   [] sk)  => await QueryAsync(new SKAnwahl (awType, sk));
-                                                                                
-        public async Task<FehlerT> Select   (AWType awType, params short[] sk)  => await QueryAsync(new SKAnwahl (awType, sk));
+        public async Task<FehlerT> Select   (AWType awType,        SK      sk)  => await QueryAsync(new SKAnwahl (awType, sk)).ConfigureAwait(false);
 
-        public async Task<FehlerT> Select   (AWType awType,        SKG     skg) => await QueryAsync(new SKGAnwahl(awType, skg));
-
-        public async Task<FehlerT> Select   (AWType awType, params SKG  [] skg) => await QueryAsync(new SKGAnwahl(awType, skg));
-
-        public async Task<FehlerT> SelectSKG(AWType awType,        short   skg) => await QueryAsync(new SKGAnwahl(awType, skg));
-
-        public async Task<FehlerT> SelectSKG(AWType awType, params short[] skg) => await QueryAsync(new SKGAnwahl(awType, skg));
+        public async Task<FehlerT> Select   (AWType awType,        short   sk)  => await QueryAsync(new SKAnwahl (awType, sk )).ConfigureAwait(false);
+        public async Task<FehlerT> Select   (AWType awType, params SK   [] sk)  => await QueryAsync(new SKAnwahl (awType, sk )).ConfigureAwait(false);
+        public async Task<FehlerT> Select   (AWType awType, params short[] sk)  => await QueryAsync(new SKAnwahl (awType, sk )).ConfigureAwait(false);
+        public async Task<FehlerT> Select   (AWType awType,        SKG     skg) => await QueryAsync(new SKGAnwahl(awType, skg)).ConfigureAwait(false);
+        public async Task<FehlerT> Select   (AWType awType, params SKG  [] skg) => await QueryAsync(new SKGAnwahl(awType, skg)).ConfigureAwait(false);
+        public async Task<FehlerT> SelectSKG(AWType awType,        short   skg) => await QueryAsync(new SKGAnwahl(awType, skg)).ConfigureAwait(false);
+        public async Task<FehlerT> SelectSKG(AWType awType, params short[] skg) => await QueryAsync(new SKGAnwahl(awType, skg)).ConfigureAwait(false);
 
         #endregion Anwahl
 
         #region Events
 
-        public async Task<FehlerT> PushKey   (byte taste     ) => await QueryAsync(Event.Chain(new BedientasteEvent(taste, true), new BedientasteEvent(taste, false)));
+        public async Task<FehlerT> PushKey   (byte taste     ) => await QueryAsync(Event.Chain(new BedientasteEvent(taste, true), new BedientasteEvent(taste, false))).ConfigureAwait(false);
 
-        public async Task<FehlerT> PushKey   (EnumTaste taste) => await PushKey((byte)taste);
+        public async Task<FehlerT> PushKey   (EnumTaste taste) => await PushKey((byte)taste).ConfigureAwait(false);
 
-        public async Task<FehlerT> PushKey   (Taste taste    ) => await PushKey((byte)taste.TastNR);
+        public async Task<FehlerT> PushKey   (Taste taste    ) => await PushKey((byte)taste.TastNR).ConfigureAwait(false);
 
-        public async Task<FehlerT> HoldKey   (byte taste     ) => await QueryAsync(new BedientasteEvent(taste, true));
+        public async Task<FehlerT> HoldKey   (byte taste     ) => await QueryAsync(new BedientasteEvent(taste, true)).ConfigureAwait(false);
 
-        public async Task<FehlerT> HoldKey   (EnumTaste taste) => await HoldKey((byte)taste);
+        public async Task<FehlerT> HoldKey   (EnumTaste taste) => await HoldKey((byte)taste).ConfigureAwait(false);
 
-        public async Task<FehlerT> HoldKey   (Taste taste    ) => await HoldKey((byte)taste.TastNR);
+        public async Task<FehlerT> HoldKey   (Taste taste    ) => await HoldKey((byte)taste.TastNR).ConfigureAwait(false);
 
-        public async Task<FehlerT> ReleaseKey(byte taste     ) => await QueryAsync(new BedientasteEvent(taste, false));
+        public async Task<FehlerT> ReleaseKey(byte taste     ) => await QueryAsync(new BedientasteEvent(taste, false)).ConfigureAwait(false);
 
-        public async Task<FehlerT> ReleaseKey(EnumTaste taste) => await ReleaseKey((byte)taste);
+        public async Task<FehlerT> ReleaseKey(EnumTaste taste) => await ReleaseKey((byte)taste).ConfigureAwait(false);
 
-        public async Task<FehlerT> ReleaseKey(Taste taste    ) => await ReleaseKey((byte)taste.TastNR);
+        public async Task<FehlerT> ReleaseKey(Taste taste    ) => await ReleaseKey((byte)taste.TastNR).ConfigureAwait(false);
 
         public async Task<FehlerT> PushKeys(params byte[] keys)
         {
@@ -138,7 +132,7 @@ namespace SKMNET.Client
                 events[ i * 2     ] = new BedientasteEvent(keys[i], true);
                 events[(i * 2) + 1] = new BedientasteEvent(keys[i], false);
             }
-            return await QueryAsync(Event.Chain(events));
+            return await QueryAsync(Event.Chain(events)).ConfigureAwait(false);
         }
         //should be a lot faster than mapping [] to byte[]
 
@@ -150,7 +144,7 @@ namespace SKMNET.Client
                 events[ i * 2     ] = new BedientasteEvent((byte)keys[i], true);
                 events[(i * 2) + 1] = new BedientasteEvent((byte)keys[i], false);
             }
-            return await QueryAsync(Event.Chain(events));
+            return await QueryAsync(Event.Chain(events)).ConfigureAwait(false);
         }
 
         public async Task<FehlerT> PushKey(params Taste[] tasten)
@@ -161,14 +155,12 @@ namespace SKMNET.Client
                 events[ i * 2     ] = new BedientasteEvent((byte)tasten[i].TastNR, true);
                 events[(i * 2) + 1] = new BedientasteEvent((byte)tasten[i].TastNR, false);
             }
-            return await QueryAsync(Event.Chain(events));
+            return await QueryAsync(Event.Chain(events)).ConfigureAwait(false);
         }
-
-
 
         public async Task<FehlerT> MoveMouse(byte x, byte y)
         {
-            return await QueryAsync(new MouseEvent(x, y, 0));
+            return await QueryAsync(new MouseEvent(x, y, 0)).ConfigureAwait(false);
         }
 
         #endregion
@@ -179,15 +171,14 @@ namespace SKMNET.Client
         /// <param name="src">Can be null, either ActiveSK or AllSK</param>
         /// <param name="dst">Destination register</param>
         /// <param name="callback">Result-Action</param>
-        public async Task<FehlerT> PushChanges(List<SK> src = null, FixParDst dst = FixParDst.Current)
+        public async Task<FehlerT> PushChanges(FixParDst dst = FixParDst.Current)
         {
-            if (src == null)
-                src = ActiveSK;
+            SK[] changed = Stromkreise.Where(s => s?.dirty == true).ToArray();
 
-            List<SK> changed = src.FindAll((sk) => sk.dirty);
-            changed.ForEach((sk) => sk.dirty = false);
 
-            return await QueryAsync(new FixParDimmer(dst, changed.ToArray()));
+            foreach(SK s in changed) s.dirty = false;
+
+            return await QueryAsync(new FixParDimmer(dst, changed.ToArray())).ConfigureAwait(false);
         }
     }
 }

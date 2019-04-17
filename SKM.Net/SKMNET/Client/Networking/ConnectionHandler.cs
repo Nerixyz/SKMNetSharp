@@ -80,7 +80,6 @@ namespace SKMNET.Client.Networking
                 TaskCompletionSource<Enums.FehlerT> res = completionQueue.Dequeue();
                 res.SetResult(fehler);
             }
-            Console.WriteLine(fehler.ToString());
         }
 
         private void SendToConsole(byte[] data)

@@ -14,7 +14,6 @@ namespace SKMNET.Client.Networking.Server.T98
     [Serializable]
     public class SKRegConf : SPacket
     {
-
         public ushort start;
         public bool clear; /* should clear */
         public ushort count;
@@ -37,13 +36,13 @@ namespace SKMNET.Client.Networking.Server.T98
         {
             if (clear)
             {
-                console.Stromkreise.Clear();
-
+                console.Stromkreise = new SK[console.SKSize];
             }
-            for (ushort i = start; i < count + start; i++)
+            for (ushort i = 0; i < count ; i++)
             {
-                if(i <= console.Stromkreise.Count)
-                    console.Stromkreise.Insert(i, new SK(data[i - start], console));
+                ushort num = data[i];
+                if(num < console.Stromkreise.Length)
+                    console.Stromkreise[num] = new SK(num);
             }
             return Enums.Response.OK;
         }

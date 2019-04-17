@@ -1,4 +1,5 @@
-﻿using SKMNET.Client.Stromkreise;
+﻿using SKMNET.Client.Networking.Client;
+using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ namespace SKMNET.Client.Networking.Server.TSD
     [Serializable]
     public class SelPar : SPacket
     {
-
         public ushort fixture;
         public string fixtureName;
         public bool last;
@@ -33,7 +33,6 @@ namespace SKMNET.Client.Networking.Server.TSD
                     buffer.ReadString(8),
                     buffer.ReadString(8),
                     buffer.ReadString(8));
-
             }
             return this;
         }
@@ -41,7 +40,7 @@ namespace SKMNET.Client.Networking.Server.TSD
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
             //Apply to SK
-            SK sk = console.ActiveSK.Find((inc) => inc.Number == fixture);
+            SK sk = console.Stromkreise[fixture];
             if (sk != null)
             {
                 if(type == 160 /* SKMON_MLPAR_REMOVE */)
@@ -58,6 +57,10 @@ namespace SKMNET.Client.Networking.Server.TSD
                     {
                         MLCParameter parameter = new MLCParameter(par.parno, Enums.SelRangeDisp.Normal, par.parname);
                         console.MLCParameters.Add(parameter);
+
+                        //get info (not loaded yet)
+                        console.QueryAsync(new ParSelect(par.parno)).ConfigureAwait(false);
+                        Console.WriteLine("sel");
                     }
                     else
                     {
@@ -97,18 +100,22 @@ namespace SKMNET.Client.Networking.Server.TSD
             /// Parameternummer (0-199)
             /// </summary>
             public short parno;
+
             /// <summary>
             /// Parameterwert
             /// </summary>
             public ushort val16;
+
             /// <summary>
             /// Parametername
             /// </summary>
             public string parname;
+
             /// <summary>
             /// Parameterwert als String
             /// </summary>
             public string parval;
+
             /// <summary>
             /// Palettenname als String
             /// </summary>

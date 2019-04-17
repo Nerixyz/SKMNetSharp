@@ -17,9 +17,9 @@ namespace SKMNET.Client
     public partial class LightingConsole
     {
         [NonSerialized]
-        public List<SK> Stromkreise = new List<SK>();
+        public SK[] Stromkreise;
 
-        public List<SK> ActiveSK { get; set; } = new List<SK>();
+        public int SKSize;
 
         public Enums.Bedienstelle Bedienstelle { get; }
 
@@ -44,7 +44,7 @@ namespace SKMNET.Client
         public Dictionary<MLPal.Flag, List<MLPal>> Paletten { get; }
 
         /// <summary>
-        /// Alle Parameter (für zB GUI)
+        /// Alle Parameter
         /// </summary>
         public List<MLCParameter> MLCParameters { get; set; } = new List<MLCParameter>();
 

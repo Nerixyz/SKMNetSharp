@@ -24,17 +24,17 @@ namespace SKMNET.Client
         [Obsolete("Use SendPacketAsync instead", false)]
         public void Query(SplittableHeader packet) => Connection.SendPacket(packet);
 
-        public async Task<Enums.FehlerT> QueryAsync(CPacket packet) => await Connection.SendPacketAsync(packet);
+        public async Task<Enums.FehlerT> QueryAsync(CPacket packet) => await Connection.SendPacketAsync(packet).ConfigureAwait(false);
 
-        public async Task<Enums.FehlerT> QueryAsync(SplittableHeader header) => await Connection.SendPacketAsync(header);
+        public async Task<Enums.FehlerT> QueryAsync(SplittableHeader header) => await Connection.SendPacketAsync(header).ConfigureAwait(false);
 
-        public async Task<Enums.FehlerT> QueryAsync(byte[] data, short type) => await Connection.SendPacketAsync(data, type);
+        public async Task<Enums.FehlerT> QueryAsync(byte[] data, short type) => await Connection.SendPacketAsync(data, type).ConfigureAwait(false);
 
         public void SendRawData(byte[] arr) => Connection.SendRawData(arr);
 
-        public SK GetSKByNumber(short num, bool entireSet = false)
+        public SK GetSKByNumber(short num)
         {
-            return entireSet ? Stromkreise.Find((x) => x.Number == num) : ActiveSK.Find((x) => x.Number == num);
+            return Stromkreise[num];
         }
     }
 }

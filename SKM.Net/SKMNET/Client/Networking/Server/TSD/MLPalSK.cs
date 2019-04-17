@@ -14,7 +14,6 @@ namespace SKMNET.Client.Networking.Server.TSD
     /// </summary>
     public class MLPalSK : SPacket
     {
-
         public ushort palno;
         public ushort mlpaltype;
         public bool last;
@@ -59,7 +58,7 @@ namespace SKMNET.Client.Networking.Server.TSD
             }
             foreach (ushort item in skTable)
             {
-                SK sk = console.Stromkreise.Find((x) => x.Number == item);
+                SK sk = console.Stromkreise[item];
                 if (sk is null)
                     continue;
                 pal.BetSK.Add(sk);

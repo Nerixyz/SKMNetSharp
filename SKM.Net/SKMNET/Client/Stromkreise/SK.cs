@@ -11,25 +11,21 @@ namespace SKMNET.Client.Stromkreise
     public class SK
     {
         public ushort Number { get; }
+
         public List<MLParameter> Parameters { get; set; }
+
+        private byte _intensity;
+
         public byte Intensity { get { return _intensity; } set {
                 Set(value);
                 dirty = true;
             }
         }
-        private byte _intensity;
+
         public byte Attrib { get; set; }
-        private bool active;
 
-        [NonSerialized]
-        private readonly LightingConsole console;
-
-        public SK(ushort Number, LightingConsole console, byte Intensity = 0)
+        public SK(ushort Number, byte Intensity = 0)
         {
-            this.active = Intensity > 0;
-
-            this.console = console;
-
             this.Number = Number;
             this.Parameters = new List<MLParameter>();
             this.Intensity = Intensity;
@@ -58,12 +54,6 @@ namespace SKMNET.Client.Stromkreise
                 Parameters[0].Value = val << 8;
             }
             _intensity = val;
-            if (val > 0 && !active)
-            {
-                active = true;
-                if(!console.ActiveSK.Contains(this))
-                    console.ActiveSK.Add(this);
-            }
         }
 
         internal bool dirty = false;

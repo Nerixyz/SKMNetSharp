@@ -50,11 +50,14 @@ namespace SKMNET.Client.Networking.Server.TSD
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            SK sk = console.Stromkreise.Find((x) => x.Number == fixture);
+            SK sk = console.Stromkreise[fixture];
             MLParameter param = sk?.Parameters.Find((x) => x.ParNo == fixpar);
             if (param is null)
                 return Enums.Response.BadCmd;
 
+            MLCParameter mlc = console.MLCParameters.Find((x) => x.Number == fixpar);
+
+            console.Logger?.Log(count);
             // TODO inspection
             int i = 0;
             foreach(SelRangeData data in arr)
@@ -63,6 +66,13 @@ namespace SKMNET.Client.Networking.Server.TSD
                 param.DefaultVal = data.defaultVal;
                 param.Flags = data.flags;
                 param.Name = data.name;
+
+                mlc.Range = (data.start, data.end);
+                mlc.Default = data.defaultVal;
+                mlc.Flags = data.flags;
+                mlc.Name = data.name;
+
+                //increment par-pointer?
                 i++;
                 param = sk.Parameters.Find((x) => x.ParNo == fixpar + i);
             }

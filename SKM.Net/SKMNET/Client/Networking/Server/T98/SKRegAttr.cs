@@ -36,24 +36,15 @@ namespace SKMNET.Client.Networking.Server.T98
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            console.ActiveSK.Clear();
             for (int i = start; i < start + count; i++)
             {
-                if (i >= console.Stromkreise.Count)
+                if (i >= console.Stromkreise.Length)
                     break;
 
                 SK sk = console.Stromkreise[i];
                 if (sk != null)
                 {
                     sk.Attrib = data[i - start];
-                }
-            }
-            // TODO: optimize speed
-            foreach (SK sk in console.Stromkreise)
-            {
-                if (sk.Attrib != 0 && sk.Number != 0)
-                {
-                    console.ActiveSK.Add(sk);
                 }
             }
             return Enums.Response.OK;

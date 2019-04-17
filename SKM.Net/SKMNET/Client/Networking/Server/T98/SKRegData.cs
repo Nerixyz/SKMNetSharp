@@ -14,10 +14,10 @@ namespace SKMNET.Client.Networking.Server.T98
     [Serializable]
     public class SKRegData : SPacket
     {
-
         public ushort start;
         public bool update; /* should display update */
         public ushort count;
+
         [NonSerialized]
         public byte[] data;
 
@@ -38,7 +38,7 @@ namespace SKMNET.Client.Networking.Server.T98
         {
             for (int i = start; i < start + count; i++)
             {
-                if (i >= console.Stromkreise.Count)
+                if (i >= console.Stromkreise.Length)
                     break;
 
                 SK reg = console.Stromkreise[i];

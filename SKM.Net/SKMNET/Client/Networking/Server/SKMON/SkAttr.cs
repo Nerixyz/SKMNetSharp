@@ -12,7 +12,6 @@ namespace SKMNET.Client.Networking.Server.SKMON
     /// </summary>
     public class SkAttr : SPacket
     {
-
         public ushort start;
         public ushort count;
         public byte[] data;
@@ -31,21 +30,12 @@ namespace SKMNET.Client.Networking.Server.SKMON
 
         public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
         {
-            console.ActiveSK.Clear();
             for (int i = start; i < start + count; i++)
             {
                 SK sk = console.Stromkreise[i];
                 if (sk != null)
                 {
                     sk.Attrib = data[i - start];
-                }
-            }
-            // TODO: optimize speed
-            foreach (SK sk in console.Stromkreise)
-            {
-                if (sk.Attrib != 0 && sk.Number != 0)
-                {
-                    console.ActiveSK.Add(sk);
                 }
             }
             return Enums.Response.OK;

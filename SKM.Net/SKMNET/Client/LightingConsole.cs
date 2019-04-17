@@ -35,6 +35,9 @@ namespace SKMNET.Client
                 Steller = Settings.Steller
             };
 
+            this.Stromkreise = new SK[this.Settings.SKSize];
+            this.SKSize = Settings.SKSize;
+
             Connection = new ConnectionHandler(ip, this, steckbrief, Settings.SKMType);
             Connection.Errored += Connection_Errored;
 
@@ -62,22 +65,40 @@ namespace SKMNET.Client
         {
             public bool Bedientasten { get; set; } = false;
             public bool BefMeldZeile { get; set; } = false;
-            public bool FuncKeys     { get; set; } = false;
-            public bool LKI          { get; set; } = false;
-            public bool BlockInfo    { get; set; } = false;
-            public bool AZ_Zeilen    { get; set; } = false;
-            public bool ExtKeys      { get; set; } = false;
-            public bool AktInfo      { get; set; } = false;
-            public bool Steller      { get; set; } = false;
+            public bool FuncKeys { get; set; } = false;
+            public bool LKI { get; set; } = false;
+            public bool BlockInfo { get; set; } = false;
+            public bool AZ_Zeilen { get; set; } = false;
+            public bool ExtKeys { get; set; } = false;
+            public bool AktInfo { get; set; } = false;
+            public bool Steller { get; set; } = false;
 
             /// <summary>
             /// Type of SKM (0=regular, 1=tsd, 2=mlc)
             /// </summary>
             public byte SKMType { get; set; } = 0;
             public Enums.Bedienstelle Bedienstelle { get; set; } = Enums.Bedienstelle.Libra;
+
+            /// <summary>
+            /// Logger for this Connection
+            /// </summary>
             public ILogger Logger { get; set; } = null;
 
-            public static ConsoleSettings All(byte SKMType = 2, Enums.Bedienstelle bedienstelle = Enums.Bedienstelle.Libra, ILogger logger = null, bool state = true)
+            /// <summary>
+            /// Size of <see cref="LightingConsole.Stromkreise"/>
+            /// </summary>
+            public int SKSize { get; set; } = 512 * 2;
+
+            /// <summary>
+            /// Initialize default settings
+            /// </summary>
+            /// <param name="SKSize">Size of <see cref="LightingConsole.Stromkreise"/></param>
+            /// <param name="SKMType">Type of SKM (0 = regular, 1 = TSD, 2 = MLC)</param>
+            /// <param name="bedienstelle">Connection type</param>
+            /// <param name="logger">Logger for the connection</param>
+            /// <param name="state">State of all flags</param>
+            /// <returns>Default <see cref="ConsoleSettings"/></returns>
+            public static ConsoleSettings All(int SKSize = 512 * 2, byte SKMType = 2, Enums.Bedienstelle bedienstelle = Enums.Bedienstelle.Libra, ILogger logger = null, bool state = true)
             {
                 return new ConsoleSettings()
                 {
@@ -93,7 +114,8 @@ namespace SKMNET.Client
 
                     Logger       = logger,
                     Bedienstelle = bedienstelle,
-                    SKMType      = SKMType
+                    SKMType      = SKMType,
+                    SKSize       = SKSize
                 };
             }
         }
