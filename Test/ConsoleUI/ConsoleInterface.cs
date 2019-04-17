@@ -100,7 +100,7 @@ namespace ConsoleUI
 
                         ushort num = ushort.Parse(func.Arguments[0].Text);
                         byte intensity = byte.Parse(func.Arguments[1].Text);
-                        SK sk = console.Stromkreise.Find((x) => x.Number == num);
+                        SK sk = console.Stromkreise[num];
                         sk.Intensity = intensity;
                         PreQuery?.Invoke();
                         console.QueryAsync(new FixParDimmer(Enums.FixParDst.Current, sk)).Wait();
@@ -191,7 +191,6 @@ namespace ConsoleUI
                         throw new Exception("Could not handle CFunction");
                     }
                 }
-
             }
             else
             {
@@ -255,14 +254,12 @@ namespace ConsoleUI
             {
                 return new CText(s);
             }
-
         }
 
         public class CFunction : CArgument
         {
             public CFunction(string text) : base(text)
             {
-
             }
 
             public string Name { get; set; }

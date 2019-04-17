@@ -22,6 +22,9 @@ using System.Runtime.InteropServices;
 using SKMNET.Client.Rendering;
 using SKMNET.Client.Stromkreise.ML;
 using static SKMNET.Enums;
+using MacroTest;
+using EffectSystem;
+using EffectSystem.Effects;
 
 namespace Test
 {
@@ -32,6 +35,7 @@ namespace Test
         private static void Main(string[] _)
         {
             MainAsync().Wait();
+            Console.ReadLine();
         }
 
         private static async Task MainAsync()
@@ -43,47 +47,23 @@ namespace Test
             console.Errored += Console_Errored;
             console.Connection.PacketReceived += Connection_PacketReceived;
 
-            
             Console.ReadLine();
-            /*stopwatch.Start();
-            Print(await console.PushKeys(EnumTaste.ONE,
-                                         EnumTaste.EIGHT,
-                                         EnumTaste.SEVEN,
-                                         EnumTaste.S,
-                                         EnumTaste.S));
-            Console.ReadLine();
-            stopwatch.Start();
-            Print(await console.CreateScene("SKMNet",
-                                            187.0));*/
-
-            FehlerT fehler = await console.QueryAsync(new ParList(true, console.ActiveSK.ToArray()));
-            Console.WriteLine(fehler);
-            Console.ReadLine();
-            foreach (MLCParameter p in console.MLCParameters)
+            EffectManager manager = new EffectManager(new List<EffectInfo>()
             {
-                Console.WriteLine(JsonConvert.SerializeObject(p));
-            }
+                new EffectInfo<DimmerFade>()
+                {
+                    Key = ConsoleKey.D
+                }
+            });
+            manager.BlockThread(console);
 
-
-
-
-
-
-
-
-
-
-            //ScriptManager manager = new ScriptManager(ScriptManager.SetupContext(console));
-            //manager.LoadScript(@"G:\Scripts\test.js", "test");
-            //Console.WriteLine("loaded");
-            //manager.ExecuteScript("test");
-            //Console.WriteLine("postExec");
-
-            //new ConsoleInterface().StartAndBlock(console, BASIC_CALLBACK, ()=> stopwatch.Start());
-
-            //Console.WriteLine(JsonConvert.SerializeObject(console.TastenManager.Tasten));
             Console.ReadLine();
-            Console.ReadLine();
+
+        }
+
+        private static void Print(ushort u)
+        {
+            Console.WriteLine(u);
         }
 
         private static void Print(Enums.FehlerT fehler)
