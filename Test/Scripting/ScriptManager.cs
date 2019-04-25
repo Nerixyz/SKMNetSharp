@@ -15,7 +15,7 @@ namespace Scripting
     {
         public const string NS_NETWORK_CLIENT = "SKMNET.Client.Networking.Client";
         public const string NS_SKMNET = "SKMNET";
-        public const string AS_SKMNET = "SKM.Net";
+        public const string AS_SKMNET = "SKMNet";
 
         public Context Context { get; set; }
 

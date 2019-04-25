@@ -14,7 +14,7 @@ namespace EffectSystem
         public List<EffectInfo> effectInfos;
         public List<Effect> activeEffects;
 
-        private Timer timer;
+        private readonly Timer timer;
 
         private LightingConsole console;
 
@@ -58,7 +58,6 @@ namespace EffectSystem
 
             if (activeEffects.Count > 0)
             {
-
                 List<EffectPar> parameters = new List<EffectPar>();
 
                 Dictionary<int, Dictionary<short, byte>> mapping = new Dictionary<int, Dictionary<short, byte>>();

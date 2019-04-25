@@ -10,16 +10,11 @@ namespace EffectSystem
 
         public DateTime Start { get; set; }
 
-        public Effect()
+        protected Effect()
         {
             this.Start = DateTime.Now;
         }
 
         public abstract EffectState Update(double time);
-
-        public static class FixParNum
-        {
-            public const short DIMMER = 0;
-        }
     }
 }

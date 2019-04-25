@@ -30,7 +30,7 @@ namespace Test
 {
     internal static class Program
     {
-        private static Stopwatch stopwatch;
+        private static Stopwatch _stopwatch;
 
         private static void Main(string[] _)
         {
@@ -40,7 +40,7 @@ namespace Test
 
         private static async Task MainAsync()
         {
-            stopwatch = new Stopwatch();
+            _stopwatch = new Stopwatch();
             LightingConsole console = new LightingConsole("127.0.0.1",
                                                           LightingConsole.ConsoleSettings.All(logger: new ConsoleLogger()));
 
@@ -48,32 +48,27 @@ namespace Test
             console.Connection.PacketReceived += Connection_PacketReceived;
 
             Console.ReadLine();
-            EffectManager manager = new EffectManager(new List<EffectInfo>()
+            EffectManager manager = new EffectManager(new List<EffectInfo>
             {
-                new EffectInfo<DimmerFade>()
+                new EffectInfo<DimmerFade>
                 {
                     Key = ConsoleKey.D
                 }
             });
             manager.BlockThread(console);
+            
 
             Console.ReadLine();
-
         }
 
-        private static void Print(ushort u)
+        private static void Print(FehlerT fehler)
         {
-            Console.WriteLine(u);
+            _stopwatch.Stop();
+            Console.WriteLine($"Delay: {_stopwatch.Elapsed.TotalMilliseconds}ms\nResponse: {fehler.ToString()}");
+            _stopwatch.Reset();
         }
 
-        private static void Print(Enums.FehlerT fehler)
-        {
-            stopwatch.Stop();
-            Console.WriteLine($"Delay: {stopwatch.Elapsed.TotalMilliseconds}ms\nResponse: {fehler.ToString()}");
-            stopwatch.Reset();
-        }
-
-        private static void Connection_PacketReceived(object sender, PacketRecievedEventArgs args)
+        private static void Connection_PacketReceived(object sender, PacketReceivedEventArgs args)
         {
             Console.WriteLine("received " + (int)args.type + " - " + args.packet.GetType().Name);
             if (args.packet is SKRegData)
@@ -85,11 +80,9 @@ namespace Test
         private static void Console_Errored(object sender, Exception e)
         {
             Console.WriteLine("ERROR:\n" + e.Message + "\n" + e.Source + "\n" + e.StackTrace);
-            if(e is UnknownSKMPacketException)
-            {
-                UnknownSKMPacketException exception = e as UnknownSKMPacketException;
-                Console.WriteLine(ByteUtils.ArrayToString(exception.Remaining));
-            }
+            if (!(e is UnknownSKMPacketException)) return;
+            UnknownSKMPacketException exception = (UnknownSKMPacketException) e;
+            Console.WriteLine(ByteUtils.ArrayToString(exception.Remaining));
         }
 
         private class ConsoleLogger : ILogger

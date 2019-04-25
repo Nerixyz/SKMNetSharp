@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrivateTests", "PrivateTests\PrivateTests\PrivateTests.csproj", "{8A710635-4D21-4397-81F8-87CA17911760}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SKM.Net", "SKM.Net\SKM.Net.csproj", "{AFEB3611-223F-4A9D-A7B1-FA94E7DA94D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SKMNet", "SKMNet\SKMNet.csproj", "{AFEB3611-223F-4A9D-A7B1-FA94E7DA94D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
