@@ -1,10 +1,6 @@
 ﻿﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SKMNET.Client.Stromkreise.ML;
-using SKMNET.Util;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
@@ -15,40 +11,40 @@ namespace SKMNET.Client.Networking.Server.TSD
     public class TSD_MLPal : SPacket
     {
 
-        public MLPalPrefab[] pallets;
-        public bool last;
-        public ushort type;
+        public MLPalPrefab[] Pallets;
+        public bool Last;
+        public ushort Type;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            type = buffer.ReadUShort();
+            Type = buffer.ReadUShort();
             ushort count = buffer.ReadUShort();
-            last = buffer.ReadUShort() != 0;
-            pallets = new MLPalPrefab[count];
+            Last = buffer.ReadUShort() != 0;
+            Pallets = new MLPalPrefab[count];
             for (int i = 0; i < count; i++)
             {
-                pallets[i] = new MLPalPrefab(type, buffer.ReadShort(), buffer.ReadString(8));
+                Pallets[i] = new MLPalPrefab(Type, buffer.ReadShort(), buffer.ReadString(8));
             }
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
 
-            if (!console.Paletten.TryGetValue(Enums.GetEnum<MLPal.Flag>(this.type), out List<MLPal> list))
+            if (!console.Paletten.TryGetValue(Enums.GetEnum<MLPal.Flag>(Type), out List<MLPal> list))
                 return Enums.Response.BadCmd;
 
-            foreach (MLPalPrefab pre in pallets)
+            foreach (MLPalPrefab pre in Pallets)
             {
-                MLPal pal = list.Find((x) => x.Number == pre.palno / 10.0);
+                MLPal pal = list.Find(x => x.Number == pre.palno / 10.0);
                 if(pal is null)
                 {
-                    pal = new MLPal(MLPal.GetFlag(pre.paltype), pre.name, pre.palno);
+                    pal = new MLPal(MLPal.GetFlag(pre.paltype), pre.Name, pre.palno);
                     list.Add(pal);
                 }
                 else
                 {
-                    pal.Name = pre.name;
+                    pal.Name = pre.Name;
                     pal.Number = pre.palno / 10.0;
                 }
             }
@@ -59,20 +55,21 @@ namespace SKMNET.Client.Networking.Server.TSD
         [Serializable]
         public struct MLPalPrefab
         {
-            public ushort paltype;
-            public short palno;
-            public string name;
+            public readonly ushort paltype;
+            public readonly short palno;
+            public string Name;
 
             public MLPalPrefab(ushort paltype, short palno, string name)
             {
                 this.paltype = paltype;
                 this.palno = palno;
-                this.name = name;
+                Name = name;
             }
+            
+            //TODO remove?
+            public bool GetFlag(MLPalFlag flag) => (paltype & (ushort)flag) != 0;
 
-            public bool GetFlag(MLPalFlag flag) => (paltype & ((ushort)(flag))) != 0;
-
-            public static bool GetFlag(MLPalFlag flag, ushort paltype) => (paltype & ((ushort)(flag))) != 0;
+            public static bool GetFlag(MLPalFlag flag, ushort paltype) => (paltype & (ushort)flag) != 0;
 
             public enum MLPalFlag
             {

@@ -1,10 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SKMNET.Client.Networking.Server.RMON
+﻿namespace SKMNET.Client.Networking.Server.RMON
 {
     /// <summary>
     /// Piepsen
@@ -14,7 +8,7 @@ namespace SKMNET.Client.Networking.Server.RMON
 
         public override SPacket ParsePacket(ByteBuffer buffer) => this;
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
             console.OnPieps(this);
             return Enums.Response.OK;

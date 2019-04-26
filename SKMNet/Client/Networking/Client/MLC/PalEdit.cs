@@ -21,51 +21,51 @@ namespace SKMNET.Client.Networking.Client
         public PalEdit(Cmd cmd, params PalEditEntry[] entries)
         {
             this.entries = entries;
-            this.editcmd = (short)cmd;
-            this.subcmd = 0;
+            editcmd = (short)cmd;
+            subcmd = 0;
         }
 
         public override IEnumerable<byte[]> GetData(LightingConsole console)
         {
-            return Make(entries, 30, CountShort, new Action<ByteBuffer, int>((buf, _) =>
+            return Make(entries, 30, CountShort, (buf, _) =>
             {
                 buf
                     .Write(console.BdstNo)
                     .Write(subcmd)
                     .Write(editcmd);
-            }), new Action<PalEditEntry, ByteBuffer>((entry, buf) =>
+            }, (entry, buf) =>
             {
                 buf
-                    .Write(entry.palkenn)
-                    .Write(entry.palNo)
-                    .Write(entry.palMask)
-                    .Write(entry.param)
-                    .Write(entry.skSelect)
-                    .Write(entry.smode)
-                    .Write(entry.text, 31)
+                    .Write(entry.Palkenn)
+                    .Write(entry.PalNo)
+                    .Write(entry.PalMask)
+                    .Write(entry.Param)
+                    .Write(entry.SKSelect)
+                    .Write(entry.Smode)
+                    .Write(entry.Text, 31)
                     .Write((byte)0);
-            }));
+            });
         }
 
         public class PalEditEntry
         {
-            public readonly short palkenn;
-            public readonly short palNo;
-            public readonly short palMask;
-            public readonly short param;
-            public readonly short skSelect;
-            public readonly short smode;
-            public readonly string text;
+            public readonly short Palkenn;
+            public readonly short PalNo;
+            public readonly short PalMask;
+            public readonly short Param;
+            public readonly short SKSelect;
+            public readonly short Smode;
+            public readonly string Text;
 
             public PalEditEntry(MLUtil.MLPalFlag palkenn, short palNo, MLUtil.MLPalFlag palMask, Param param, SkSelect skSelect, SMode smode, string text)
             {
-                this.palkenn = (short) palkenn;
-                this.palNo = palNo;
-                this.palMask = (short)palMask;
-                this.param = (short)param;
-                this.skSelect = (short)skSelect;
-                this.smode = (short)smode;
-                this.text = text;
+                Palkenn = (short) palkenn;
+                PalNo = palNo;
+                PalMask = (short)palMask;
+                Param = (short)param;
+                SKSelect = (short)skSelect;
+                Smode = (short)smode;
+                Text = text;
             }
         }
 

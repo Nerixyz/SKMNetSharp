@@ -1,12 +1,8 @@
-﻿﻿using SKMNET.Client.Networking.Client;
-using SKMNET.Client.Stromkreise;
+﻿using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
-using SKMNET.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
@@ -26,40 +22,39 @@ namespace SKMNET.Client.Networking.Client
                 parameters,
                 200,
                 CountShort,
-                new Action<ByteBuffer, int>((buf, _) => buf.Write(console.BdstNo).Write((short)valueType).Write((short)dstReg)),
-                new Action<MLParameter, ByteBuffer>((par, buf) =>
-                       {
-                           if (par.Sk == null)
-                               throw new NullReferenceException("MLParameter.SK not set");
-                           buf.Write((short)par.Sk.Number).Write(par.ParNo).Write((short)((int)par.Value << 8));
-                       })
+                (buf, _) => buf.Write(console.BdstNo).Write((short)valueType).Write((short)dstReg),
+                (par, buf) =>
+                {
+                    if (par.Sk == null)
+                        throw new NullReferenceException("MLParameter.SK not set");
+                    buf.Write((short)par.Sk.Number).Write(par.ParNo).Write((short)((int)par.Value << 8));
+                }
             );
         }
 
         public FixPar(ValueType type = ValueType.ABS, Enums.FixParDst reg = Enums.FixParDst.Current, params MLParameter[] parameters)
         {
             this.parameters = parameters;
-            this.valueType = type;
-            this.dstReg = reg;
+            valueType = type;
+            dstReg = reg;
         }
 
         public FixPar(ValueType type = ValueType.ABS, Enums.FixParDst reg = Enums.FixParDst.Current, params SK[] sks)
         {
-            int estSize = 0;
-            foreach(SK s in sks) estSize += s.Parameters.Count;
+            int estSize = sks.Sum(s => s.Parameters.Count);
 
-            this.parameters = new MLParameter[estSize];
+            parameters = new MLParameter[estSize];
             for(int i = 0, pointer = 0; i < sks.Length; i++)
             {
                 foreach(MLParameter parameter in sks[i].Parameters)
                 {
-                    this.parameters[i] = parameter;
+                    parameters[i] = parameter;
 
                     pointer++;
                 }
             }
             valueType = type;
-            this.dstReg = reg;
+            dstReg = reg;
         }
 
         public enum ValueType

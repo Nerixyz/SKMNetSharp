@@ -1,10 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SKMNET.Client.Networking.Server
+﻿namespace SKMNET.Client.Networking.Server
 {
     /// <summary>
     /// Bildschirmdaten
@@ -19,29 +13,29 @@ namespace SKMNET.Client.Networking.Server
         /// <summary>
         /// Position im Bildschirm. Links oben entspricht Position 0.
         /// </summary>
-        public ushort start;
+        public ushort Start;
         /// <summary>
         /// Anzahl der folgenden Bildschirm Daten length. (legacy)
         /// </summary>
-        public ushort count;
+        public ushort Count;
         /// <summary>
         /// Bildschirmdaten (Bit 15..8 Attribut, Bit 7..0 Zeichen.)
         /// </summary>
-        public ushort[] data;
+        public ushort[] Data;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            this.start = buffer.ReadUShort();
-            this.count = buffer.ReadUShort();
-            this.data = new ushort[count];
-            for (int i = 0; i < count; i++)
+            Start = buffer.ReadUShort();
+            Count = buffer.ReadUShort();
+            Data = new ushort[Count];
+            for (int i = 0; i < Count; i++)
             {
-                this.data[i] = buffer.ReadUShort();
+                Data[i] = buffer.ReadUShort();
             }
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
             console.ScreenManager.HandleData(this);
             return Enums.Response.OK;

@@ -1,8 +1,4 @@
 ﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
@@ -20,7 +16,7 @@ namespace SKMNET.Client.Networking.Client
         {
             byte[] data = BitConverter.GetBytes(lkno);
             Array.Reverse(data);
-            return 0x05000000 | (((byte)console.BdstNo) << 4 * 8) | (data[0] << 2 * 8) | data[1];
+            return 0x05000000 | ((byte)console.BdstNo << 4 * 8) | (data[0] << 2 * 8) | data[1];
         }
     }
 }

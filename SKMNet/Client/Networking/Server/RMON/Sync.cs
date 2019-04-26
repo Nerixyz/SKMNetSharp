@@ -1,10 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SKMNET.Client.Networking.Server.RMON
+﻿namespace SKMNET.Client.Networking.Server.RMON
 {
     /// <summary>
     /// Synctelegramm
@@ -14,6 +8,6 @@ namespace SKMNET.Client.Networking.Server.RMON
 
         public override SPacket ParsePacket(ByteBuffer buffer) => this;
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type) => Enums.Response.OK;
+        public override Enums.Response ProcessPacket(LightingConsole console, int type) => Enums.Response.OK;
     }
 }

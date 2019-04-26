@@ -1,10 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SKMNET.Client.Networking.Client
+﻿namespace SKMNET.Client.Networking.Client
 {
     /// <summary>
     /// Leitungsauswahl für DMX-Daten
@@ -16,10 +10,10 @@ namespace SKMNET.Client.Networking.Client
         private readonly short subCmd;
         private readonly bool[] config;
 
-        public DMXSelect(bool[] data, bool MLC)
+        public DMXSelect(bool[] data, bool  mlc)
         {
-            this.config = data;
-            this.subCmd = (short) (MLC ? 1 : 0);
+            config = data;
+            subCmd = (short) (mlc ? 1 : 0);
         }
 
         public override byte[] GetDataToSend(LightingConsole console)

@@ -1,10 +1,6 @@
 ﻿﻿using SKMNET.Util;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+ 
 namespace SKMNET.Client.Networking.Client
 {
     /// <summary>
@@ -30,20 +26,20 @@ namespace SKMNET.Client.Networking.Client
                 commands,
                 2,
                 CountShort,
-                new Action<ByteBuffer, int>((buf, _) => buf.Write(console.BdstNo).Write((short)command)),
-                new Action<PalCmdEntry, ByteBuffer>((entry, buf) => buf.Write(entry.palkenn).Write(entry.palno))
+                (buf, _) => buf.Write(console.BdstNo).Write((short)command),
+                (entry, buf) => buf.Write(entry.Palkenn).Write(entry.Palno)
            );
         }
 
         public class PalCmdEntry
         {
-            public readonly short palkenn;
-            public readonly short palno;
+            public readonly short Palkenn;
+            public readonly short Palno;
 
             public PalCmdEntry(MLUtil.MLPalFlag mask, short palno)
             {
-                this.palkenn = (short)mask;
-                this.palno = palno;
+                Palkenn = (short)mask;
+                this.Palno = palno;
             }
         }
 

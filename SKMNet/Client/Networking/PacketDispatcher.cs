@@ -15,12 +15,7 @@ namespace SKMNET.Client.Networking
     public class PacketDispatcher
     {
         private readonly ConnectionHandler connection;
-        private readonly Dictionary<int, Type> serverPacketMap;
-
-        public PacketDispatcher(ConnectionHandler handler)
-        {
-            this.connection = handler;
-            this.serverPacketMap = new Dictionary<int, Type>
+        public static readonly Dictionary<int, Type> ServerPacketMap = new Dictionary<int, Type>
             {
                 /* RMON */
                 { 0, typeof(Sync) },
@@ -80,7 +75,7 @@ namespace SKMNET.Client.Networking
                 { 160, typeof(SelPar) } // = SKMON_MLPAR_REMOVE
             };
 
-        }
+        public PacketDispatcher(ConnectionHandler handler) => connection = handler;
 
         public Enums.Response OnDataIncoming(byte[] data)
         {
@@ -97,7 +92,7 @@ namespace SKMNET.Client.Networking
                     Enums.Type eType = Enums.GetEnum<Enums.Type>(type);
 
                     //get PacketClass/Type
-                    if (!serverPacketMap.TryGetValue(type, out Type packetType))
+                    if (!ServerPacketMap.TryGetValue(type, out Type packetType))
                     {
                         connection.OnErrored(this, new UnknownSKMPacketException(type, data, packetBuffer));
                         return Enums.Response.BadCmd;
@@ -105,13 +100,12 @@ namespace SKMNET.Client.Networking
 
                     SPacket packet = (SPacket)Activator.CreateInstance(packetType);
 
-                    packet.ParsePacket(packetBuffer);
-                    code = packet.ProcessPacket(connection.Console, connection, type);
+                    code = packet.ParsePacket(packetBuffer).ProcessPacket(connection.Console, type);
 
                     PacketReceivedEventArgs consolePacket = new PacketReceivedEventArgs(eType, packet);
                     connection.OnPacketReceived(this, consolePacket);
-                    if (consolePacket.response != Enums.Response.OK)
-                        code = consolePacket.response;
+                    if (consolePacket.Response != Enums.Response.OK)
+                        code = consolePacket.Response;
 
                     if (code != Enums.Response.OK)
                         break;

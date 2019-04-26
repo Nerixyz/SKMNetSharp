@@ -1,10 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SKMNET.Client.Networking.Server.TSD
+﻿namespace SKMNET.Client.Networking.Server.TSD
 {
     /// <summary>
     /// Parameterdefinitionen (Name usw.)
@@ -12,18 +6,18 @@ namespace SKMNET.Client.Networking.Server.TSD
     public class ParDef : SPacket
     {
 
-        public bool last;
-        public ushort count;
-        public ParDefData[] arr;
+        public bool Last;
+        public ushort Count;
+        public ParDefData[] Data;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            last = buffer.ReadUShort() != 0;
-            count = buffer.ReadUShort();
-            arr = new ParDefData[count];
-            for(int i = 0; i < count; i++)
+            Last = buffer.ReadUShort() != 0;
+            Count = buffer.ReadUShort();
+            Data = new ParDefData[Count];
+            for(int i = 0; i < Count; i++)
             {
-                arr[i] = new ParDefData(
+                Data[i] = new ParDefData(
                     buffer.ReadShort(),
                     buffer.ReadShort(),
                     buffer.ReadShort(),
@@ -33,31 +27,31 @@ namespace SKMNET.Client.Networking.Server.TSD
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
             console.MLCParameters.Clear();
-            foreach(ParDefData data in arr)
+            foreach(ParDefData data in Data)
             {
-                console.MLCParameters.Add(new Stromkreise.ML.MLCParameter(data.parno, data.dispMode, data.parName));
+                console.MLCParameters.Add(new Stromkreise.ML.MLCParameter(data.Parno, data.DispMode, data.ParName));
             }
             return Enums.Response.OK;
         }
 
         public struct ParDefData
         {
-            public short parno;
-            public Enums.SelRangeDisp dispMode;
-            public short dispOrder;
-            public short reserve2;
-            public string parName;
+            public readonly short Parno;
+            public readonly Enums.SelRangeDisp DispMode;
+            public readonly short DispOrder;
+            public readonly short Reserve2;
+            public readonly string ParName;
 
             public ParDefData(short parno, short dispMode, short dispOrder, short reserve2, string parName)
             {
-                this.parno = parno;
-                this.dispMode = (Enums.SelRangeDisp)dispMode;
-                this.dispOrder = dispOrder;
-                this.reserve2 = reserve2;
-                this.parName = parName;
+                Parno = parno;
+                DispMode = (Enums.SelRangeDisp)dispMode;
+                DispOrder = dispOrder;
+                Reserve2 = reserve2;
+                ParName = parName;
             }
         }
     }

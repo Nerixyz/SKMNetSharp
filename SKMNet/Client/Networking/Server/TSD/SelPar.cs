@@ -2,32 +2,28 @@
 using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+ 
 namespace SKMNET.Client.Networking.Server.TSD
 {
     [Serializable]
     public class SelPar : SPacket
     {
-        public ushort fixture;
-        public string fixtureName;
-        public bool last;
-        public ushort count;
-        public SelParData[] parameters;
+        public ushort Fixture;
+        public string FixtureName;
+        public bool Last;
+        public ushort Count;
+        public SelParData[] Parameters;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            fixture = buffer.ReadUShort();
-            fixtureName = buffer.ReadString(8);
-            last = buffer.ReadUShort() != 0;
-            count = buffer.ReadUShort();
-            parameters = new SelParData[count];
-            for(int i = 0; i < count; i++)
+            Fixture = buffer.ReadUShort();
+            FixtureName = buffer.ReadString(8);
+            Last = buffer.ReadUShort() != 0;
+            Count = buffer.ReadUShort();
+            Parameters = new SelParData[Count];
+            for(int i = 0; i < Count; i++)
             {
-                parameters[i] = new SelParData(
+                Parameters[i] = new SelParData(
                     buffer.ReadShort(),
                     buffer.ReadUShort(),
                     buffer.ReadString(8),
@@ -37,60 +33,56 @@ namespace SKMNET.Client.Networking.Server.TSD
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
             //Apply to SK
-            SK sk = console.Stromkreise[fixture];
-            if (sk != null)
+            SK sk = console.Stromkreise[Fixture];
+            if (sk == null) return Enums.Response.BadCmd;
+            
+            if(type == 160 /* SKMON_MLPAR_REMOVE */)
             {
-                if(type == 160 /* SKMON_MLPAR_REMOVE */)
-                {
-                    sk.Parameters.Clear();
-                    return Enums.Response.OK;
-                }
-
-                // load MLCParams
-                foreach (SelParData par in parameters)
-                {
-                    MLCParameter mlcParameter = console.MLCParameters.Find((x) => x.Number == par.parno);
-                    if(mlcParameter == null)
-                    {
-                        MLCParameter parameter = new MLCParameter(par.parno, Enums.SelRangeDisp.Normal, par.parname);
-                        console.MLCParameters.Add(parameter);
-
-                        //get info (not loaded yet)
-                        console.QueryAsync(new ParSelect(par.parno)).ConfigureAwait(false);
-                        Console.WriteLine("sel");
-                    }
-                    else
-                    {
-                        mlcParameter.Name = par.parname;
-                    }
-                    MLParameter param = sk.Parameters.Find((inc) => inc.ParNo == par.parno);
-                    if (param != null)
-                    {
-                        param.Value = (par.val16 & 0xff00) >> 8;
-                        param.Display = par.parval;
-                        param.PalName = par.palname;
-                        param.Sk = sk;
-                    }
-                    else
-                    {
-                        param = new MLParameter(par.parname, par.parno, (par.val16 & 0xff00) >> 8)
-                        {
-                            PalName = par.palname,
-                            Display = par.parname,
-                            Sk = sk
-                        };
-                        sk.Parameters.Add(param);
-                    }
-                }
+                sk.Parameters.Clear();
                 return Enums.Response.OK;
             }
-            else
+
+            // load MLCParams
+            foreach (SelParData par in Parameters)
             {
-                return Enums.Response.BadCmd;
+                MLCParameter mlcParameter = console.MLCParameters.Find(x => x.Number == par.Parno);
+                if(mlcParameter == null)
+                {
+                    MLCParameter parameter = new MLCParameter(par.Parno, Enums.SelRangeDisp.Normal, par.Parname);
+                    console.MLCParameters.Add(parameter);
+
+                    //get info (not loaded yet)
+                    console.QueryAsync(new ParSelect(par.Parno)).ConfigureAwait(false);
+                    Console.WriteLine("sel");
+                }
+                else
+                {
+                    mlcParameter.Name = par.Parname;
+                }
+                MLParameter param = sk.Parameters.Find(inc => inc.ParNo == par.Parno);
+                if (param != null)
+                {
+                    param.Value = (par.Val16 & 0xff00) >> 8;
+                    param.Display = par.Parval;
+                    param.PalName = par.Palname;
+                    param.Sk = sk;
+                }
+                else
+                {
+                    param = new MLParameter(par.Parname, par.Parno, (par.Val16 & 0xff00) >> 8)
+                    {
+                        PalName = par.Palname,
+                        Display = par.Parname,
+                        Sk = sk
+                    };
+                    sk.Parameters.Add(param);
+                }
             }
+            return Enums.Response.OK;
+
         }
 
         [Serializable]
@@ -99,35 +91,35 @@ namespace SKMNET.Client.Networking.Server.TSD
             /// <summary>
             /// Parameternummer (0-199)
             /// </summary>
-            public short parno;
+            public readonly short Parno;
 
             /// <summary>
             /// Parameterwert
             /// </summary>
-            public ushort val16;
+            public readonly ushort Val16;
 
             /// <summary>
             /// Parametername
             /// </summary>
-            public string parname;
+            public readonly string Parname;
 
             /// <summary>
             /// Parameterwert als String
             /// </summary>
-            public string parval;
+            public readonly string Parval;
 
             /// <summary>
             /// Palettenname als String
             /// </summary>
-            public string palname;
+            public readonly string Palname;
 
             public SelParData(short parno, ushort val16, string parname, string parval, string palname)
             {
-                this.parno = parno;
-                this.val16 = val16;
-                this.parname = parname;
-                this.parval = parval;
-                this.palname = palname;
+                Parno = parno;
+                Val16 = val16;
+                Parname = parname;
+                Parval = parval;
+                Palname = palname;
             }
         }
     }

@@ -1,10 +1,5 @@
 ﻿﻿using SKMNET.Client.Stromkreise;
-using SKMNET.Util;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static SKMNET.Enums;
 
 namespace SKMNET.Client.Networking.Client
@@ -17,23 +12,23 @@ namespace SKMNET.Client.Networking.Client
         public override short Type => 16;
 
         private readonly AWType action;
-        private readonly short[] SKGs;
+        private readonly short[] skgs;
 
         public override byte[] GetDataToSend(LightingConsole console)
         {
-            return new ByteBuffer().WriteShort(console.BdstNo).WriteShort((short)action).WriteShort((short)SKGs.Length).Write(SKGs).ToArray();
+            return new ByteBuffer().WriteShort(console.BdstNo).WriteShort((short)action).WriteShort((short)skgs.Length).Write(skgs).ToArray();
         }
 
-        public SKGAnwahl(AWType type, params short[] SKGs)
+        public SKGAnwahl(AWType type, params short[] skgs)
         {
-            this.action = type;
-            this.SKGs = SKGs;
+            action = type;
+            this.skgs = skgs;
         }
 
         public SKGAnwahl(AWType type, params SKG[] SKGs)
         {
-            this.action = type;
-            this.SKGs = SKGs.Select((skg) => (short)skg.Number).ToArray();
+            action = type;
+            skgs = SKGs.Select(skg => (short)skg.Number).ToArray();
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace SKMNET.Client.Networking.Server.ISKMON
 {
     /// <summary>
@@ -13,25 +12,25 @@ namespace SKMNET.Client.Networking.Server.ISKMON
     public class AZ : SPacket
     {
 
-        public ushort flags;
-        public string linetext;
+        public ushort Flags;
+        public string LineText;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            flags = buffer.ReadUShort();
-            linetext = buffer.ReadString(48);
+            Flags = buffer.ReadUShort();
+            LineText = buffer.ReadString(48);
             return this;
         }
 
-        public bool Angewaehlt() => (flags & 0x0001) != 0;
+        public bool Angewaehlt => (Flags & 0x0001) != 0;
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
             switch((Enums.Type)Enum.ToObject(typeof(Enums.Type), type))
             {
-                case Enums.Type.AZ_IST: console.RegIST.Text = linetext; console.RegIST.AW = Angewaehlt(); break;
-                case Enums.Type.AZ_ZIEL: console.RegZIEL.Text = linetext; console.RegZIEL.AW = Angewaehlt(); break;
-                case Enums.Type.AZ_VOR: console.RegVOR.Text = linetext; console.RegVOR.AW = Angewaehlt(); break;
+                case Enums.Type.AZ_IST: console.RegIST.Text = LineText; console.RegIST.AW = Angewaehlt; break;
+                case Enums.Type.AZ_ZIEL: console.RegZIEL.Text = LineText; console.RegZIEL.AW = Angewaehlt; break;
+                case Enums.Type.AZ_VOR: console.RegVOR.Text = LineText; console.RegVOR.AW = Angewaehlt; break;
             }
 
             return Enums.Response.OK;

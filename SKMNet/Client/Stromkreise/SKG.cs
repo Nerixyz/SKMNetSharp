@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Stromkreise
 {
@@ -14,8 +10,8 @@ namespace SKMNET.Client.Stromkreise
 
         public SKG(ushort number, string name)
         {
-            this.Number = number;
-            this.Name = name;
+            Number = number;
+            Name = name;
         }
 
     }

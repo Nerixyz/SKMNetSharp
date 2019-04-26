@@ -1,8 +1,4 @@
 ﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.SKMON
 {
@@ -11,16 +7,15 @@ namespace SKMNET.Client.Networking.Server.SKMON
     /// </summary>
     public class SkCmd : SPacket
     {
-
-        public Enums.SKCmd cmd;
+        public Enums.SKCmd Cmd;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            cmd = (Enums.SKCmd)Enum.ToObject(typeof(Enums.SKCmd), buffer.ReadByte());
+            Cmd = (Enums.SKCmd)Enum.ToObject(typeof(Enums.SKCmd), buffer.ReadByte());
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
             //TODO we don't know PepeLaugh
             return Enums.Response.OK;

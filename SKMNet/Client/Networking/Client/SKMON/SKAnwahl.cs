@@ -1,10 +1,5 @@
 ﻿﻿using SKMNET.Client.Stromkreise;
-using SKMNET.Util;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static SKMNET.Enums;
 
 namespace SKMNET.Client.Networking.Client
@@ -32,7 +27,7 @@ namespace SKMNET.Client.Networking.Client
         public SKAnwahl(AWType type, params SK[] skNo)
         {
             this.type = type;
-            this.skNo = skNo.Select((sk) => (short)sk.Number).ToArray();
+            this.skNo = skNo.Select(sk => (short)sk.Number).ToArray();
         }
     }
 }

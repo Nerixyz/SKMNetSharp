@@ -1,9 +1,4 @@
-﻿﻿using SKMNET.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace SKMNET.Client.Networking.Client
 {
@@ -15,7 +10,7 @@ namespace SKMNET.Client.Networking.Client
         {
             //no BdstNo ?!
             return new ByteBuffer()
-                .Write((int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds) // Time
+                .Write((int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds) // Time
                 .Write((short)1) // Count
                 .Write((short)1) // Flags
                 .Write(GetEventInteger(console)) // Event Int
@@ -39,7 +34,7 @@ namespace SKMNET.Client.Networking.Client
             public override byte[] GetDataToSend(LightingConsole console)
             {
                 ByteBuffer buffer = new ByteBuffer()
-                    .Write((int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds)
+                    .Write((int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds)
                     .Write((short)events.Length).Write((short)1); // Flags (context)
 
                 foreach(Event e in events)

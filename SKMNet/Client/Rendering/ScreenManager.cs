@@ -26,12 +26,12 @@ namespace SKMNET.Client.Rendering
 
         public void HandleData(ScreenData packet)
         {
-            Screens[0].HandleData(packet.data, packet.start, packet.count);
+            Screens[0].HandleData(packet.Data, packet.Start, packet.Count);
         }
 
         public void HandleData(MScreenData packet)
         {
-            (Screens[(packet.monitor & MScreenData.MON_MASK) - 1] ?? (Screens[(packet.monitor & MScreenData.MON_MASK) -1] = new Screen(this, (byte)(packet.monitor & MScreenData.MON_MASK)))).HandleData(packet.data, packet.start, packet.count);
+            (Screens[(packet.Monitor & MScreenData.MON_MASK) - 1] ?? (Screens[(packet.Monitor & MScreenData.MON_MASK) -1] = new Screen(this, (byte)(packet.Monitor & MScreenData.MON_MASK)))).HandleData(packet.Data, packet.Start, packet.Count);
         }
 
         public void HandleData(MPalData packet)

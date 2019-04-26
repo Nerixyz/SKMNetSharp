@@ -86,10 +86,10 @@ namespace Test
 
         private static void Connection_PacketReceived(object sender, PacketReceivedEventArgs args)
         {
-            Console.WriteLine("received " + (int)args.type + " - " + args.packet.GetType().Name);
-            if (args.packet is SKRegData)
+            Console.WriteLine("received " + (int)args.Type + " - " + args.Packet.GetType().Name);
+            if (args.Packet is SKRegData)
             {
-                Console.WriteLine(JsonConvert.SerializeObject(args.packet));
+                Console.WriteLine(JsonConvert.SerializeObject(args.Packet));
             }
         }
 

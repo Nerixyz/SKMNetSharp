@@ -7,7 +7,6 @@ namespace SKMNET.Client.Networking.Client
         private readonly byte state;
         private readonly short scancode;
 
-        // TODO make Enum
         public TextTastEvent(short scancode, byte state = 0)
         {
             this.state = state;

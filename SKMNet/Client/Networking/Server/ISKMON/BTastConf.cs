@@ -12,23 +12,23 @@ namespace SKMNET.Client.Networking.Server
     public class BTastConf : SPacket
     {
 
-        public BTastConfEntry[] entries;
-        public ushort count;
+        public BTastConfEntry[] Entries;
+        public ushort Count;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            count = buffer.ReadUShort();
-            entries = new BTastConfEntry[count];
-            for(int i = 0; i < count; i++)
+            Count = buffer.ReadUShort();
+            Entries = new BTastConfEntry[Count];
+            for(int i = 0; i < Count; i++)
             {
-                entries[i] = new BTastConfEntry(buffer.ReadUShort(), buffer.ReadString(6));
+                Entries[i] = new BTastConfEntry(buffer.ReadUShort(), buffer.ReadString(6));
             }
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            foreach(BTastConfEntry entry in entries)
+            foreach(BTastConfEntry entry in Entries)
             {
                 console.TastenManager.Add(new Tasten.Taste(entry.Tastnr, entry.Name));
             }
@@ -43,8 +43,8 @@ namespace SKMNET.Client.Networking.Server
 
             public BTastConfEntry(ushort tastnr, string name)
             {
-                this.Tastnr = tastnr;
-                this.Name = name;
+                Tastnr = tastnr;
+                Name = name;
             }
 
             public ushort GetNumber()

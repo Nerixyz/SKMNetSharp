@@ -12,13 +12,13 @@ namespace SKMNET.Client.Networking.Server.LIBRAExt
     [Serializable]
     public class AktInfo : SPacket
     {
-        public string register;
-        public string listenanzeige;
+        public string Register;
+        public string Listenanzeige;
         /*
          * Header contains
          * ----------------
-         * ushort version
-         * ushort datalen
+         * ushort version (=0)
+         * ushort datalen (=16=8+8)
          * ----------------
          * -> useless
          * */
@@ -29,15 +29,15 @@ namespace SKMNET.Client.Networking.Server.LIBRAExt
             buffer.ReadUShort();
             //len
             buffer.ReadUShort();
-            register = buffer.ReadString(8);
-            listenanzeige = buffer.ReadString(8);
+            Register = buffer.ReadString(8);
+            Listenanzeige = buffer.ReadString(8);
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            console.AktReg = register;
-            console.AktList = listenanzeige;
+            console.AktReg = Register;
+            console.AktList = Listenanzeige;
             return Enums.Response.OK;
         }
     }

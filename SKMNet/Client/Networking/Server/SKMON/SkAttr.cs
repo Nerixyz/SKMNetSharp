@@ -1,10 +1,5 @@
 ﻿﻿using SKMNET.Client.Stromkreise;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+ 
 namespace SKMNET.Client.Networking.Server.SKMON
 {
     /// <summary>
@@ -12,31 +7,32 @@ namespace SKMNET.Client.Networking.Server.SKMON
     /// </summary>
     public class SkAttr : SPacket
     {
-        public ushort start;
-        public ushort count;
-        public byte[] data;
+        public ushort Start;
+        public ushort Count;
+        public byte[] Data;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            start = buffer.ReadUShort();
-            count = buffer.ReadUShort();
-            this.data = new byte[count];
-            for(int i = 0; i < count; i++)
+            Start = buffer.ReadUShort();
+            Count = buffer.ReadUShort();
+            Data = new byte[Count];
+            for(int i = 0; i < Count; i++)
             {
-                this.data[i] = buffer.ReadByte();
+                Data[i] = buffer.ReadByte();
             }
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            for (int i = start; i < start + count; i++)
+            if (Start >= console.SKSize) //ignore sks
+                return Enums.Response.OK;
+            
+            for (int i = Start; i < Start + Count; i++)
             {
                 SK sk = console.Stromkreise[i];
-                if (sk != null)
-                {
-                    sk.Attrib = data[i - start];
-                }
+                
+                if (sk != null) sk.Attrib = Data[i - Start];
             }
             return Enums.Response.OK;
         }

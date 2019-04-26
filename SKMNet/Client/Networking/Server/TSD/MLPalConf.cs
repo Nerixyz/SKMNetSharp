@@ -1,9 +1,6 @@
 ﻿﻿using SKMNET.Client.Stromkreise.ML;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
@@ -14,17 +11,17 @@ namespace SKMNET.Client.Networking.Server.TSD
     public class MLPalConf : SPacket
     {
 
-        public bool absolute; /* Should Update the whole configuration */
-        public ushort MLPalType { get; set; }/* MLPalFlag */
-        public bool last;
+        public bool Absolute; /* Should Update the whole configuration */
+        public ushort MlPalType { get; set; }/* MLPalFlag */
+        public bool Last;
 
         public List<ConfEntry> Entries { get; } = new List<ConfEntry>();
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            absolute = buffer.ReadUShort() == 0;
-            MLPalType = buffer.ReadUShort();
-            last = buffer.ReadUShort() != 0;
+            Absolute = buffer.ReadUShort() == 0;
+            MlPalType = buffer.ReadUShort();
+            Last = buffer.ReadUShort() != 0;
             while(true)
             {
                 short palno = buffer.ReadShort();
@@ -39,13 +36,13 @@ namespace SKMNET.Client.Networking.Server.TSD
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            MLPal.Flag mlType = MLPal.GetFlag(MLPalType);
+            MLPal.Flag mlType = MLPal.GetFlag(MlPalType);
             if (!console.Paletten.TryGetValue(mlType, out List<MLPal> list))
                 return Enums.Response.BadCmd;
 
-            if (absolute)
+            if (Absolute)
                 list.Clear();
 
             foreach(ConfEntry entry in Entries) list.Add(new MLPal(mlType, entry.Text, entry.Palno));
@@ -56,13 +53,13 @@ namespace SKMNET.Client.Networking.Server.TSD
         [Serializable]
         public struct ConfEntry
         {
-            public short Palno { get; set; }
-            public string Text { get; set; }
+            public short Palno { get; }
+            public string Text { get; }
 
             public ConfEntry(short palno, string text)
             {
-                this.Palno = palno;
-                this.Text = text;
+                Palno = palno;
+                Text = text;
             }
         }
     }

@@ -1,10 +1,5 @@
 ﻿﻿using SKMNET.Client.Vorstellungen;
-using SKMNET.Util;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
@@ -15,41 +10,40 @@ namespace SKMNET.Client.Networking.Server.TSD
     public class MLCJob : SPacket
     {
 
-        public ushort job;
-        public uint vstNum;
+        public ushort Job;
+        public uint VstNum;
         /// <summary>
-        /// 0 = normal; 'detect' changed <cref="vstNum"/>
+        /// 0 = normal; 'detect' changed <see cref="VstNum"/>
         /// 1 = force; reload MLCConfig
         /// </summary>
-        public uint modus;
-        public uint par3;
-        public ushort res1;
-        public ushort count;
-        public string buf;
+        public uint Modus;
+        public uint Par3;
+        public ushort Res1;
+        public ushort Count;
+        public string Buf;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            job = buffer.ReadUShort();
-            vstNum = buffer.ReadUInt();
-            modus = buffer.ReadUInt();
-            par3 = buffer.ReadUInt();
-            res1 = buffer.ReadUShort();
-            count = buffer.ReadUShort();
-            buf = buffer.ReadString(count);
+            Job = buffer.ReadUShort();
+            VstNum = buffer.ReadUInt();
+            Modus = buffer.ReadUInt();
+            Par3 = buffer.ReadUInt();
+            Res1 = buffer.ReadUShort();
+            Count = buffer.ReadUShort();
+            Buf = buffer.ReadString(Count);
             return this;
         }
 
-        public bool Load { get => job == 1; }
-        public bool Save { get => job == 2; }
+        public bool Load => Job == 1;
+        public bool Save => Job == 2;
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            Vorstellung vst = console.Vorstellungen.Find((x) => vstNum == x.Number);
-            if (vst is null)
-            {
-                vst = new Vorstellung((ushort)vstNum);
-                console.Vorstellungen.Add(vst);
-            }
+            Vorstellung vst = console.Vorstellungen.Find(x => VstNum == x.Number);
+            if (!(vst is null)) return Enums.Response.OK;
+            
+            vst = new Vorstellung((ushort)VstNum);
+            console.Vorstellungen.Add(vst);
             return Enums.Response.OK;
         }
     }

@@ -1,10 +1,6 @@
 ﻿﻿using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.TSD
 {
@@ -14,29 +10,29 @@ namespace SKMNET.Client.Networking.Server.TSD
     [Serializable]
     public class SelRange : SPacket
     {
-        public ushort fixture;
-        public ushort fixpar;
-        public ushort val16;
-        public ushort res1;
-        public ushort res2;
-        public bool last;
-        public ushort count;
+        public ushort Fixture;
+        public ushort Fixpar;
+        public ushort Val16;
+        public ushort Res1;
+        public ushort Res2;
+        public bool Last;
+        public ushort Count;
 
-        public SelRangeData[] arr;
+        public SelRangeData[] Arr;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            fixture = buffer.ReadUShort();
-            fixpar = buffer.ReadUShort();
-            val16 = buffer.ReadUShort();
-            res1 = buffer.ReadUShort();
-            res2 = buffer.ReadUShort();
-            last = buffer.ReadUShort() != 0;
-            count = buffer.ReadUShort();
-            arr = new SelRangeData[count];
-            for(int i = 0; i < count; i++)
+            Fixture = buffer.ReadUShort();
+            Fixpar = buffer.ReadUShort();
+            Val16 = buffer.ReadUShort();
+            Res1 = buffer.ReadUShort();
+            Res2 = buffer.ReadUShort();
+            Last = buffer.ReadUShort() != 0;
+            Count = buffer.ReadUShort();
+            Arr = new SelRangeData[Count];
+            for(int i = 0; i < Count; i++)
             {
-                arr[i] = new SelRangeData(
+                Arr[i] = new SelRangeData(
                     buffer.ReadByte(),
                     buffer.ReadByte(),
                     buffer.ReadByte(),
@@ -48,33 +44,36 @@ namespace SKMNET.Client.Networking.Server.TSD
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            SK sk = console.Stromkreise[fixture];
-            MLParameter param = sk?.Parameters.Find((x) => x.ParNo == fixpar);
+            SK sk = console.Stromkreise[Fixture];
+            MLParameter param = sk?.Parameters.Find(x => x.ParNo == Fixpar);
             if (param is null)
                 return Enums.Response.BadCmd;
 
-            MLCParameter mlc = console.MLCParameters.Find((x) => x.Number == fixpar);
-
-            console.Logger?.Log(count);
+            MLCParameter mlc = console.MLCParameters.Find(x => x.Number == Fixpar);
+            //TODO remove?
+#if DEBUG
+            console.Logger?.Log(Count);
+#endif
+            
             // TODO inspection
             int i = 0;
-            foreach(SelRangeData data in arr)
+            foreach(SelRangeData data in Arr)
             {
-                param.Range = (data.start, data.end);
-                param.DefaultVal = data.defaultVal;
-                param.Flags = data.flags;
-                param.Name = data.name;
+                param.Range = (Start: data.Start, End: data.End);
+                param.DefaultVal = data.DefaultVal;
+                param.Flags = data.Flags;
+                param.Name = data.Name;
 
-                mlc.Range = (data.start, data.end);
-                mlc.Default = data.defaultVal;
-                mlc.Flags = data.flags;
-                mlc.Name = data.name;
+                mlc.Range = (start: data.Start, end: data.End);
+                mlc.Default = data.DefaultVal;
+                mlc.Flags = data.Flags;
+                mlc.Name = data.Name;
 
                 //increment par-pointer?
                 i++;
-                param = sk.Parameters.Find((x) => x.ParNo == fixpar + i);
+                param = sk.Parameters.Find(x => x.ParNo == Fixpar + i);
             }
             return Enums.Response.OK;
         }
@@ -82,23 +81,23 @@ namespace SKMNET.Client.Networking.Server.TSD
         [Serializable]
         public struct SelRangeData
         {
-            public byte start;
-            public byte end;
-            public byte defaultVal;
-            public byte flags;
-            public ushort res1;
-            public ushort res2;
-            public string name;
+            public readonly byte Start;
+            public readonly byte End;
+            public readonly byte DefaultVal;
+            public readonly byte Flags;
+            public readonly ushort Res1;
+            public readonly ushort Res2;
+            public readonly string Name;
 
             public SelRangeData(byte start, byte end, byte defaultVal, byte flags, ushort res1, ushort res2, string name)
             {
-                this.start = start;
-                this.end = end;
-                this.defaultVal = defaultVal;
-                this.flags = flags;
-                this.res1 = res1;
-                this.res2 = res2;
-                this.name = name;
+                Start = start;
+                End = end;
+                DefaultVal = defaultVal;
+                Flags = flags;
+                Res1 = res1;
+                Res2 = res2;
+                Name = name;
             }
         }
     }

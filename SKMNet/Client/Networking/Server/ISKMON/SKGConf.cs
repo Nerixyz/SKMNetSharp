@@ -13,36 +13,34 @@ namespace SKMNET.Client.Networking.Server.ISKMON
     [Serializable]
     public class SKGConf : SPacket
     {
-        public ushort count;
-        public SKGConfEntry[] entries;
+        public ushort Count;
+        public SKGConfEntry[] Entries;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            count = buffer.ReadUShort();
-            entries = new SKGConfEntry[count];
-            for(int i = 0; i < count; i++)
+            Count = buffer.ReadUShort();
+            Entries = new SKGConfEntry[Count];
+            for(int i = 0; i < Count; i++)
             {
-                entries[i] = new SKGConfEntry(buffer.ReadUShort(), buffer.ReadString(8));
+                Entries[i] = new SKGConfEntry(buffer.ReadUShort(), buffer.ReadString(8));
             }
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            foreach(SKGConfEntry entry in entries)
+            foreach(SKGConfEntry entry in Entries)
             {
-                SKG skg = console.Stromkreisgruppen.Find((x) => x.Number == entry.skgnum);
+                SKG skg = console.Stromkreisgruppen.Find(x => x.Number == entry.SKGNum);
                 if(skg is null)
                 {
-                    skg = new SKG(entry.skgnum, entry.skgname);
+                    skg = new SKG(entry.SKGNum, entry.SKGName);
                     console.Stromkreisgruppen.Add(skg);
                     continue;
                 }
-                else
-                {
-                    skg.Number = entry.skgnum;
-                    skg.Name = entry.skgname;
-                }
+
+                skg.Number = entry.SKGNum;
+                skg.Name = entry.SKGName;
             }
             return Enums.Response.OK;
         }
@@ -50,13 +48,13 @@ namespace SKMNET.Client.Networking.Server.ISKMON
         [Serializable]
         public struct SKGConfEntry
         {
-            public ushort skgnum;
-            public string skgname;
+            public ushort SKGNum;
+            public string SKGName;
 
-            public SKGConfEntry(ushort skgnum, string skgname)
+            public SKGConfEntry(ushort skgNum, string skgName)
             {
-                this.skgnum = skgnum;
-                this.skgname = skgname;
+                SKGNum = skgNum;
+                SKGName = skgName;
             }
         }
     }

@@ -1,10 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SKMNET.Client.Networking.Server.RMON
+﻿namespace SKMNET.Client.Networking.Server.RMON
 {
     /// <summary>
     /// Multiscreen Bildschirmdaten
@@ -16,26 +10,26 @@ namespace SKMNET.Client.Networking.Server.RMON
         public const ushort MON_HM_FLAG = 0x8000;
         public const byte MON_MAX = 4;
 
-        public ushort monitor;
-        public ushort start;
-        public ushort count;
-        public ushort[] data;
+        public ushort Monitor;
+        public ushort Start;
+        public ushort Count;
+        public ushort[] Data;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            monitor = buffer.ReadUShort();
-            start = buffer.ReadUShort();
-            count = buffer.ReadUShort();
+            Monitor = buffer.ReadUShort();
+            Start = buffer.ReadUShort();
+            Count = buffer.ReadUShort();
 
-            this.data = new ushort[count];
-            for(int i = 0; i < count; i++){
-                this.data[i] = buffer.ReadUShort();
+            Data = new ushort[Count];
+            for(int i = 0; i < Count; i++){
+                Data[i] = buffer.ReadUShort();
             }
 
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
             console.ScreenManager.HandleData(this);
             return Enums.Response.OK;

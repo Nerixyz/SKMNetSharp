@@ -21,11 +21,11 @@ namespace SKMNET.Client.Networking
         private readonly Queue<TaskCompletionSource<Enums.FehlerT>> completionQueue;
 
 
-        public ConnectionHandler(string ipAdress, LightingConsole parent, SKMSteckbrief steckbrief, byte SKMType)
+        public ConnectionHandler(string ipAddress, LightingConsole parent, SKMSteckbrief steckbrief, byte SKMType)
         {
             Console = parent;
 
-            sendClient = new SendClient(new IPEndPoint(IPAddress.Parse(ipAdress), 5063));
+            sendClient = new SendClient(new IPEndPoint(IPAddress.Parse(ipAddress), 5063));
             sendClient.Receive += SendClientReceive;
             sendClient.Errored += SendClientErrored;
             sendClient.Start();
@@ -42,10 +42,7 @@ namespace SKMNET.Client.Networking
             SendToConsole(MakePacket(sync.GetDataToSend(Console), sync.Type));
         }
 
-        private void ReceiveClientErrored(object sender, Exception e)
-        {
-            OnErrored(this, e);
-        }
+        private void ReceiveClientErrored(object sender, Exception e) => OnErrored(this, e);
 
         private void ReceiveClientReceive(object sender, ReceiveClient.RecieveEventArgs args)
         {
@@ -73,28 +70,17 @@ namespace SKMNET.Client.Networking
             ByteBuffer buf = new ByteBuffer(e);
             Enums.FehlerT fehler = Enums.GetEnum<Enums.FehlerT>(buf.ReadUInt());
 
-
-            if (completionQueue.Count > 0)
-            {
-                TaskCompletionSource<Enums.FehlerT> res = completionQueue.Dequeue();
-                res.SetResult(fehler);
-            }
+            if (completionQueue.Count <= 0) return;
+            
+            TaskCompletionSource<Enums.FehlerT> res = completionQueue.Dequeue();
+            res.SetResult(fehler);
         }
 
-        private void SendToConsole(byte[] data)
-        {
-            sendClient.SendData(data);
-        }
+        private void SendToConsole(byte[] data) => sendClient.SendData(data);
 
-        public void SendRawData(byte[] arr)
-        {
-            SendToConsole(arr);
-        }
+        public void SendRawData(byte[] arr) => SendToConsole(arr);
 
-        public void SendPacket(byte[] data, short type)
-        {
-            SendToConsole(MakePacket(data, type));
-        }
+        public void SendPacket(byte[] data, short type) => SendToConsole(MakePacket(data, type));
 
         public void SendPacket(CPacket header)
         {
@@ -132,12 +118,6 @@ namespace SKMNET.Client.Networking
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
 
-        public event EventHandler<Exception> Errored;
-        public void OnErrored(object sender, Exception data) { Errored?.Invoke(sender, data); }
-
-        public event EventHandler<PacketReceivedEventArgs> PacketReceived;
-        public void OnPacketReceived(PacketDispatcher sender, PacketReceivedEventArgs args) { PacketReceived?.Invoke(sender, args); }
-
         public async Task<Enums.FehlerT> SendPacketAsync(CPacket packet)
         {
             TaskCompletionSource<Enums.FehlerT> src = new TaskCompletionSource<Enums.FehlerT>();
@@ -173,18 +153,24 @@ namespace SKMNET.Client.Networking
 
             return await src.Task;
         }
+        
+        public event EventHandler<Exception> Errored;
+        public void OnErrored(object sender, Exception data) { Errored?.Invoke(sender, data); }
+
+        public event EventHandler<PacketReceivedEventArgs> PacketReceived;
+        public void OnPacketReceived(PacketDispatcher sender, PacketReceivedEventArgs args) { PacketReceived?.Invoke(sender, args); }
     }
 
     public class PacketReceivedEventArgs
     {
-        public Enums.Type type;
-        public SPacket packet;
-        public Enums.Response response = Enums.Response.OK;
+        public readonly Enums.Type Type;
+        public readonly SPacket Packet;
+        public Enums.Response Response = Enums.Response.OK;
 
         public PacketReceivedEventArgs(Enums.Type type, SPacket packet)
         {
-            this.type = type;
-            this.packet = packet;
+            Type = type;
+            Packet = packet;
         }
     }
 }

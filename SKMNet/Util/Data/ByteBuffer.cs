@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -115,16 +116,14 @@ namespace SKMNET
         public ByteBuffer Write(string value, int length)
         {
             memory.Write(Encoding.ASCII.GetBytes(value), 0, Math.Min(length, value.Length));
-            if(Math.Min(length, value.Length) < length)
+            if (Math.Min(length, value.Length) >= length) return this;
+            
+            byte[] fill = new byte[length - value.Length];
+            for(int i = 0; i < fill.Length; i++)
             {
-                byte[] fill = new byte[length - value.Length];
-                for(int i = 0; i < fill.Length; i++)
-                {
-                    fill[i] = 0;
-                }
-                memory.Write(fill, 0, fill.Length);
-
+                fill[i] = 0;
             }
+            memory.Write(fill, 0, fill.Length);
             return this;
         }
 
@@ -136,7 +135,7 @@ namespace SKMNET
             return this;
         }
 
-        public ByteBuffer Write(ushort[] arr)
+        public ByteBuffer Write(IEnumerable<ushort> arr)
         {
             foreach (ushort value in arr)
             {
@@ -147,7 +146,7 @@ namespace SKMNET
             return this;
         }
 
-        public ByteBuffer Write(short[] arr)
+        public ByteBuffer Write(IEnumerable<short> arr)
         {
             foreach (short value in arr)
             {
@@ -164,20 +163,12 @@ namespace SKMNET
             return this;
         }
 
-        public int Length {
-            get {
-                return (int) memory.Length;
-            }
-        }
+        public int Length => (int) memory.Length;
 
         public void Forward(int forward) => memory.Position += forward;
 
         public byte[] ToArray() => memory.ToArray();
 
-        public long Position {
-            get {
-                return memory.Position;
-            }
-        }
+        public long Position => memory.Position;
     }
 }

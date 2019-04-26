@@ -1,10 +1,6 @@
 ﻿﻿using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static SKMNET.Util.MLUtil;
 
 namespace SKMNET.Client.Networking.Server.TSD
@@ -14,29 +10,29 @@ namespace SKMNET.Client.Networking.Server.TSD
     /// </summary>
     public class MLPalSK : SPacket
     {
-        public ushort palno;
-        public ushort mlpaltype;
-        public bool last;
-        public ushort skcount;
-        public ushort[] skTable;
+        public ushort Palno;
+        public ushort Mlpaltype;
+        public bool Last;
+        public ushort SkCount;
+        public ushort[] SKTable;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            palno = buffer.ReadUShort();
-            mlpaltype = buffer.ReadUShort();
-            last = buffer.ReadUShort() != 0;
-            skcount = buffer.ReadUShort();
-            skTable = new ushort[skcount];
-            for(int i = 0; i < skcount; i++)
+            Palno = buffer.ReadUShort();
+            Mlpaltype = buffer.ReadUShort();
+            Last = buffer.ReadUShort() != 0;
+            SkCount = buffer.ReadUShort();
+            SKTable = new ushort[SkCount];
+            for(int i = 0; i < SkCount; i++)
             {
-                skTable[i] = buffer.ReadUShort();
+                SKTable[i] = buffer.ReadUShort();
             }
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            if (!console.Paletten.TryGetValue(Enums.GetEnum<MLPal.Flag>(mlpaltype), out List<MLPal> list))
+            if (!console.Paletten.TryGetValue(Enums.GetEnum<MLPal.Flag>(Mlpaltype), out List<MLPal> list))
                 return Enums.Response.BadCmd;
 
             Handle(list, console);
@@ -46,17 +42,17 @@ namespace SKMNET.Client.Networking.Server.TSD
 
         private void Handle(List<MLPal> pals, LightingConsole console)
         {
-            MLPal pal = pals.Find((x) => x.Number == palno);
+            MLPal pal = pals.Find(x => x.Number == Palno/10d);
             if (pal == null)
             {
-                pal = new MLPal((MLPal.Flag)GetPalType(mlpaltype), string.Empty, (short)palno);
+                pal = new MLPal((MLPal.Flag)GetPalType(Mlpaltype), string.Empty, (short)Palno);
                 pals.Add(pal);
             }
             else
             {
                 pal.BetSk.Clear();
             }
-            foreach (ushort item in skTable)
+            foreach (ushort item in SKTable)
             {
                 SK sk = console.Stromkreise[item];
                 if (sk is null)

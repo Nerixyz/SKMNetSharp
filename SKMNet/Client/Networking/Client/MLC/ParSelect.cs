@@ -1,10 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SKMNET.Client.Networking.Client
+﻿namespace SKMNET.Client.Networking.Client
 {
     /// <summary>
     /// ML-Parameter selektieren
@@ -18,7 +12,7 @@ namespace SKMNET.Client.Networking.Client
 
         public ParSelect(short parNo, short subcmd = 0)
         {
-            this.parno = parNo;
+            parno = parNo;
             this.subcmd = subcmd;
         }
 

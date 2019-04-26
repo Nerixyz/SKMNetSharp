@@ -46,14 +46,8 @@ namespace SKMNET.Client.Networking.Client
 
         protected delegate void WriteCount(ByteBuffer buf, int maxEntries, int totalDone, int listCount);
 
-        protected static void CountShort(ByteBuffer buf, int maxEntries, int totalDone, int listCount)
-        {
-            buf.WriteShort((short)Math.Min(maxEntries, listCount - totalDone));
-        }
+        protected static void CountShort(ByteBuffer buf, int maxEntries, int totalDone, int listCount) => buf.WriteShort((short)Math.Min(maxEntries, listCount - totalDone));
 
-        protected static void CountUShort(ByteBuffer buf, int maxEntries, int totalDone, int listCount)
-        {
-            buf.WriteUshort((ushort)Math.Min(maxEntries, listCount - totalDone));
-        }
+        protected static void CountUShort(ByteBuffer buf, int maxEntries, int totalDone, int listCount) => buf.WriteUshort((ushort)Math.Min(maxEntries, listCount - totalDone));
     }
 }

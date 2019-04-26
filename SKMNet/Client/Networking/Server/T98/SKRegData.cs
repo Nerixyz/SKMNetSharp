@@ -1,10 +1,5 @@
 ﻿﻿using SKMNET.Client.Stromkreise;
-using SKMNET.Util;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.T98
 {
@@ -14,35 +9,35 @@ namespace SKMNET.Client.Networking.Server.T98
     [Serializable]
     public class SKRegData : SPacket
     {
-        public ushort start;
-        public bool update; /* should display update */
-        public ushort count;
+        public ushort Start;
+        public bool Update; /* should display update */
+        public ushort Count;
 
         [NonSerialized]
-        public byte[] data;
+        public byte[] Data;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            start = buffer.ReadUShort();
-            update = buffer.ReadUShort() != 0x0;
-            count = buffer.ReadUShort();
-            this.data = new byte[count];
-            for (int i = 0; i < count; i++)
+            Start = buffer.ReadUShort();
+            Update = buffer.ReadUShort() != 0x0;
+            Count = buffer.ReadUShort();
+            Data = new byte[Count];
+            for (int i = 0; i < Count; i++)
             {
-                this.data[i] = buffer.ReadByte();
+                Data[i] = buffer.ReadByte();
             }
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            for (int i = start; i < start + count; i++)
+            for (int i = Start; i < Start + Count; i++)
             {
                 if (i >= console.Stromkreise.Length)
                     break;
 
                 SK reg = console.Stromkreise[i];
-                reg?.SetDimmer(data[i - start]);
+                reg?.SetDimmer(Data[i - Start]);
             }
             return Enums.Response.OK;
         }

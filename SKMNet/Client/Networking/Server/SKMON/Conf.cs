@@ -1,8 +1,4 @@
 ﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Server.SKMON
 {
@@ -13,19 +9,20 @@ namespace SKMNET.Client.Networking.Server.SKMON
     public class Conf : SPacket
     {
 
-        public List<Enums.OVDisp> Disp { get; } = new List<Enums.OVDisp>();
+        public Enums.OVDisp[] Disp { get; private set; }
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
             ushort count = buffer.ReadUShort();
+            Disp = new Enums.OVDisp[count];
             for(int i = 0; i < count; i++)
             {
-                Disp.Add(Enums.GetEnum<Enums.OVDisp>(buffer.ReadUShort()));
+                Disp[i] = Enums.GetEnum<Enums.OVDisp>(buffer.ReadUShort());
             }
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
             console.DisplayMode = Disp[0];
             return Enums.Response.OK;

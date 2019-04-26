@@ -1,10 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SKMNET.Client.Networking.Server.SKMON
+﻿namespace SKMNET.Client.Networking.Server.SKMON
 {
     /// <summary>
     /// Kopfzeile
@@ -12,24 +6,24 @@ namespace SKMNET.Client.Networking.Server.SKMON
     public class Headline : SPacket
     {
 
-        public ushort farbno;
-        public ushort count;
+        public ushort Farbno;
+        public ushort Count;
         /// <summary>
         /// Kopfzeilen-String
         /// </summary>
-        public string data;
+        public string Data;
 
         public override SPacket ParsePacket(ByteBuffer buffer)
         {
-            farbno = buffer.ReadUShort();
-            count = buffer.ReadUShort();
-            this.data = buffer.ReadString(count);
+            Farbno = buffer.ReadUShort();
+            Count = buffer.ReadUShort();
+            Data = buffer.ReadString(Count);
             return this;
         }
 
-        public override Enums.Response ProcessPacket(LightingConsole console, ConnectionHandler handler, int type)
+        public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            console.Headline = data;
+            console.Headline = Data;
             return Enums.Response.OK;
         }
     }

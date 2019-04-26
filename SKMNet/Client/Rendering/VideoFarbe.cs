@@ -11,8 +11,8 @@ namespace SKMNET.Client.Rendering
 
         public VideoFarbe(NTColor vg, NTColor hg, short farbno)
         {
-            this.vgColor = vg;
-            this.hgColor = hg;
+            vgColor = vg;
+            hgColor = hg;
             this.farbno = farbno;
         }
 

@@ -1,10 +1,6 @@
 ﻿﻿using SKMNET.Client.Stromkreise;
-using SKMNET.Util;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Networking.Client
 {
@@ -14,35 +10,34 @@ namespace SKMNET.Client.Networking.Client
     public class DmxData : CPacket
     {
         public override short Type => 21;
-        private const short subCmd = 0;
-        private readonly Enums.FixParDst dst;
-        private readonly List<SK> SKs;
+        private const short SUB_CMD = 0;
+        public readonly Enums.FixParDst Dst;
+        private readonly List<SK> sks;
         private readonly List<byte[]> data;
 
         public override byte[] GetDataToSend(LightingConsole console)
         {
             ByteBuffer buf = new ByteBuffer().
                 Write(console.BdstNo).
-                Write(subCmd).
-                Write((short)dst);
-            if(SKs != null)
+                Write(SUB_CMD).
+                Write((short)Dst);
+            if(sks != null)
             {
                 buf.WriteShort(1);
-                SKs.Sort(new Comparison<SK>((SK n1, SK n2) =>
+                sks.Sort((n1, n2) =>
                 {
                     if (n1.Number > n2.Number) return -1;
-                    else if (n2.Number > n1.Number) return 1;
-                    else return 0;
-                }));
+                    return n2.Number > n1.Number ? 1 : 0;
+                });
 
                 // assume they are all on the same line
                 buf.WriteShort(1);
                 int ptr = 0;
                 for(int i = 0; i < 512; i++)
                 {
-                    if(SKs.Count > ptr && SKs[ptr].Number == i + 1)
+                    if(sks.Count > ptr && sks[ptr].Number == i + 1)
                     {
-                        buf.Write(SKs[ptr].Intensity);
+                        buf.Write(sks[ptr].Intensity);
                         ptr++;
                     }
                     else
@@ -66,16 +61,16 @@ namespace SKMNET.Client.Networking.Client
             return buf.ToArray();
         }
 
-        public DmxData(List<SK> SKs = null, Enums.FixParDst dst = Enums.FixParDst.Current)
+        public DmxData(List<SK> sks = null, Enums.FixParDst dst = Enums.FixParDst.Current)
         {
-            this.SKs = SKs;
-            this.dst = dst;
+            this.sks = sks;
+            Dst = dst;
             //throw new NotImplementedException("sknum != dmxout");
         }
 
         public DmxData(List<byte[]> data, Enums.FixParDst dst = Enums.FixParDst.Current)
         {
-            this.dst = dst;
+            Dst = dst;
             if (data.Count == 0)
                 return;
             if (data.Count > 8)
@@ -88,11 +83,11 @@ namespace SKMNET.Client.Networking.Client
                     data.Remove(data[i]);
                     continue;
                 }
-                if(data[i].Length != 512)
-                {
-                    byte[] holder = new byte[512];
-                    Array.Copy(data[i], holder, Math.Min(data[i].Length, 512));
-                }
+
+                if (data[i].Length == 512) continue;
+                
+                byte[] holder = new byte[512];
+                Array.Copy(data[i], holder, Math.Min(data[i].Length, 512));
             }
             this.data = data;
         }

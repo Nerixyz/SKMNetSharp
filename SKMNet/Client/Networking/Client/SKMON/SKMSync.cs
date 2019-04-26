@@ -1,11 +1,4 @@
-﻿﻿using SKMNET.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SKMNET.Client.Networking.Client
+﻿namespace SKMNET.Client.Networking.Client
 {
     /// <summary>
     /// SKMON an/abmelden
@@ -16,7 +9,7 @@ namespace SKMNET.Client.Networking.Client
 
         private readonly Action action;
         private readonly int flags;
-        private readonly byte SKMType;
+        private readonly byte skmType;
 
         public override byte[] GetDataToSend(LightingConsole console)
         {
@@ -25,36 +18,33 @@ namespace SKMNET.Client.Networking.Client
             {
                 steckbrief[i] = (flags & (1 << i)) != 0 ? (byte)1 : (byte)0;
             }
-            steckbrief[0] = SKMType;
-            if (action == Action.BEGIN)
-                return new ByteBuffer().Write((short)action).WriteShort(console.BdstNo).WriteShort(10).Write(steckbrief).ToArray();
-            else
-                return new ByteBuffer().Write((short)action).WriteShort(console.BdstNo).WriteShort(0)/*count = 0 -> no array needed { .Write(steckbrief) } */.ToArray();
+            steckbrief[0] = skmType;
+            return 
+                action == Action.BEGIN ? new ByteBuffer().Write((short)action).WriteShort(console.BdstNo).WriteShort(10).Write(steckbrief).ToArray() 
+                    : new ByteBuffer().Write((short)action).WriteShort(console.BdstNo).WriteShort(0)/*count = 0 -> no array needed { .Write(steckbrief) } */.ToArray();
         }
 
         public SKMSync(Action action)
         {
             this.action = action;
-            this.flags = 0;
+            flags = 0;
         }
 
         public SKMSync(int flags)
         {
-            this.action = Action.BEGIN;
+            action = Action.BEGIN;
             this.flags = flags;
         }
 
-        public SKMSync(SKMSteckbrief steckbrief, byte SKMType)
+        public SKMSync(SKMSteckbrief steckbrief, byte skmType)
         {
-            this.action = Action.BEGIN;
+            action = Action.BEGIN;
             System.Reflection.FieldInfo[] fields = steckbrief.GetType().GetFields();
-            int flags = 0;
             for(int i = 0; i < fields.Length; i++)
             {
                 flags |= ((bool)fields[i].GetValue(steckbrief) ? 1 : 0) << (i+1);
             }
-            this.flags = flags;
-            this.SKMType = SKMType;
+            this.skmType = skmType;
         }
 
         public enum Action

@@ -1,8 +1,4 @@
-﻿﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace SKMNET.Client.Networking.Client
 {
@@ -18,7 +14,7 @@ namespace SKMNET.Client.Networking.Client
 
         public Mailbox(params MailboxEntry[] entry)
         {
-            this.entries = entry;
+            entries = entry;
         }
 
         public override IEnumerable<byte[]> GetData(LightingConsole console) =>
@@ -26,25 +22,25 @@ namespace SKMNET.Client.Networking.Client
                 entries,
                 80,
                 CountShort,
-                new Action<ByteBuffer, int>((buf, _) => buf.WriteShort(console.BdstNo).Write(0)),
-                new Action<MailboxEntry, ByteBuffer>((entry, buf) => buf.Write(entry.mailboxNo).Write(entry.pad).Write(entry.job).Write(entry.par1).Write(entry.par2))
+                (buf, _) => buf.WriteShort(console.BdstNo).Write(0),
+                (entry, buf) => buf.Write(entry.MailboxNo).Write(entry.Pad).Write(entry.Job).Write(entry.Par1).Write(entry.Par2)
            );
 
         public class MailboxEntry
         {
-            public readonly short mailboxNo;
-            public readonly short pad;
-            public readonly int job;
-            public readonly int par1;
-            public readonly int par2;
+            public readonly short MailboxNo;
+            public readonly short Pad;
+            public readonly int Job;
+            public readonly int Par1;
+            public readonly int Par2;
 
             public MailboxEntry(short mailboxNo, int job, int par1, int par2, short pad = 0)
             {
-                this.mailboxNo = mailboxNo;
-                this.pad = pad;
-                this.job = job;
-                this.par1 = par1;
-                this.par2 = par2;
+                MailboxNo = mailboxNo;
+                Pad = pad;
+                Job = job;
+                Par1 = par1;
+                Par2 = par2;
             }
         }
 

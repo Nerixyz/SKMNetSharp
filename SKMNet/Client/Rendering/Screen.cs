@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Rendering
 {
@@ -20,8 +18,8 @@ namespace SKMNET.Client.Rendering
         public Screen(ScreenManager manager, byte num)
         {
             this.manager = manager;
-            this.Num = num;
-            this.Init = true;
+            Num = num;
+            Init = true;
             Setup();
         }
 
@@ -37,7 +35,7 @@ namespace SKMNET.Client.Rendering
 
         public MBlock GetBlock(int x, int y)
         {
-            return Data[Math.Min((x * VERTICAL_LINES) + y, Data.Length - 1)];
+            return Data[Math.Min(x * VERTICAL_LINES + y, Data.Length - 1)];
         }
 
         private void Setup()

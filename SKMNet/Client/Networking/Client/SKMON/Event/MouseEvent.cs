@@ -11,8 +11,8 @@
         }
         public MouseEvent(byte mouseX, byte mouseY, byte buttons)
         {
-            this.moveX = mouseX;
-            this.moveY = mouseY;
+            moveX = mouseX;
+            moveY = mouseY;
             this.buttons = buttons;
         }
     }

@@ -8,9 +8,9 @@
 
         public NTColor(byte red, byte green, byte blue)
         {
-            this.Red = red;
-            this.Green = green;
-            this.Blue = blue;
+            Red = red;
+            Green = green;
+            Blue = blue;
         }
     }
 }
