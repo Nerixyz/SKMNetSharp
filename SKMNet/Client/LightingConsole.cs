@@ -40,7 +40,7 @@ namespace SKMNET.Client
 
             ScreenManager = new ScreenManager(this);
 
-            TastenManager = new TastenManager(this);
+            TastenManager = new TastenManager();
 
             Paletten = new Dictionary<MLPal.Flag, List<MLPal>>
             {

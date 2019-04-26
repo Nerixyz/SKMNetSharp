@@ -72,7 +72,7 @@ namespace SKMNET.Client.Networking.Server.TSD
                         param.Value = (par.val16 & 0xff00) >> 8;
                         param.Display = par.parval;
                         param.PalName = par.palname;
-                        param.SK = sk;
+                        param.Sk = sk;
                     }
                     else
                     {
@@ -80,7 +80,7 @@ namespace SKMNET.Client.Networking.Server.TSD
                         {
                             PalName = par.palname,
                             Display = par.parname,
-                            SK = sk
+                            Sk = sk
                         };
                         sk.Parameters.Add(param);
                     }

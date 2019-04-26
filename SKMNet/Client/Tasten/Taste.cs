@@ -10,9 +10,9 @@ namespace SKMNET.Client.Tasten
     public class Taste
     {
         public ushort Data { get; }
-        public ushort TastNR { get { return (ushort)( Data & 0x3fff); } }
-        public bool Zweiflankentaste { get { return (Data & 0x8000) != 0; } }
-        public bool Lamp { get { return (Data & 0x4000) != 0; } }
+        public ushort TastNR => (ushort)( Data & 0x3fff);
+        public bool Zweiflankentaste => (Data & 0x8000) != 0;
+        public bool Lamp => (Data & 0x4000) != 0;
 
         public string Name { get; }
 
@@ -20,9 +20,9 @@ namespace SKMNET.Client.Tasten
 
         public Taste(ushort data, string name)
         {
-            this.Data = data;
-            this.Name = name;
-            this.State = LampState.Aus;
+            Data = data;
+            Name = name;
+            State = LampState.Aus;
         }
 
         [Serializable]

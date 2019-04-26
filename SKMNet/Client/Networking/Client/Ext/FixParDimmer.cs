@@ -12,7 +12,7 @@ namespace SKMNET.Client.Networking.Client
         private readonly SK[] sks;
         public override short Type => 20;
 
-        public override List<byte[]> GetData(LightingConsole console) =>
+        public override IEnumerable<byte[]> GetData(LightingConsole console) =>
             Make(
                 sks,
                 200,

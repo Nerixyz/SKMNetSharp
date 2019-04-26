@@ -54,14 +54,14 @@ namespace SKMNET.Client.Networking.Server.TSD
             }
             else
             {
-                pal.BetSK.Clear();
+                pal.BetSk.Clear();
             }
             foreach (ushort item in skTable)
             {
                 SK sk = console.Stromkreise[item];
                 if (sk is null)
                     continue;
-                pal.BetSK.Add(sk);
+                pal.BetSk.Add(sk);
             }
         }
     }

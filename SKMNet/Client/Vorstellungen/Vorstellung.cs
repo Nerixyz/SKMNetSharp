@@ -9,11 +9,8 @@ namespace SKMNET.Client.Vorstellungen
     [Serializable]
     public class Vorstellung
     {
-        public ushort Number;
+        public ushort Number { get; }
 
-        public Vorstellung(ushort number)
-        {
-            this.Number = number;
-        }
+        public Vorstellung(ushort number) => Number = number;
     }
 }

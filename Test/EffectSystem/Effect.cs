@@ -8,11 +8,11 @@ namespace EffectSystem
     {
         public abstract double Length { get; }
 
-        public DateTime Start { get; set; }
+        public DateTime Start { get; }
 
         protected Effect()
         {
-            this.Start = DateTime.Now;
+            Start = DateTime.Now;
         }
 
         public abstract EffectState Update(double time);

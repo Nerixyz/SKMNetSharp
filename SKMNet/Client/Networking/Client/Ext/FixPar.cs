@@ -20,7 +20,7 @@ namespace SKMNET.Client.Networking.Client
         private readonly MLParameter[] parameters;
         public override short Type => 20;
 
-        public override List<byte[]> GetData(LightingConsole console)
+        public override IEnumerable<byte[]> GetData(LightingConsole console)
         {
             return Make(
                 parameters,
@@ -29,9 +29,9 @@ namespace SKMNET.Client.Networking.Client
                 new Action<ByteBuffer, int>((buf, _) => buf.Write(console.BdstNo).Write((short)valueType).Write((short)dstReg)),
                 new Action<MLParameter, ByteBuffer>((par, buf) =>
                        {
-                           if (par.SK == null)
+                           if (par.Sk == null)
                                throw new NullReferenceException("MLParameter.SK not set");
-                           buf.Write((short)par.SK.Number).Write(par.ParNo).Write((short)((int)par.Value << 8));
+                           buf.Write((short)par.Sk.Number).Write(par.ParNo).Write((short)((int)par.Value << 8));
                        })
             );
         }

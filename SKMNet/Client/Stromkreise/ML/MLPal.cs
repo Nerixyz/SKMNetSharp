@@ -10,12 +10,11 @@ namespace SKMNET.Client.Stromkreise.ML
     [Serializable]
     public class MLPal
     {
-
-        public Flag Type { get; set; }
+        public Flag Type { get; }
         public string Name { get; set; }
         public double Number { get; set; }
-        public List<SK> BetSK { get; set; }
-        public short PalNO { get; }
+        public List<SK> BetSk { get; }
+        public short PalNo { get; }
 
         /// <summary>
         /// Constructor
@@ -25,30 +24,62 @@ namespace SKMNET.Client.Stromkreise.ML
         /// <param name="num">PalNo is converted to double</param>
         public MLPal(Flag pal, string name, short num)
         {
-            this.Type = pal;
-            this.Name = name;
-            this.Number = num / 10d;
-            this.BetSK = new List<SK>();
-            this.PalNO = num;
+            Type = pal;
+            Name = name;
+            Number = num / 10d;
+            BetSk = new List<SK>();
+            PalNo = num;
         }
 
         public enum Flag
         {
-            I = 0x0001,   /* I-Palette */
-            F = 0x0002,   /* F-Palette */
-            C = 0x0004,   /* C-Palette */
-            B = 0x0008,   /* B-Palette */
+            /// <summary>
+            /// I-Palette
+            /// </summary>
+            I = 0x0001,
+            /// <summary>
+            /// F-Palette
+            /// </summary>
+            F = 0x0002,
+            /// <summary>
+            /// C-Palette
+            /// </summary>
+            C = 0x0004,
+            /// <summary>
+            /// B-Palette
+            /// </summary>
+            B = 0x0008,
 
-            SKG = 0x0010,   /* Stromkreisgruppe */
-            BLK = 0x0020,   /* Stimmung */
-            DYN = 0x0040,   /* Dynamics */
-            CUR_SEL = 0x0080,   /* Aktuelle Selektion */
+            /// <summary>
+            /// Stromkreisgruppe
+            /// </summary>
+            SKG = 0x0010,
+            /// <summary>
+            /// Stimmung
+            /// </summary>
+            BLK = 0x0020,
+            /// <summary>
+            /// Dynamics
+            /// </summary>
+            DYN = 0x0040,
+            /// <summary>
+            /// Aktuelle Selektion
+            /// </summary>
+            CUR_SEL = 0x0080
         }
 
         public static Flag GetFlag(ushort paltype)
         {
             paltype &= 0x0070;
-            return (paltype & 0x0001) != 0 ? Flag.I : (paltype & 0x0002) != 0 ? Flag.F : (paltype & 0x0004) != 0 ? Flag.C : (paltype & 0x0008) != 0 ? Flag.B : (paltype & 0x0010) != 0 ? Flag.SKG : (paltype & 0x0020) != 0 ? Flag.BLK : (paltype & 0x0040) != 0 ? Flag.DYN : Flag.CUR_SEL;
+            return 
+                (paltype & 0x0001) != 0 ? Flag.I :
+                (paltype & 0x0002) != 0 ? Flag.F :
+                (paltype & 0x0004) != 0 ? Flag.C :
+                (paltype & 0x0008) != 0 ? Flag.B :
+                (paltype & 0x0010) != 0 ? Flag.SKG :
+                (paltype & 0x0020) != 0 ? Flag.BLK :
+                (paltype & 0x0040) != 0 ? Flag.DYN :
+                                          Flag.CUR_SEL;
         }
     }
 }

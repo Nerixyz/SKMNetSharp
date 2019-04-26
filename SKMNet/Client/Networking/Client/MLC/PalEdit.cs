@@ -25,7 +25,7 @@ namespace SKMNET.Client.Networking.Client
             this.subcmd = 0;
         }
 
-        public override List<byte[]> GetData(LightingConsole console)
+        public override IEnumerable<byte[]> GetData(LightingConsole console)
         {
             return Make(entries, 30, CountShort, new Action<ByteBuffer, int>((buf, _) =>
             {

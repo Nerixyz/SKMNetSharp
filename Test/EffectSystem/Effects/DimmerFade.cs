@@ -11,11 +11,11 @@ namespace EffectSystem.Effects
 
         public override EffectState Update(double time)
         {
-            return new EffectState()
+            return new EffectState
             {
-                Parameters = new EffectPar[]
+                Parameters = new[]
                 {
-                    new EffectPar()
+                    new EffectPar
                     {
                        Fixture = 1,
                        ParNum = FixParMap.Active.DIMMER,

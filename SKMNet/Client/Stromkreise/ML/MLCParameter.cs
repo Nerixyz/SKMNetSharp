@@ -14,26 +14,29 @@ namespace SKMNET.Client.Stromkreise.ML
         /// <summary>
         /// No linear value (only defaultvalue)
         /// </summary>
-        public bool Setpoint { get => (Flags & 0x01) != 0; }
+        public bool Setpoint => (Flags & 0x01) != 0;
+
         /// <summary>
         /// Only absolute values no increment/decrement
         /// </summary>
-        public bool Encskip  { get => (Flags & 0x02) != 0; }
+        public bool Encskip => (Flags & 0x02) != 0;
+
         /// <summary>
         /// Display DMX-Value (0-255)
         /// </summary>
-        public bool DMXVal   { get => (Flags & 0x04) != 0; }
+        public bool DMXVal => (Flags & 0x04) != 0;
+
         /// <summary>
         /// Display percentage (0-100)
         /// </summary>
-        public bool Relval   { get => (Flags & 0x08) != 0; }
+        public bool Relval => (Flags & 0x08) != 0;
 
 
         public MLCParameter(short number, Enums.SelRangeDisp disp, string name)
         {
-            this.Number = number;
-            this.Disp = disp;
-            this.Name = name;
+            Number = number;
+            Disp = disp;
+            Name = name;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace SKMNET.Client.Networking.Client
             this.entries = entry;
         }
 
-        public override List<byte[]> GetData(LightingConsole console) =>
+        public override IEnumerable<byte[]> GetData(LightingConsole console) =>
             Make(
                 entries,
                 80,

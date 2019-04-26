@@ -23,7 +23,7 @@ namespace SKMNET.Client.Networking.Client
             this.sendRange = sendRange;
         }
 
-        public override List<byte[]> GetData(LightingConsole console)
+        public override IEnumerable<byte[]> GetData(LightingConsole console)
         {
             return Make(
                 entries,

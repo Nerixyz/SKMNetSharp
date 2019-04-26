@@ -1,9 +1,6 @@
 ﻿using SKMNET.Client.Stromkreise.ML;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SKMNET.Client.Stromkreise
 {
@@ -12,11 +9,14 @@ namespace SKMNET.Client.Stromkreise
     {
         public ushort Number { get; }
 
-        public List<MLParameter> Parameters { get; set; }
+        public List<MLParameter> Parameters { get; private set; }
 
-        private byte _intensity;
+        private byte intensity;
 
-        public byte Intensity { get { return _intensity; } set {
+        public byte Intensity 
+        { 
+            get => intensity;
+            set {
                 Set(value);
                 dirty = true;
             }
@@ -24,17 +24,17 @@ namespace SKMNET.Client.Stromkreise
 
         public byte Attrib { get; set; }
 
-        public SK(ushort Number, byte Intensity = 0)
+        public SK(ushort number, byte intensity = 0)
         {
-            this.Number = Number;
+            Number = number;
             Parameters = new List<MLParameter>();
-            this.Intensity = Intensity;
+            Intensity = intensity;
             Attrib = 0;
         }
 
         public void SetIntensity(int intensity)
         {
-            this.Intensity = (byte)intensity;
+            Intensity = (byte)intensity;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace SKMNET.Client.Stromkreise
         /// <param name="val">Dimmer</param>
         internal void SetDimmer(byte val)
         {
-            _intensity = val;
+            intensity = val;
             dirty = false;
         }
 
@@ -53,18 +53,18 @@ namespace SKMNET.Client.Stromkreise
             {
                 Parameters[0].Value = val << 8;
             }
-            _intensity = val;
+            intensity = val;
         }
 
-        internal bool dirty = false;
+        internal bool dirty;
 
-        public bool Anwahl   { get { return (Attrib & 0x01) != 0; } }
-        public bool SKUErr   { get { return (Attrib & 0x02) != 0; } }
-        public bool Maske    { get { return (Attrib & 0x04) != 0; } }
-        public bool Bet      { get { return (Attrib & 0x08) != 0; } }
-        public bool Modified { get { return (Attrib & 0x10) != 0; } }
-        public bool Sperr    { get { return (Attrib & 0x20) != 0; } }
-        public bool Heller   { get { return (Attrib & 0x40) != 0; } }
-        public bool Dunkler  { get { return (Attrib & 0x80) != 0; } }
+        public bool Anwahl => (Attrib & 0x01) != 0;
+        public bool SKUErr => (Attrib & 0x02) != 0;
+        public bool Maske => (Attrib & 0x04) != 0;
+        public bool Bet => (Attrib & 0x08) != 0;
+        public bool Modified => (Attrib & 0x10) != 0;
+        public bool Sperr => (Attrib & 0x20) != 0;
+        public bool Heller => (Attrib & 0x40) != 0;
+        public bool Dunkler => (Attrib & 0x80) != 0;
     }
 }

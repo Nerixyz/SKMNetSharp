@@ -5,6 +5,6 @@ namespace SKMNET.Util
 {
     public interface ISplittable
     {
-        List<byte[]> GetData(LightingConsole console);
+        IEnumerable<byte[]> GetData(LightingConsole console);
     }
 }

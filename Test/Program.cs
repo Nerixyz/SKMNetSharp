@@ -53,7 +53,23 @@ namespace Test
                 new EffectInfo<DimmerFade>
                 {
                     Key = ConsoleKey.D
+                },
+                new EffectInfo<ColorEffect>
+                {
+                    Key = ConsoleKey.R,
+                    Arguments = new object[] { new []{101, 102, 103, 104}, new EffectColor{Red = 255, Green = 0, Blue = 0}}
+                },
+                new EffectInfo<ColorEffect>
+                {
+                    Key = ConsoleKey.G,
+                    Arguments = new object[] { new []{101, 102, 103, 104}, new EffectColor{Red = 0, Green = 255, Blue = 0} }
+                },
+                new EffectInfo<ColorEffect>
+                {
+                    Key = ConsoleKey.B,
+                    Arguments = new object[] { new []{101, 102, 103, 104}, new EffectColor{Red = 0, Green = 0, Blue = 255}}
                 }
+                
             });
             manager.BlockThread(console);
             

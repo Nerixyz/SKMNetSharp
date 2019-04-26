@@ -43,7 +43,7 @@ namespace SKMNET.Client
         /// <summary>
         /// Alle Parameter
         /// </summary>
-        public List<MLCParameter> MLCParameters { get; set; } = new List<MLCParameter>();
+        public List<MLCParameter> MLCParameters { get; } = new List<MLCParameter>();
 
         /// <summary>
         /// Registerinfo IST

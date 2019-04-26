@@ -3,16 +3,14 @@ using SKMNET.Client;
 using SKMNET.Client.Networking.Client;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Timers;
 
 namespace EffectSystem
 {
     public class EffectManager
     {
-        public List<EffectInfo> effectInfos;
-        public List<Effect> activeEffects;
+        public readonly List<EffectInfo> EffectInfos;
+        public List<Effect> ActiveEffects;
 
         private readonly Timer timer;
 
@@ -20,32 +18,32 @@ namespace EffectSystem
 
         public EffectManager(List<EffectInfo> effectInfos, double intervalS = 1.0 / 44.0)
         {
-            this.effectInfos = effectInfos;
-            activeEffects = new List<Effect>();
+            EffectInfos = effectInfos;
+            ActiveEffects = new List<Effect>();
             timer = new Timer(intervalS * 1000.0);
         }
 
-        public void BlockThread(LightingConsole console)
+        public void BlockThread(LightingConsole consoleIn)
         {
-            this.console = console;
-            this.timer.Elapsed += Timer_Elapsed;
-            this.timer.Start();
+            console = consoleIn;
+            timer.Elapsed += Timer_Elapsed;
+            timer.Start();
             ConsoleKeyInfo info;
             while((info = Console.ReadKey(true)).Key != ConsoleKey.Escape)
             {
-                var effect = effectInfos.Find((x) => x.Key == info.Key);
+                EffectInfo effect = EffectInfos.Find(x => x.Key == info.Key);
                 if (effect != null)
-                    activeEffects.Add(effect.Init());
+                    ActiveEffects.Add(effect.Init());
             }
         }
 
         private async void Timer_Elapsed(object sender, ElapsedEventArgs args)
         {
             List<int> toRemove = new List<int>();
-            EffectState[] states = new EffectState[activeEffects.Count];
-            for (int i = 0; i < activeEffects.Count; i++)
+            EffectState[] states = new EffectState[ActiveEffects.Count];
+            for (int i = 0; i < ActiveEffects.Count; i++)
             {
-                Effect e = activeEffects[i];
+                Effect e = ActiveEffects[i];
                 double timePassed = (DateTime.Now - e.Start).TotalSeconds;
                 if (timePassed > e.Length)
                 {
@@ -54,34 +52,31 @@ namespace EffectSystem
                 }
                 states[i] = e.Update(timePassed);
             }
-            toRemove.ForEach((x) => activeEffects.RemoveAt(x));
+            toRemove.ForEach(x => ActiveEffects.RemoveAt(x));
 
-            if (activeEffects.Count > 0)
+            if (ActiveEffects.Count <= 0) return;
+            
+            Dictionary<int, Dictionary<short, byte>> mapping = new Dictionary<int, Dictionary<short, byte>>();
+
+            foreach (EffectState state in states)
             {
-                List<EffectPar> parameters = new List<EffectPar>();
+                if (state.Parameters == null)
+                    continue;
 
-                Dictionary<int, Dictionary<short, byte>> mapping = new Dictionary<int, Dictionary<short, byte>>();
-
-                foreach (EffectState state in states)
+                foreach (EffectPar par in state.Parameters)
                 {
-                    if (state.Parameters == null)
-                        continue;
+                    if (!mapping.ContainsKey(par.Fixture))
+                        mapping.Add(par.Fixture, new Dictionary<short, byte>());
 
-                    foreach (EffectPar par in state.Parameters)
-                    {
-                        if (!mapping.ContainsKey(par.Fixture))
-                            mapping.Add(par.Fixture, new Dictionary<short, byte>());
-
-                        if (!mapping[par.Fixture].ContainsKey(par.ParNum))
-                            mapping[par.Fixture].Add(par.ParNum, par.Value);
-                        else if (mapping[par.Fixture][par.ParNum] < par.Value)
-                            mapping[par.Fixture][par.ParNum] = par.Value;
-                    }
+                    if (!mapping[par.Fixture].ContainsKey(par.ParNum))
+                        mapping[par.Fixture].Add(par.ParNum, par.Value);
+                    else if (mapping[par.Fixture][par.ParNum] < par.Value)
+                        mapping[par.Fixture][par.ParNum] = par.Value;
                 }
-                Enums.FehlerT fehler = await console.QueryAsync(new CustomFixPar(mapping)).ConfigureAwait(false);
-                if (fehler != Enums.FehlerT.FT_OK)
-                    console.Logger?.Log("[EffectManager] response not FT_OK: " + fehler.ToString());
             }
+            Enums.FehlerT fehler = await console.QueryAsync(new CustomFixPar(mapping)).ConfigureAwait(false);
+            if (fehler != Enums.FehlerT.FT_OK)
+                console.Logger?.Log("[EffectManager] response not FT_OK: " + fehler);
         }
 
         public sealed class CustomFixPar : SplittableHeader
@@ -92,42 +87,42 @@ namespace EffectSystem
             private readonly FixPar.ValueType valueType;
             private readonly Enums.FixParDst dstReg;
 
-            public override List<byte[]> GetData(LightingConsole console)
+            public override IEnumerable<byte[]> GetData(LightingConsole console)
             {
                 return Make(
                 infos.ToArray(),
                 200,
                 CountShort,
-                new Action<ByteBuffer, int>((buf, _) => buf.Write((short)console.Bedienstelle).Write((short)valueType).Write((short)dstReg)),
-                new Action<SkInfo, ByteBuffer>((par, buf) =>
+                (buf, _) => buf.Write((short)console.Bedienstelle).Write((short)valueType).Write((short)dstReg),
+                (par, buf) =>
                 {
-                    foreach(KeyValuePair<short, byte> pair in par.parameters)
+                    foreach((short key, byte value) in par.Parameters)
                     {
-                        buf.Write((short)par.num).WriteShort(pair.Key).WriteShort((short)((pair.Value) << 8));
+                        buf.Write((short)par.Num).WriteShort(key).WriteShort((short)(value << 8));
                     }
-                })
+                }
             );
             }
 
             public CustomFixPar(Dictionary<int, Dictionary<short, byte>> mapping, FixPar.ValueType type = FixPar.ValueType.ABS, Enums.FixParDst reg = Enums.FixParDst.Current)
             {
                 infos = new List<SkInfo>(mapping.Count);
-                foreach (KeyValuePair<int, Dictionary<short, byte>> pair in mapping)
+                foreach ((int key, Dictionary<short, byte> value) in mapping)
                 {
-                    infos.Add(new SkInfo()
+                    infos.Add(new SkInfo
                     {
-                        num = pair.Key,
-                        parameters = pair.Value
+                        Num = key,
+                        Parameters = value
                     });
                 }
-                this.valueType = type;
-                this.dstReg = reg;
+                valueType = type;
+                dstReg = reg;
             }
 
             private struct SkInfo
             {
-                public int num;
-                public Dictionary<short, byte> parameters;
+                public int Num;
+                public Dictionary<short, byte> Parameters;
             }
         }
     }

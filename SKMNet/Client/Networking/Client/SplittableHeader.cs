@@ -8,9 +8,9 @@ namespace SKMNET.Client.Networking.Client
     {
         public abstract short Type { get; }
 
-        public abstract List<byte[]> GetData(LightingConsole console);
+        public abstract IEnumerable<byte[]> GetData(LightingConsole console);
 
-        protected static List<byte[]> Make<T>(T[] entries, int maxEntries, WriteCount writeCount, Action<ByteBuffer, int> addHeader_func, Action<T, ByteBuffer> addData_func)
+        protected static IEnumerable<byte[]> Make<T>(T[] entries, int maxEntries, WriteCount writeCount, Action<ByteBuffer, int> addHeaderFunc, Action<T, ByteBuffer> addDataFunc)
         {
             List<byte[]> allPackets = new List<byte[]>();
 
@@ -23,21 +23,20 @@ namespace SKMNET.Client.Networking.Client
             {
                 if (addHeader)
                 {
-                    addHeader_func(currentBuffer, totalEntries);
+                    addHeaderFunc(currentBuffer, totalEntries);
                     writeCount?.Invoke(currentBuffer, maxEntries, totalEntries, entries.Length);
                     addHeader = false;
                 }
-                addData_func(entry, currentBuffer);
+                addDataFunc(entry, currentBuffer);
 
                 entriesDone++;
-                if(entriesDone >= maxEntries)
-                {
-                    entriesDone = 0;
-                    addHeader = true;
-                    allPackets.Add(currentBuffer.ToArray());
-                    currentBuffer = new ByteBuffer();
-                    totalEntries += maxEntries;
-                }
+                if (entriesDone < maxEntries) continue;
+                
+                entriesDone = 0;
+                addHeader = true;
+                allPackets.Add(currentBuffer.ToArray());
+                currentBuffer = new ByteBuffer();
+                totalEntries += maxEntries;
 
             }
             allPackets.Add(currentBuffer.ToArray());

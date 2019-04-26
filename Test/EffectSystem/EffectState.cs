@@ -6,7 +6,7 @@ namespace EffectSystem
 {
     public struct EffectState
     {
-        public EffectPar[] Parameters;
+        public IEnumerable<EffectPar> Parameters;
     }
 
     public struct EffectPar
