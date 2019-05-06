@@ -2,29 +2,17 @@
 using SKMNET;
 using SKMNET.Client;
 using SKMNET.Client.Networking;
-using SKMNET.Client.Networking.Client;
 using SKMNET.Logging;
 using System;
-using CoreClipboard;
-using System.Threading;
-using System.Diagnostics;
 using System.Collections.Generic;
-using SKMNET.Client.Stromkreise;
+using System.Diagnostics;
+using System.Drawing;
+using System.Linq;
 using SKMNET.Client.Networking.Server.T98;
 using SKMNET.Exceptions;
-using System.Reflection;
-using ConsoleUI;
-using NiL.JS.Core;
-using Scripting;
-using System.IO;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using SKMNET.Client.Rendering;
-using SKMNET.Client.Stromkreise.ML;
+using System.Timers;
 using static SKMNET.Enums;
-using MacroTest;
-using EffectSystem;
-using EffectSystem.Effects;
 
 namespace Test
 {
@@ -48,32 +36,7 @@ namespace Test
             console.Connection.PacketReceived += Connection_PacketReceived;
 
             Console.ReadLine();
-            EffectManager manager = new EffectManager(new List<EffectInfo>
-            {
-                new EffectInfo<DimmerFade>
-                {
-                    Key = ConsoleKey.D
-                },
-                new EffectInfo<ColorEffect>
-                {
-                    Key = ConsoleKey.R,
-                    Arguments = new object[] { new []{101, 102, 103, 104}, new EffectColor{Red = 255, Green = 0, Blue = 0}}
-                },
-                new EffectInfo<ColorEffect>
-                {
-                    Key = ConsoleKey.G,
-                    Arguments = new object[] { new []{101, 102, 103, 104}, new EffectColor{Red = 0, Green = 255, Blue = 0} }
-                },
-                new EffectInfo<ColorEffect>
-                {
-                    Key = ConsoleKey.B,
-                    Arguments = new object[] { new []{101, 102, 103, 104}, new EffectColor{Red = 0, Green = 0, Blue = 255}}
-                }
-                
-            });
-            manager.BlockThread(console);
-            
-
+            Examples.Rainbow(console, 101);
             Console.ReadLine();
         }
 
@@ -100,7 +63,6 @@ namespace Test
             UnknownSKMPacketException exception = (UnknownSKMPacketException) e;
             Console.WriteLine(ByteUtils.ArrayToString(exception.Remaining));
         }
-
         private class ConsoleLogger : ILogger
         {
             public void Log(object toLog)

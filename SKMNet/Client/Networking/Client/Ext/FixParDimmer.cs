@@ -16,7 +16,7 @@ namespace SKMNET.Client.Networking.Client
                 200,
                 CountShort,
                 (buf, _) => buf.Write(console.BdstNo).Write(subCmd).Write((short)dstReg),
-                (par, buf) => buf.Write((short)par.Number).WriteShort(0).Write((short)((int)par.Intensity << 8))
+                (par, buf) => buf.Write((short)par.Number).WriteShort(0).Write((short)(par.Intensity << 8))
             );
 
         public FixParDimmer( Enums.FixParDst reg = Enums.FixParDst.Current, params SK[] sks)
