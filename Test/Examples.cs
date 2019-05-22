@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using EffectSystem;
+using SKMNET;
 using SKMNET.Client;
+using SKMNET.Client.Networking.Client;
 
 namespace Test
 {
@@ -34,33 +37,31 @@ namespace Test
             t.Start();
         }
         
-        private static void HsvToRgb(double h, double S, double V, out int r, out int g, out int b)
-        {    
-            double H = h;
-            while (H < 0) { H += 360; };
-            while (H >= 360) { H -= 360; };
+        private static void HsvToRgb(double h, double saturation, double value, out int r, out int g, out int b)
+        {
+            double H = Math.Abs(h % 360.0);
             double R, G, B;
-            if (V <= 0)
+            if (value <= 0)
             { R = G = B = 0; }
-            else if (S <= 0)
+            else if (saturation <= 0)
             {
-                R = G = B = V;
+                R = G = B = value;
             }
             else
             {
                 double hf = H / 60.0;
                 int i = (int)Math.Floor(hf);
                 double f = hf - i;
-                double pv = V * (1 - S);
-                double qv = V * (1 - S * f);
-                double tv = V * (1 - S * (1 - f));
+                double pv = value * (1 - saturation);
+                double qv = value * (1 - saturation * f);
+                double tv = value * (1 - saturation * (1 - f));
                 switch (i)
                 {
 
                     // Red is the dominant color
 
                     case 0:
-                        R = V;
+                        R = value;
                         G = tv;
                         B = pv;
                         break;
@@ -69,12 +70,12 @@ namespace Test
 
                     case 1:
                         R = qv;
-                        G = V;
+                        G = value;
                         B = pv;
                         break;
                     case 2:
                         R = pv;
-                        G = V;
+                        G = value;
                         B = tv;
                         break;
 
@@ -83,18 +84,18 @@ namespace Test
                     case 3:
                         R = pv;
                         G = qv;
-                        B = V;
+                        B = value;
                         break;
                     case 4:
                         R = tv;
                         G = pv;
-                        B = V;
+                        B = value;
                         break;
 
                     // Red is the dominant color
 
                     case 5:
-                        R = V;
+                        R = value;
                         G = pv;
                         B = qv;
                         break;
@@ -102,12 +103,12 @@ namespace Test
                     // Just in case we overshoot on our math by a little, we put these here. Since its a switch it won't slow us down at all to put these here.
 
                     case 6:
-                        R = V;
+                        R = value;
                         G = tv;
                         B = pv;
                         break;
                     case -1:
-                        R = V;
+                        R = value;
                         G = pv;
                         B = qv;
                         break;
@@ -116,7 +117,7 @@ namespace Test
 
                     default:
                         //LFATAL("i Value error in Pixel conversion, Value is %d", i);
-                        R = G = B = V; // Just pretend its black/white
+                        R = G = B = value; // Just pretend its black/white
                         break;
                 }
             }
@@ -138,6 +139,58 @@ namespace Test
         {
             EffectManager manager = new EffectManager(infos, intervalS);
             manager.BlockThread(console);
+        }
+
+        #endregion
+
+        #region FunctionIntensity
+
+        public static async Task<Enums.FehlerT> FunctionIntensity(LightingConsole console, Func<short, byte> func, params short[] sks)
+        {
+            return await console.QueryAsync(
+                new FixParUnsafe(
+                    sks,
+                    Enumerable
+                        .Range(0, sks.Length)
+                        .Select(
+                            index => func((short)index))
+                        .ToArray()
+                    )
+                );
+        }
+
+        private class FixParUnsafe : SplittableHeader
+        {
+            public override short Type => 20;
+            private readonly IEnumerable<SKInfo> infos;
+            public override IEnumerable<byte[]> GetData(LightingConsole console)
+            {
+                return Make(
+                    infos.ToArray(),
+                    200,
+                    CountShort,
+                    (buf, _) => buf.Write((short)console.Bedienstelle).Write((short)FixPar.ValueType.ABS).Write((short)Enums.FixParDst.Current),
+                    (par, buf) =>
+                    {
+                        buf
+                            .Write(par.num)
+                            .WriteShort(0)
+                            .Write((short) (par.val << 8));
+                    }
+                );
+            }
+
+            public FixParUnsafe(IReadOnlyList<short> sks, IReadOnlyList<byte> values)
+            {
+                infos = Enumerable.Range(0, sks.Count)
+                    .Select(index => new SKInfo() {num = sks[index], val = values[index]});
+            }
+            
+            private struct SKInfo
+            {
+                public short num;
+                public byte val;
+            }
         }
 
         #endregion

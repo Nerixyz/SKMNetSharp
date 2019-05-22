@@ -33,8 +33,8 @@ namespace SKMNET.Client.Networking
                 { 100, typeof(SkData) },
                 { 101, typeof(SkAttr) },
                 { 102, typeof(Headline) },
-                { 103, typeof(Sync) },
-                { 104, typeof(Conf) },
+                { 103, typeof(Conf) },
+                { 104, typeof(SkCmd) },
 
                 /* ISKMON */
                 { 105, typeof(BTastConf) },
@@ -77,7 +77,7 @@ namespace SKMNET.Client.Networking
 
         public PacketDispatcher(ConnectionHandler handler) => connection = handler;
 
-        public Enums.Response OnDataIncoming(byte[] data)
+        public virtual Enums.Response OnDataIncoming(byte[] data)
         {
             try
             {

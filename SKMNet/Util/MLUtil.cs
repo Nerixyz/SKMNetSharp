@@ -2,10 +2,7 @@
 {
     public static class MLUtil
     {
-        public static bool GetFlag(MLPalFlag flag, ushort paltype)
-        {
-            return (paltype & (ushort)flag) != 0;
-        }
+        public static bool GetFlag(MLPalFlag flag, ushort paltype) => (paltype & (ushort)flag) != 0;
 
         public static MLPalFlag GetPalType(ushort value)
         {

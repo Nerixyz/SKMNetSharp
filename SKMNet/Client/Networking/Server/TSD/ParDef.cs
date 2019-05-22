@@ -29,7 +29,7 @@
 
         public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            console.MLCParameters.Clear();
+            //console.MLCParameters.Clear(); why tho
             foreach(ParDefData data in Data)
             {
                 console.MLCParameters.Add(new Stromkreise.ML.MLCParameter(data.Parno, data.DispMode, data.ParName));

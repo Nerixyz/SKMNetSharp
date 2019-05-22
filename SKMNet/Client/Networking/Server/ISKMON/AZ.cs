@@ -26,7 +26,7 @@ namespace SKMNET.Client.Networking.Server.ISKMON
 
         public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            switch((Enums.Type)Enum.ToObject(typeof(Enums.Type), type))
+            switch(Enums.GetEnum<Enums.Type>(type))
             {
                 case Enums.Type.AZ_IST: console.RegIST.Text = LineText; console.RegIST.AW = Angewaehlt; break;
                 case Enums.Type.AZ_ZIEL: console.RegZIEL.Text = LineText; console.RegZIEL.AW = Angewaehlt; break;

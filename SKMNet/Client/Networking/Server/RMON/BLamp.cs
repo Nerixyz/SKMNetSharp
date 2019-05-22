@@ -20,7 +20,7 @@ namespace SKMNET.Client.Networking.Server.RMON
             LampStates = new Taste.LampState[256];
             for(int i = 0; i < 256; i++)
             {
-                LampStates[i] = (Taste.LampState)Enum.ToObject(typeof(Taste.LampState), buffer.ReadByte());
+                LampStates[i] = Enums.GetEnum<Taste.LampState>(buffer.ReadByte());
             }
             return this;
         }

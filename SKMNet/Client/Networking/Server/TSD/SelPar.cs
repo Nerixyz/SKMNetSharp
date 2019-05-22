@@ -56,7 +56,6 @@ namespace SKMNET.Client.Networking.Server.TSD
 
                     //get info (not loaded yet)
                     console.QueryAsync(new ParSelect(par.Parno)).ConfigureAwait(false);
-                    Console.WriteLine("sel");
                 }
                 else
                 {
