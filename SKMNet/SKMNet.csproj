@@ -3,6 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>SKMNET</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageVersion>0.1.0</PackageVersion>
+    <Title>SKMNetSharp</Title>
+    <Authors>Nerix</Authors>
+    <Description>Connect to any transtechnik Focus/Prisma NT(X) using simple SKMNet-Client</Description>
+    <RepositoryUrl>https://github.com/Nerixyz/SKMNetSharp</RepositoryUrl>
+    <PackageTags>skmnet</PackageTags>
   </PropertyGroup>
 
 </Project>

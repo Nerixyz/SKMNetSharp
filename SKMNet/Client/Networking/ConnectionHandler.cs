@@ -73,7 +73,7 @@ namespace SKMNET.Client.Networking
             if (completionQueue.Count <= 0) return;
             
             TaskCompletionSource<Enums.FehlerT> res = completionQueue.Dequeue();
-            res.SetResult(fehler);
+            res?.SetResult(fehler);
         }
 
         private void SendToConsole(byte[] data) => sendClient.SendData(data);

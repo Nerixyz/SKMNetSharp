@@ -36,7 +36,7 @@ namespace SKMNET.Client.Networking.Server.TSD
 
             foreach (MLPalPrefab pre in Pallets)
             {
-                MLPal pal = list.Find(x => x.Number == pre.palno / 10.0);
+                MLPal pal = list.Find(x => x.PalNo == pre.palno);
                 if(pal is null)
                 {
                     pal = new MLPal(MLPal.GetFlag(pre.paltype), pre.Name, pre.palno);
@@ -44,7 +44,8 @@ namespace SKMNET.Client.Networking.Server.TSD
                 }
                 else
                 {
-                    pal.Name = pre.Name;
+                    // TODO: not update?
+                    //pal.Name = pre.Name;
                     pal.Number = pre.palno / 10.0;
                 }
             }

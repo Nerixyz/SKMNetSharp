@@ -12,7 +12,10 @@ using SKMNET.Client.Networking.Server.T98;
 using SKMNET.Exceptions;
 using System.Threading.Tasks;
 using System.Timers;
+using SKMNET.Client.Networking.Client;
 using SKMNET.Client.Networking.Server;
+using SKMNET.Client.Stromkreise.ML;
+using SKMNET.Util;
 using static SKMNET.Enums;
 using Type = System.Type;
 
@@ -22,17 +25,13 @@ namespace Test
     {
         private static Stopwatch _stopwatch;
 
-        private static void Main(string[] _)
-        {
-            MainAsync().Wait();
-            Console.ReadLine();
-        }
+        private static void Main(string[] _) => MainAsync().Wait();
 
         private static async Task MainAsync()
         {
             _stopwatch = new Stopwatch();
             LightingConsole console = new LightingConsole(
-                "127.0.0.1",
+                Environment.GetEnvironmentVariable("SKM_IP") ?? "127.0.0.1",
                 LightingConsole.ConsoleSettings.All(
                     logger: new ConsoleLogger()
                     )
@@ -42,24 +41,22 @@ namespace Test
             console.Connection.PacketReceived += Connection_PacketReceived;
 
             Console.ReadLine();
-            _stopwatch.Start();
-            Print(
-                await Examples.FunctionIntensity(
-                    console, 
-                    x => (byte)Math.Min(x % 100 * 2.55, 255.0),
-                    Enumerable
-                        .Range(0, 200)
-                        .Select(i => (short)i)
-                        .ToArray()
-                    )
-                );
+            await Print(console.QueryAsync(
+                new PalCommand(commands: new PalCommand.PalCmdEntry(MLUtil.MLPalFlag.BLK, 10))));
             Console.ReadLine();
         }
 
-        private static void Print(FehlerT fehler)
+        /// <summary>
+        /// Prints delay and response
+        /// </summary>
+        /// <param name="fehler">Request</param>
+        /// <returns>void</returns>
+        private static async Task Print(Task<FehlerT> fehler)
         {
+            _stopwatch.Start();
+            FehlerT f = await fehler;
             _stopwatch.Stop();
-            Console.WriteLine($"Delay: {_stopwatch.Elapsed.TotalMilliseconds}ms\nResponse: {fehler.ToString()}");
+            Console.WriteLine($"Delay: {_stopwatch.Elapsed.TotalMilliseconds}ms\nResponse: {f.ToString()}");
             _stopwatch.Reset();
         }
 
@@ -76,10 +73,7 @@ namespace Test
         {
             byte[] raw = new byte[hex.Length / 2];
             for (int i = 0; i < raw.Length; i++)
-            {
                 raw[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
-            }
-
             return raw;
         }
 
@@ -93,10 +87,7 @@ namespace Test
 
         private class ConsoleLogger : ILogger
         {
-            public void Log(object toLog)
-            {
-                Console.WriteLine(toLog);
-            }
+            public void Log(object toLog) => Console.WriteLine(toLog);
         }
     }
 }

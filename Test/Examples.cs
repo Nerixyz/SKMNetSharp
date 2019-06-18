@@ -25,13 +25,20 @@ namespace Test
             Timer t = new Timer(1.0 / 44.0);
             t.Elapsed += (sender, args) =>
             {
-                console.Query(new FixParColor(new Dictionary<short, Color>(sk.Select(x =>
-                {
-                    double hue = (DateTime.Now.Ticks / 100.0) % 360.0;
-                    Console.WriteLine(Math.Round(hue, 2));
-                    HsvToRgb(hue, 1.0, 1.0, out int r, out int g, out int b);
-                    return new KeyValuePair<short, Color>(x, Color.FromArgb(255, r, g, b));
-                }))));
+                console.Query(
+                    new FixParColor(
+                        new Dictionary<short, Color>(
+                            sk.Select(x =>
+                                    {
+                                        double hue = (DateTime.Now.Ticks / 100.0) % 360.0;
+                                        Console.WriteLine(Math.Round(hue, 2));
+                                        HsvToRgb(hue, 1.0, 1.0, out int r, out int g, out int b);
+                                        return new KeyValuePair<short, Color>(x, Color.FromArgb(255, r, g, b));
+                                    }
+                                )
+                            )
+                        )
+                    );
                 
             };
             t.Start();
@@ -42,7 +49,9 @@ namespace Test
             double H = Math.Abs(h % 360.0);
             double R, G, B;
             if (value <= 0)
-            { R = G = B = 0; }
+            {
+                R = G = B = 0;
+            }
             else if (saturation <= 0)
             {
                 R = G = B = value;

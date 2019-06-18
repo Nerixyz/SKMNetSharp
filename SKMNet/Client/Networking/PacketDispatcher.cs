@@ -105,7 +105,10 @@ namespace SKMNET.Client.Networking
                     PacketReceivedEventArgs consolePacket = new PacketReceivedEventArgs(eType, packet);
                     connection.OnPacketReceived(this, consolePacket);
                     if (consolePacket.Response != Enums.Response.OK)
+                    {
+                        connection.OnErrored(this, new PacketParseException("Could not parse packet", eType, data));
                         code = consolePacket.Response;
+                    }
 
                     if (code != Enums.Response.OK)
                         break;
@@ -116,6 +119,17 @@ namespace SKMNET.Client.Networking
             {
                 connection.OnErrored(this, e);
                 return Enums.Response.BadCmd;
+            }
+        }
+
+        class PacketParseException: Exception
+        {
+            public Enums.Type Type { get; }
+            public byte[] Packet { get; }
+            public PacketParseException(string message, Enums.Type type, byte[] packet) : base(message)
+            {
+                this.Type = type;
+                this.Packet = packet;
             }
         }
     }
