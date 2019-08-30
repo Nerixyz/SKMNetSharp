@@ -1,8 +1,9 @@
 ﻿﻿using SKMNET.Util;
 using System;
 using System.Collections.Generic;
+ using SKMNET.Util.Networking;
 
-namespace SKMNET.Client.Networking.Client
+ namespace SKMNET.Client.Networking.Client
 {
     public abstract class SplittableHeader : ISplittable
     {

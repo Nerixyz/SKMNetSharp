@@ -6,6 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using SKMNET.Client.Networking.Client.Ext;
+using SKMNET.Client.Networking.Client.MLC;
+using SKMNET.Client.Networking.Client.MonSel;
+using SKMNET.Client.Networking.Client.SKMON;
+using SKMNET.Client.Networking.Client.SKMON.Event;
+using SKMNET.Client.Networking.Client.TSD;
 
 namespace ConsoleUI
 {
@@ -14,7 +20,7 @@ namespace ConsoleUI
         public static List<Type> RegisteredInstanceTypes = new List<Type>()
         {
             typeof(DmxData),
-            typeof(DMXSelect),
+            typeof(DmxSelect),
             typeof(FixPar),
             typeof(FixParDimmer),
             typeof(Mailbox),

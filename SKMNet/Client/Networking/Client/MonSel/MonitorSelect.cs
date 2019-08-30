@@ -1,4 +1,4 @@
-﻿namespace SKMNET.Client.Networking.Client
+﻿namespace SKMNET.Client.Networking.Client.MonSel
 {
     /// <summary>
     /// Monitore selektieren

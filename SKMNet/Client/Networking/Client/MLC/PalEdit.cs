@@ -1,11 +1,7 @@
-﻿﻿using SKMNET.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using SKMNET.Util;
 
-namespace SKMNET.Client.Networking.Client
+namespace SKMNET.Client.Networking.Client.MLC
 {
     /// <summary>
     /// Palettendaten bearbeiten
@@ -21,31 +17,23 @@ namespace SKMNET.Client.Networking.Client
         public PalEdit(Cmd cmd, params PalEditEntry[] entries)
         {
             this.entries = entries;
-            editcmd = (short)cmd;
+            editcmd = (short) cmd;
             subcmd = 0;
         }
 
-        public override IEnumerable<byte[]> GetData(LightingConsole console)
-        {
-            return Make(entries, 30, CountShort, (buf, _) =>
-            {
-                buf
-                    .Write(console.BdstNo)
-                    .Write(subcmd)
-                    .Write(editcmd);
-            }, (entry, buf) =>
-            {
-                buf
-                    .Write(entry.Palkenn)
-                    .Write(entry.PalNo)
-                    .Write(entry.PalMask)
-                    .Write(entry.Param)
-                    .Write(entry.SKSelect)
-                    .Write(entry.Smode)
-                    .Write(entry.Text, 31)
-                    .Write((byte)0);
-            });
-        }
+        public override IEnumerable<byte[]> GetData(LightingConsole console) =>
+            Make(entries, 30, CountShort, (buf, _) => buf
+                .Write(console.BdstNo)
+                .Write(subcmd)
+                .Write(editcmd), (entry, buf) => buf
+                .Write(entry.Palkenn)
+                .Write(entry.PalNo)
+                .Write(entry.PalMask)
+                .Write(entry.Param)
+                .Write(entry.SKSelect)
+                .Write(entry.Smode)
+                .Write(entry.Text, 31)
+                .Write((byte) 0));
 
         public class PalEditEntry
         {
@@ -57,14 +45,15 @@ namespace SKMNET.Client.Networking.Client
             public readonly short Smode;
             public readonly string Text;
 
-            public PalEditEntry(MLUtil.MLPalFlag palkenn, short palNo, MLUtil.MLPalFlag palMask, Param param, SkSelect skSelect, SMode smode, string text)
+            public PalEditEntry(MlUtil.MlPalFlag palkenn, short palNo, MlUtil.MlPalFlag palMask, Param param,
+                SkSelect skSelect, SMode smode, string text)
             {
                 Palkenn = (short) palkenn;
                 PalNo = palNo;
-                PalMask = (short)palMask;
-                Param = (short)param;
-                SKSelect = (short)skSelect;
-                Smode = (short)smode;
+                PalMask = (short) palMask;
+                Param = (short) param;
+                SKSelect = (short) skSelect;
+                Smode = (short) smode;
                 Text = text;
             }
         }

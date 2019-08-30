@@ -3,7 +3,7 @@
     /// <summary>
     /// Auf das RESET wurde ein vollständiges Update gesendet
     /// </summary>
-    public class ACKReset : SPacket
+    public class AckReset : SPacket
     {
 
         public override SPacket ParsePacket(ByteBuffer buffer) => this;

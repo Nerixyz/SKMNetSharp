@@ -1,7 +1,7 @@
-﻿using SKMNET.Client;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SKMNET.Client;
 
-namespace SKMNET.Util
+namespace SKMNET.Util.Networking
 {
     public interface ISplittable
     {

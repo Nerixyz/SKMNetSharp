@@ -4,6 +4,7 @@ using SKMNET.Client.Networking.Client;
 using System;
 using System.Collections.Generic;
 using System.Timers;
+using SKMNET.Client.Networking.Client.Ext;
 
 namespace EffectSystem
 {

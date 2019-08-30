@@ -1,4 +1,4 @@
-﻿﻿namespace SKMNET.Client.Networking.Client
+﻿﻿ namespace SKMNET.Client.Networking.Client.SKMON.Event
 {
     public class MonitorEvent : Event
     {
@@ -6,10 +6,7 @@
         private const byte PARAM = 0;
         private readonly byte cmd;
 
-        public override int GetEventInteger(LightingConsole console)
-        {
-            return 0x0d000000 | (monitor << 16) | (PARAM << 8) | cmd;
-        }
+        public override int GetEventInteger(LightingConsole console) => 0x0d000000 | (monitor << 16) | (PARAM << 8) | cmd;
 
         public MonitorEvent(byte monitor, byte cmd)
         {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SKMNET.Client.Networking.Client
+namespace SKMNET.Client.Networking.Client.Ext
 {
     // max len = 80 
     /// <summary>

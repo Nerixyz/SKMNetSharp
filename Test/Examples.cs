@@ -8,6 +8,7 @@ using EffectSystem;
 using SKMNET;
 using SKMNET.Client;
 using SKMNET.Client.Networking.Client;
+using SKMNET.Client.Networking.Client.Ext;
 
 namespace Test
 {

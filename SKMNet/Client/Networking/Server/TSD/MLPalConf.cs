@@ -8,7 +8,7 @@ namespace SKMNET.Client.Networking.Server.TSD
     /// Palettenkonfiguration mit langen Namen
     /// </summary>
     [Serializable]
-    public class MLPalConf : SPacket
+    public class MlPalConf : SPacket
     {
 
         public bool Absolute; /* Should Update the whole configuration */
@@ -38,14 +38,14 @@ namespace SKMNET.Client.Networking.Server.TSD
 
         public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
-            MLPal.Flag mlType = MLPal.GetFlag(MlPalType);
-            if (!console.Paletten.TryGetValue(mlType, out List<MLPal> list))
+            MlPal.Flag mlType = MlPal.GetFlag(MlPalType);
+            if (!console.Paletten.TryGetValue(mlType, out List<MlPal> list))
                 return Enums.Response.BadCmd;
 
             if (Absolute)
                 list.Clear();
 
-            foreach(ConfEntry entry in Entries) list.Add(new MLPal(mlType, entry.Text, entry.Palno));
+            foreach(ConfEntry entry in Entries) list.Add(new MlPal(mlType, entry.Text, entry.Palno));
 
             return Enums.Response.OK;
         }

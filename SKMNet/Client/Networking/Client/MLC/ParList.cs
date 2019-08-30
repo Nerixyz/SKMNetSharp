@@ -1,7 +1,7 @@
-﻿﻿using SKMNET.Client.Stromkreise;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SKMNET.Client.Stromkreise;
 
-namespace SKMNET.Client.Networking.Client
+namespace SKMNET.Client.Networking.Client.MLC
 {
     /// <summary>
     /// Anforderungsliste ML-Parameterwerte
@@ -19,15 +19,13 @@ namespace SKMNET.Client.Networking.Client
             this.sendRange = sendRange;
         }
 
-        public override IEnumerable<byte[]> GetData(LightingConsole console)
-        {
-            return Make(
+        public override IEnumerable<byte[]> GetData(LightingConsole console) =>
+            Make(
                 entries,
                 230,
                 CountShort,
                 (buf, total) => buf.Write(console.BdstNo).Write((short)0).Write((short)(total + 230 > entries.Length ? 1 : 0)),
                 (sk, buf) => buf.Write(sk.Number).Write((short)-2).Write((short)(sendRange ? 0x0001 : 0))
-           );
-        }
+            );
     }
 }

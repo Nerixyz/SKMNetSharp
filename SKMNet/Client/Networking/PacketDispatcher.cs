@@ -24,7 +24,7 @@ namespace SKMNET.Client.Networking
                 { 3, typeof(ReadKey) },
                 { 4, typeof(Pieps) },
                 { 5, typeof(BLamp) },
-                { 6, typeof(ACKReset) },
+                { 6, typeof(AckReset) },
 
                 { 11, typeof(MScreenData) },
                 { 12, typeof(MPalData) },
@@ -41,9 +41,9 @@ namespace SKMNET.Client.Networking
                 { 106, typeof(FKeyConf) },
                 { 107, typeof(Bed) },
                 { 108, typeof(Meld) },
-                { 110, typeof(AZ) },
-                { 111, typeof(AZ) },
-                { 112, typeof(AZ) },
+                { 110, typeof(Az) },
+                { 111, typeof(Az) },
+                { 112, typeof(Az) },
                 { 115, typeof(SKGConf) },
 
                 /* T98 */
@@ -54,17 +54,17 @@ namespace SKMNET.Client.Networking
 
                 /* TSD */
                 { 130, typeof(Sync) }, /* returns SKMON_OK */
-                { 131, typeof(DMXData) },
-                { 132, typeof(TSD_MLPal) },
-                { 133, typeof(TSD_MLPal) }, /* the same i guess */
+                { 131, typeof(DmxData) },
+                { 132, typeof(TsdMlPal) },
+                { 133, typeof(TsdMlPal) }, /* the same i guess */
 
                 /* MLC */
-                { 150, typeof(MLCJob) },
+                { 150, typeof(MlcJob) },
                 { 151, typeof(SelPar) },
                 { 152, typeof(SelRange) },
                 { 153, typeof(ParDef) },
-                { 154, typeof(MLPalConf) },
-                { 155, typeof(MLPalSK) },
+                { 154, typeof(MlPalConf) },
+                { 155, typeof(MlPalSK) },
                 { 156, typeof(SelPar) }, // = SKMON_MLPAR
 
                 /* Libra 1.8 */
@@ -77,7 +77,7 @@ namespace SKMNET.Client.Networking
 
         public PacketDispatcher(ConnectionHandler handler) => connection = handler;
 
-        public virtual Enums.Response OnDataIncoming(byte[] data)
+        public Enums.Response OnDataIncoming(byte[] data)
         {
             try
             {
@@ -122,7 +122,7 @@ namespace SKMNET.Client.Networking
             }
         }
 
-        class PacketParseException: Exception
+        public class PacketParseException: Exception
         {
             public Enums.Type Type { get; }
             public byte[] Packet { get; }

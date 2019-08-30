@@ -7,6 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SKMNET.Client.Networking.Client.Ext;
+using SKMNET.Client.Networking.Client.MLC;
+using SKMNET.Client.Networking.Client.SKMON;
+using SKMNET.Client.Networking.Client.SKMON.Event;
 using static SKMNET.Enums;
 
 namespace SKMNET.Client
@@ -25,7 +29,7 @@ namespace SKMNET.Client
             return await EditPal(
                 name,
                 number,
-                MLUtil.MLPalFlag.BLK).ConfigureAwait(false);
+                MlUtil.MlPalFlag.BLK).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -45,7 +49,7 @@ namespace SKMNET.Client
             return await EditPal(
                 name,
                 number,
-                MLUtil.MLPalFlag.BLK,
+                MlUtil.MlPalFlag.BLK,
                 param,
                 skSelect,
                 saveMode,
@@ -65,7 +69,7 @@ namespace SKMNET.Client
         /// <param name="action">Das Bearbeitungskommando</param>
         public async Task<FehlerT> EditPal(string name,
                                            double number,
-                                           MLUtil.MLPalFlag type,
+                                           MlUtil.MlPalFlag type,
                                            PalEdit.Param param = PalEdit.Param.Default,
                                            PalEdit.SkSelect select = PalEdit.SkSelect.Default,
                                            PalEdit.SMode smode = PalEdit.SMode.Default,
@@ -103,19 +107,19 @@ namespace SKMNET.Client
 
         public async Task<FehlerT> PushKey   (EnumTaste taste) => await PushKey((byte)taste).ConfigureAwait(false);
 
-        public async Task<FehlerT> PushKey   (Taste taste    ) => await PushKey((byte)taste.TastNR).ConfigureAwait(false);
+        public async Task<FehlerT> PushKey   (Taste taste    ) => await PushKey((byte)taste.TastNr).ConfigureAwait(false);
 
         public async Task<FehlerT> HoldKey   (byte taste     ) => await QueryAsync(new BedientasteEvent(taste, true)).ConfigureAwait(false);
 
         public async Task<FehlerT> HoldKey   (EnumTaste taste) => await HoldKey((byte)taste).ConfigureAwait(false);
 
-        public async Task<FehlerT> HoldKey   (Taste taste    ) => await HoldKey((byte)taste.TastNR).ConfigureAwait(false);
+        public async Task<FehlerT> HoldKey   (Taste taste    ) => await HoldKey((byte)taste.TastNr).ConfigureAwait(false);
 
         public async Task<FehlerT> ReleaseKey(byte taste     ) => await QueryAsync(new BedientasteEvent(taste, false)).ConfigureAwait(false);
 
         public async Task<FehlerT> ReleaseKey(EnumTaste taste) => await ReleaseKey((byte)taste).ConfigureAwait(false);
 
-        public async Task<FehlerT> ReleaseKey(Taste taste    ) => await ReleaseKey((byte)taste.TastNR).ConfigureAwait(false);
+        public async Task<FehlerT> ReleaseKey(Taste taste    ) => await ReleaseKey((byte)taste.TastNr).ConfigureAwait(false);
 
         public async Task<FehlerT> PushKeys(params byte[] keys)
         {
@@ -145,8 +149,8 @@ namespace SKMNET.Client
             Event[] events = new Event[tasten.Length * 2];
             for (int i = 0; i < tasten.Length; i++)
             {
-                events[ i * 2     ] = new BedientasteEvent((byte)tasten[i].TastNR, true);
-                events[(i * 2) + 1] = new BedientasteEvent((byte)tasten[i].TastNR, false);
+                events[ i * 2     ] = new BedientasteEvent((byte)tasten[i].TastNr, true);
+                events[(i * 2) + 1] = new BedientasteEvent((byte)tasten[i].TastNr, false);
             }
             return await QueryAsync(Event.Chain(events)).ConfigureAwait(false);
         }

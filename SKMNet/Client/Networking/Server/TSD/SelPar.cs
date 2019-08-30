@@ -2,8 +2,9 @@
 using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
 using System;
- 
-namespace SKMNET.Client.Networking.Server.TSD
+ using SKMNET.Client.Networking.Client.MLC;
+
+ namespace SKMNET.Client.Networking.Server.TSD
 {
     [Serializable]
     public class SelPar : SPacket
@@ -48,10 +49,10 @@ namespace SKMNET.Client.Networking.Server.TSD
             // load MLCParams
             foreach (SelParData par in Parameters)
             {
-                MLCParameter mlcParameter = console.MLCParameters.Find(x => x.Number == par.Parno);
+                MlcParameter mlcParameter = console.MLCParameters.Find(x => x.Number == par.Parno);
                 if(mlcParameter == null)
                 {
-                    MLCParameter parameter = new MLCParameter(par.Parno, Enums.SelRangeDisp.Normal, par.Parname);
+                    MlcParameter parameter = new MlcParameter(par.Parno, Enums.SelRangeDisp.Normal, par.Parname);
                     console.MLCParameters.Add(parameter);
 
                     //get info (not loaded yet)
@@ -61,7 +62,7 @@ namespace SKMNET.Client.Networking.Server.TSD
                 {
                     mlcParameter.Name = par.Parname;
                 }
-                MLParameter param = sk.Parameters.Find(inc => inc.ParNo == par.Parno);
+                MlParameter param = sk.Parameters.Find(inc => inc.ParNo == par.Parno);
                 if (param != null)
                 {
                     param.Value = (par.Val16 & 0xff00) >> 8;
@@ -71,7 +72,7 @@ namespace SKMNET.Client.Networking.Server.TSD
                 }
                 else
                 {
-                    param = new MLParameter(par.Parname, par.Parno, (par.Val16 & 0xff00) >> 8)
+                    param = new MlParameter(par.Parname, par.Parno, (par.Val16 & 0xff00) >> 8)
                     {
                         PalName = par.Palname,
                         Display = par.Parname,

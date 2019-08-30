@@ -1,11 +1,12 @@
 ﻿using SKMNET.Client.Networking.Client;
 using System;
 using System.Globalization;
+using SKMNET.Client.Networking.Client.MLC;
 
 namespace SKMNET.Client.Stromkreise.ML
 {
     [Serializable]
-    public class MLParameter
+    public class MlParameter
     {
         public string Name { get; set; }
         public short ParNo { get; }
@@ -19,7 +20,7 @@ namespace SKMNET.Client.Stromkreise.ML
         [NonSerialized]
         public SK Sk;
 
-        public MLParameter(string name, short parNo = -1, double value = 0)
+        public MlParameter(string name, short parNo = -1, double value = 0)
         {
             Name = name;
             ParNo = parNo;
@@ -28,9 +29,6 @@ namespace SKMNET.Client.Stromkreise.ML
             PalName = string.Empty;
         }
 
-        public ParSelect MakeTriggerMLCPacket()
-        {
-            return new ParSelect(ParNo);
-        }
+        public ParSelect MakeTriggerMlcPacket() => new ParSelect(ParNo);
     }
 }

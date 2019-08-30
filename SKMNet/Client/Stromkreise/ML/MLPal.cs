@@ -8,7 +8,7 @@ using SKMNET.Util;
 namespace SKMNET.Client.Stromkreise.ML
 {
     [Serializable]
-    public class MLPal
+    public class MlPal
     {
         public Flag Type { get; }
         public string Name { get; set; }
@@ -22,7 +22,7 @@ namespace SKMNET.Client.Stromkreise.ML
         /// <param name="pal">PalType</param>
         /// <param name="name">PalName</param>
         /// <param name="num">PalNo is converted to double</param>
-        public MLPal(Flag pal, string name, short num)
+        public MlPal(Flag pal, string name, short num)
         {
             Type = pal;
             Name = name;

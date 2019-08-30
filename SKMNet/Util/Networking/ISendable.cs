@@ -1,6 +1,6 @@
 ﻿using SKMNET.Client;
 
-namespace SKMNET.Util
+namespace SKMNET.Util.Networking
 {
     public interface ISendable
     {

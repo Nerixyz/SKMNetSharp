@@ -4,9 +4,10 @@ using SKMNET.Client.Rendering;
 using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Client.Tasten;
-using SKMNET.Logging;
 using System;
 using System.Collections.Generic;
+using SKMNET.Client.Networking.Client.SKMON;
+using SKMNET.Util;
 
 namespace SKMNET.Client
 {
@@ -21,9 +22,9 @@ namespace SKMNET.Client
                 Bedientasten = Settings.Bedientasten,
                 BefMeldZeile = Settings.BefMeldZeile,
                 FuncKeys = Settings.FuncKeys,
-                LKI = Settings.Lki,
+                Lki = Settings.Lki,
                 BlockInfo = Settings.BlockInfo,
-                AZ_Zeilen = Settings.AzZeilen,
+                AzZeilen = Settings.AzZeilen,
                 ExtKeys = Settings.ExtKeys,
                 AktInfo = Settings.AktInfo,
                 Steller = Settings.Steller
@@ -42,16 +43,16 @@ namespace SKMNET.Client
 
             TastenManager = new TastenManager();
 
-            Paletten = new Dictionary<MLPal.Flag, List<MLPal>>
+            Paletten = new Dictionary<MlPal.Flag, List<MlPal>>
             {
-                { MLPal.Flag.I, new List<MLPal>() },
-                { MLPal.Flag.F, new List<MLPal>() },
-                { MLPal.Flag.C, new List<MLPal>() },
-                { MLPal.Flag.B, new List<MLPal>() },
-                { MLPal.Flag.SKG, new List<MLPal>() },
-                { MLPal.Flag.BLK, new List<MLPal>() },
-                { MLPal.Flag.DYN, new List<MLPal>() },
-                { MLPal.Flag.CUR_SEL, new List<MLPal>() }
+                { MlPal.Flag.I, new List<MlPal>() },
+                { MlPal.Flag.F, new List<MlPal>() },
+                { MlPal.Flag.C, new List<MlPal>() },
+                { MlPal.Flag.B, new List<MlPal>() },
+                { MlPal.Flag.SKG, new List<MlPal>() },
+                { MlPal.Flag.BLK, new List<MlPal>() },
+                { MlPal.Flag.DYN, new List<MlPal>() },
+                { MlPal.Flag.CUR_SEL, new List<MlPal>() }
             };
         }
 

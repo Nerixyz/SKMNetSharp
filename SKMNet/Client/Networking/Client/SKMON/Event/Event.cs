@@ -1,21 +1,18 @@
 ﻿using System;
 
-namespace SKMNET.Client.Networking.Client
+namespace SKMNET.Client.Networking.Client.SKMON.Event
 {
     public abstract class Event : CPacket
     {
         public override short Type => 14;
 
-        public override byte[] GetDataToSend(LightingConsole console)
-        {
-            //no BdstNo ?!
-            return new ByteBuffer()
+        public override byte[] GetDataToSend(LightingConsole console) =>
+            new ByteBuffer()
                 .Write((int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds) // Time
                 .Write((short)1) // Count
                 .Write((short)1) // Flags
                 .Write(GetEventInteger(console)) // Event Int
                 .ToArray();
-        }
 
         public abstract int GetEventInteger(LightingConsole console);
 

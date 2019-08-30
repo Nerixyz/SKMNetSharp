@@ -68,8 +68,7 @@ namespace SKMNET
         public ByteBuffer WriteUshort(ushort value)
         {
             byte[] data = BitConverter.GetBytes(value);
-            Array.Reverse(data);
-            memory.Write(data, 0, 2);
+            memory.Write(data.TransformToBigEndian(), 0, 2);
             return this;
         }
 
@@ -78,32 +77,28 @@ namespace SKMNET
         public ByteBuffer WriteShort(short value)
         {
             byte[] data = BitConverter.GetBytes(value);
-            Array.Reverse(data);
-            memory.Write(data, 0, 2);
+            memory.Write(data.TransformToBigEndian(), 0, 2);
             return this;
         }
 
         public ByteBuffer Write(int value)
         {
             byte[] data = BitConverter.GetBytes(value);
-            Array.Reverse(data);
-            memory.Write(data, 0, 4);
+            memory.Write(data.TransformToBigEndian(), 0, 4);
             return this;
         }
 
         public ByteBuffer Write(uint value)
         {
             byte[] data = BitConverter.GetBytes(value);
-            Array.Reverse(data);
-            memory.Write(data, 0, 4);
+            memory.Write(data.TransformToBigEndian(), 0, 4);
             return this;
         }
 
         public ByteBuffer Write(long value)
         {
             byte[] data = BitConverter.GetBytes(value);
-            Array.Reverse(data);
-            memory.Write(data, 0, 8);
+            memory.Write(data.TransformToBigEndian(), 0, 8);
             return this;
         }
 
@@ -130,8 +125,7 @@ namespace SKMNET
         public ByteBuffer Write(ulong value)
         {
             byte[] data = BitConverter.GetBytes(value);
-            Array.Reverse(data);
-            memory.Write(data, 0, 8);
+            memory.Write(data.TransformToBigEndian(), 0, 8);
             return this;
         }
 
@@ -140,8 +134,7 @@ namespace SKMNET
             foreach (ushort value in arr)
             {
                 byte[] data = BitConverter.GetBytes(value);
-                Array.Reverse(data);
-                memory.Write(data, 0, 2);
+                memory.Write(data.TransformToBigEndian(), 0, 2);
             }
             return this;
         }
@@ -151,8 +144,7 @@ namespace SKMNET
             foreach (short value in arr)
             {
                 byte[] data = BitConverter.GetBytes(value);
-                Array.Reverse(data);
-                memory.Write(data, 0, 2);
+                memory.Write(data.TransformToBigEndian(), 0, 2);
             }
             return this;
         }
@@ -170,5 +162,24 @@ namespace SKMNET
         public byte[] ToArray() => memory.ToArray();
 
         public long Position => memory.Position;
+    }
+
+    public static class ByteArrayExtensions
+    {
+        public static byte[] TransformToBigEndian(this byte[] instance)
+        {
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(instance);
+
+            return instance;
+        }
+
+        public static byte[] TransformBigToLocalEndian(this byte[] instance)
+        {
+            if(BitConverter.IsLittleEndian)
+                Array.Reverse(instance);
+
+            return instance;
+        }
     }
 }

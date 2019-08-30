@@ -4,6 +4,7 @@ using System.Linq;
 using SKMNET;
 using SKMNET.Client;
 using SKMNET.Client.Networking.Client;
+using SKMNET.Client.Networking.Client.Ext;
 using SKMNET.Client.Stromkreise.ML;
 
 namespace Test
@@ -41,19 +42,19 @@ namespace Test
                     new SkInfo
                     {
                         SkNum = x.Key,
-                        Par = FixParMap.Active.RED,
+                        Par = FixParMap.Active.Red,
                         Val = x.Value.R
                     }
                     ,new SkInfo
                     {
                         SkNum = x.Key,
-                        Par = FixParMap.Active.GREEN,
+                        Par = FixParMap.Active.Green,
                         Val = x.Value.G
                     }
                     ,new SkInfo
                     {
                         SkNum = x.Key,
-                        Par = FixParMap.Active.BLUE,
+                        Par = FixParMap.Active.Blue,
                         Val = x.Value.B
                     }
                 });

@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+ using SKMNET.Client.Networking.Client.SKMON;
+ using SKMNET.Util.Networking;
 
-namespace SKMNET.Client.Networking
+ namespace SKMNET.Client.Networking
 {
     public class ConnectionHandler
     {
@@ -53,7 +55,7 @@ namespace SKMNET.Client.Networking
             catch (Exception e)
             {
                 args.ResponseCode = Enums.Response.BadCmd;
-                Console.Logger?.Log(ByteUtils.ArrayToString(args.Data));
+                Console.Logger?.Log(args.Data.ToHexString());
                 OnErrored(this, e);
                 Console.Logger?.Log(e.StackTrace);
             }

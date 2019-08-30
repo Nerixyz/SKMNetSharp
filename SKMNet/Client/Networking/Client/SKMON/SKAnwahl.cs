@@ -1,8 +1,8 @@
-﻿﻿using SKMNET.Client.Stromkreise;
-using System.Linq;
+﻿using System.Linq;
+using SKMNET.Client.Stromkreise;
 using static SKMNET.Enums;
 
-namespace SKMNET.Client.Networking.Client
+namespace SKMNET.Client.Networking.Client.SKMON
 {
     /// <summary>
     /// SK-Anwahl-Telegramm
@@ -13,10 +13,7 @@ namespace SKMNET.Client.Networking.Client
         private readonly AWType type;
         private readonly short[] skNo;
 
-        public override byte[] GetDataToSend(LightingConsole console)
-        {
-            return new ByteBuffer().WriteShort(console.BdstNo).Write((short)type).Write((short)skNo.Length).Write(skNo).ToArray();
-        }
+        public override byte[] GetDataToSend(LightingConsole console) => new ByteBuffer().WriteShort(console.BdstNo).Write((short)type).Write((short)skNo.Length).Write(skNo).ToArray();
 
         public SKAnwahl(AWType type, params short[] skNo)
         {

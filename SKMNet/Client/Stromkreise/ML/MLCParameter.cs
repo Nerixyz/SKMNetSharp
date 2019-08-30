@@ -3,7 +3,7 @@
 namespace SKMNET.Client.Stromkreise.ML
 {
     [Serializable]
-    public class MLCParameter
+    public class MlcParameter
     {
         public Enums.SelRangeDisp Disp { get; internal set; }
         public short Number { get; internal set; }
@@ -32,7 +32,7 @@ namespace SKMNET.Client.Stromkreise.ML
         public bool Relval => (Flags & 0x08) != 0;
 
 
-        public MLCParameter(short number, Enums.SelRangeDisp disp, string name)
+        public MlcParameter(short number, Enums.SelRangeDisp disp, string name)
         {
             Number = number;
             Disp = disp;

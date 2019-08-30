@@ -1,6 +1,7 @@
 ﻿﻿using SKMNET.Util;
+ using SKMNET.Util.Networking;
 
-namespace SKMNET.Client.Networking.Client
+ namespace SKMNET.Client.Networking.Client
 {
     public abstract class CPacket : ISendable
     {

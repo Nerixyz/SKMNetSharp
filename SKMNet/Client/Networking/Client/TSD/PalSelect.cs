@@ -1,6 +1,6 @@
 ﻿﻿using SKMNET.Util;
- 
-namespace SKMNET.Client.Networking.Client
+
+ namespace SKMNET.Client.Networking.Client.TSD
 {
     /// <summary>
     /// Auswahl für Palettendaten
@@ -11,12 +11,9 @@ namespace SKMNET.Client.Networking.Client
         private readonly short palMask;
         private const short SubCmd = 0;
 
-        public override byte[] GetDataToSend(LightingConsole console)
-        {
-            return new ByteBuffer().Write(console.BdstNo).Write(SubCmd).Write(palMask).ToArray();
-        }
+        public override byte[] GetDataToSend(LightingConsole console) => new ByteBuffer().Write(console.BdstNo).Write(SubCmd).Write(palMask).ToArray();
 
-        public PalSelect(MLUtil.MLPalFlag PalMask)
+        public PalSelect(MlUtil.MlPalFlag PalMask)
         {
             this.palMask = (short)PalMask;
         }

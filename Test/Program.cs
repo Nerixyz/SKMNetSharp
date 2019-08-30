@@ -2,7 +2,6 @@
 using SKMNET;
 using SKMNET.Client;
 using SKMNET.Client.Networking;
-using SKMNET.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +12,7 @@ using SKMNET.Exceptions;
 using System.Threading.Tasks;
 using System.Timers;
 using SKMNET.Client.Networking.Client;
+using SKMNET.Client.Networking.Client.TSD;
 using SKMNET.Client.Networking.Server;
 using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Util;
@@ -42,7 +42,7 @@ namespace Test
 
             Console.ReadLine();
             await Print(console.QueryAsync(
-                new PalCommand(commands: new PalCommand.PalCmdEntry(MLUtil.MLPalFlag.BLK, 10))));
+                new PalCommand(commands: new PalCommand.PalCmdEntry(MlUtil.MlPalFlag.BLK, 10))));
             Console.ReadLine();
         }
 
@@ -62,7 +62,7 @@ namespace Test
 
         private static void Connection_PacketReceived(object sender, PacketReceivedEventArgs args)
         {
-            Console.WriteLine("received " + (int) args.Type + " - " + args.Packet.GetType().Name);
+            Console.WriteLine($"received {(int) args.Type} - {args.Packet.GetType().Name}");
             if (args.Packet is SKRegData)
             {
                 Console.WriteLine(JsonConvert.SerializeObject(args.Packet));
@@ -82,7 +82,7 @@ namespace Test
             Console.WriteLine("ERROR:\n" + e.Message + "\n" + e.Source + "\n" + e.StackTrace);
             if (!(e is UnknownSKMPacketException)) return;
             UnknownSKMPacketException exception = (UnknownSKMPacketException) e;
-            Console.WriteLine(ByteUtils.ArrayToString(exception.Remaining));
+            Console.WriteLine(exception.Remaining.ToHexString());
         }
 
         private class ConsoleLogger : ILogger
