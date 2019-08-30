@@ -24,9 +24,9 @@ namespace EffectSystem.Effects
             {
                 Parameters = Fixtures.SelectMany(x => new[]
                 {
-                    new EffectPar {Fixture = x, ParNum = FixParMap.Active.RED,   Value = Color.Red},
-                    new EffectPar {Fixture = x, ParNum = FixParMap.Active.GREEN, Value = Color.Green},
-                    new EffectPar {Fixture = x, ParNum = FixParMap.Active.BLUE,  Value = Color.Blue}
+                    new EffectPar {Fixture = x, ParNum = FixParMap.Active.Red,   Value = Color.Red},
+                    new EffectPar {Fixture = x, ParNum = FixParMap.Active.Green, Value = Color.Green},
+                    new EffectPar {Fixture = x, ParNum = FixParMap.Active.Blue,  Value = Color.Blue}
                 })
             };
         }

@@ -15,6 +15,6 @@ namespace SKMNET.Client.Tasten
 
         public Taste FindByName(string name)  => Tasten.Find(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
-        public Taste FindByNumber(int number) => Tasten.Find(x => x.TastNR == number);
+        public Taste FindByNumber(int number) => Tasten.Find(x => x.TastNr == number);
     }
 }

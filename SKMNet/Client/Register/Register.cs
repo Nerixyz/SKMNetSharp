@@ -7,13 +7,13 @@ namespace SKMNET.Client
     {
         public string Name { get; }
         public string Text { get; set; }
-        public bool AW { get; set; }
+        public bool Aw { get; set; }
 
-        public Register(string name, string text, bool AW)
+        public Register(string name, string text, bool aw)
         {
             Name = name;
             Text = text;
-            this.AW = AW;
+            this.Aw = aw;
         }
     }
 }

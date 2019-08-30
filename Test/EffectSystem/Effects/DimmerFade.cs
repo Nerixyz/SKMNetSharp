@@ -18,7 +18,7 @@ namespace EffectSystem.Effects
                     new EffectPar
                     {
                        Fixture = 1,
-                       ParNum = FixParMap.Active.DIMMER,
+                       ParNum = FixParMap.Active.Dimmer,
                        Value = (byte)((1.0 - time) * 255)
                     }
                 }

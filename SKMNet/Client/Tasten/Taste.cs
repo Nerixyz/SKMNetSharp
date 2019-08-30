@@ -6,7 +6,7 @@ namespace SKMNET.Client.Tasten
     public class Taste
     {
         public ushort Data { get; }
-        public ushort TastNR => (ushort)( Data & 0x3fff);
+        public ushort TastNr => (ushort)( Data & 0x3fff);
         public bool Zweiflankentaste => (Data & 0x8000) != 0;
         public bool Lamp => (Data & 0x4000) != 0;
 

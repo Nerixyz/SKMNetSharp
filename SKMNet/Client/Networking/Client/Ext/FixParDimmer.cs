@@ -1,7 +1,7 @@
-﻿﻿using SKMNET.Client.Stromkreise;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SKMNET.Client.Stromkreise;
 
-namespace SKMNET.Client.Networking.Client
+namespace SKMNET.Client.Networking.Client.Ext
 {
     public class FixParDimmer : SplittableHeader
     {

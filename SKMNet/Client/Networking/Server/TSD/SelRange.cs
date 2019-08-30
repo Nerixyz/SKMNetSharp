@@ -47,11 +47,11 @@ namespace SKMNET.Client.Networking.Server.TSD
         public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
             SK sk = console.Stromkreise[Fixture];
-            MLParameter param = sk?.Parameters.Find(x => x.ParNo == Fixpar);
+            MlParameter param = sk?.Parameters.Find(x => x.ParNo == Fixpar);
             if (param is null)
                 return Enums.Response.BadCmd;
 
-            MLCParameter mlc = console.MLCParameters.Find(x => x.Number == Fixpar);
+            MlcParameter mlc = console.MLCParameters.Find(x => x.Number == Fixpar);
             //TODO remove?
 #if DEBUG
             console.Logger?.Log(Count);

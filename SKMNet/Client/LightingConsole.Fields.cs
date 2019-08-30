@@ -5,12 +5,12 @@ using SKMNET.Client.Stromkreise;
 using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Client.Tasten;
 using SKMNET.Client.Vorstellungen;
-using SKMNET.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SKMNET.Util;
 
 namespace SKMNET.Client
 {
@@ -38,12 +38,12 @@ namespace SKMNET.Client
         public string AktReg { get; set; }
         public string AktList { get; set; }
 
-        public Dictionary<MLPal.Flag, List<MLPal>> Paletten { get; }
+        public Dictionary<MlPal.Flag, List<MlPal>> Paletten { get; }
 
         /// <summary>
         /// Alle Parameter
         /// </summary>
-        public List<MLCParameter> MLCParameters { get; } = new List<MLCParameter>();
+        public List<MlcParameter> MLCParameters { get; } = new List<MlcParameter>();
 
         /// <summary>
         /// Registerinfo IST

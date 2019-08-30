@@ -1,7 +1,7 @@
-﻿﻿using SKMNET.Client.Rendering;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SKMNET.Client.Rendering;
 
-namespace SKMNET.Client.Networking.Server
+namespace SKMNET.Client.Networking.Server.RMON
 {
     /// <summary>
     /// Video-Palettendaten (Komplett-Telegramm)

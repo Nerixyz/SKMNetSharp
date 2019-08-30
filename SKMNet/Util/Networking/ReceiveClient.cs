@@ -1,11 +1,11 @@
-﻿using SKMNET.Exceptions;
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using SKMNET.Exceptions;
 
-namespace SKMNET.Util
+namespace SKMNET.Util.Networking
 {
     internal sealed class ReceiveClient
     {

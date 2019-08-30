@@ -1,11 +1,11 @@
-﻿using SKMNET.Client;
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using SKMNET.Client;
 using SKMNET.Exceptions;
 
-namespace SKMNET.Util
+namespace SKMNET.Util.Networking
 {
     internal class SendClient
     {

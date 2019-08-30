@@ -1,4 +1,4 @@
-﻿namespace SKMNET.Client.Networking.Client
+﻿namespace SKMNET.Client.Networking.Client.SKMON.Event
 {
     public class MacroEvent : Event
     {
@@ -11,9 +11,6 @@
             macroNoMsb = msb;
         }
 
-        public override int GetEventInteger(LightingConsole console)
-        {
-            return 0x06000000 | ((byte)console.BdstNo << 16) | (macroNoMsb << 8) | macroNoLsb;
-        }
+        public override int GetEventInteger(LightingConsole console) => 0x06000000 | ((byte)console.BdstNo << 16) | (macroNoMsb << 8) | macroNoLsb;
     }
 }

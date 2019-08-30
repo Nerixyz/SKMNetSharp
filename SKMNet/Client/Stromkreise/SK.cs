@@ -9,7 +9,7 @@ namespace SKMNET.Client.Stromkreise
     {
         public ushort Number { get; }
 
-        public List<MLParameter> Parameters { get; private set; }
+        public List<MlParameter> Parameters { get; private set; }
 
         private byte intensity;
 
@@ -27,7 +27,7 @@ namespace SKMNET.Client.Stromkreise
         public SK(ushort number, byte intensity = 0)
         {
             Number = number;
-            Parameters = new List<MLParameter>();
+            Parameters = new List<MlParameter>();
             Intensity = intensity;
             Attrib = 0;
         }
@@ -59,7 +59,7 @@ namespace SKMNET.Client.Stromkreise
         internal bool dirty;
 
         public bool Anwahl => (Attrib & 0x01) != 0;
-        public bool SKUErr => (Attrib & 0x02) != 0;
+        public bool SkuErr => (Attrib & 0x02) != 0;
         public bool Maske => (Attrib & 0x04) != 0;
         public bool Bet => (Attrib & 0x08) != 0;
         public bool Modified => (Attrib & 0x10) != 0;

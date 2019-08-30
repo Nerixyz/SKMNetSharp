@@ -1,4 +1,4 @@
-﻿namespace SKMNET.Client.Networking.Client
+﻿namespace SKMNET.Client.Networking.Client.MLC
 {
     /// <summary>
     /// ML-Parameter selektieren
@@ -17,9 +17,6 @@
         }
 
 
-        public override byte[] GetDataToSend(LightingConsole console)
-        {
-            return new ByteBuffer().Write(parno).Write(subcmd).Write(console.BdstNo).ToArray();
-        }
+        public override byte[] GetDataToSend(LightingConsole console) => new ByteBuffer().Write(parno).Write(subcmd).Write(console.BdstNo).ToArray();
     }
 }

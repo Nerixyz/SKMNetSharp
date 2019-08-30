@@ -18,7 +18,10 @@ namespace SKMNET.Client
         /// <param name="packet">Packet to send</param>
         public void Query(CPacket packet) => Connection.SendPacket(packet);
 
-        [Obsolete("Use SendPacketAsync instead", false)]
+        /// <summary>
+        /// Send packet to console
+        /// </summary>
+        /// <param name="packet"></param>
         public void Query(SplittableHeader packet) => Connection.SendPacket(packet);
 
         public async Task<Enums.FehlerT> QueryAsync(CPacket packet) => await Connection.SendPacketAsync(packet).ConfigureAwait(false);

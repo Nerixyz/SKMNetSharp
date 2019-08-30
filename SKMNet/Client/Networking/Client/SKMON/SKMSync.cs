@@ -1,4 +1,4 @@
-﻿namespace SKMNET.Client.Networking.Client
+﻿namespace SKMNET.Client.Networking.Client.SKMON
 {
     /// <summary>
     /// SKMON an/abmelden
@@ -62,9 +62,9 @@
         public bool Bedientasten;
         public bool BefMeldZeile;
         public bool FuncKeys;
-        public bool LKI;
+        public bool Lki;
         public bool BlockInfo;
-        public bool AZ_Zeilen;
+        public bool AzZeilen;
         public bool ExtKeys;
         public bool AktInfo;
         public bool Steller;

@@ -1,4 +1,4 @@
-﻿namespace SKMNET.Logging
+﻿namespace SKMNET.Util
 {
     public interface ILogger
     {

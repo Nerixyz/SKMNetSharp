@@ -1,24 +1,21 @@
 ﻿namespace SKMNET.Util
 {
-    public static class MLUtil
+    public static class MlUtil
     {
-        public static bool GetFlag(MLPalFlag flag, ushort paltype)
+        public static bool GetFlag(MlPalFlag flag, ushort paltype) => (paltype & (ushort)flag) != 0;
+
+        public static MlPalFlag GetPalType(ushort value)
         {
-            return (paltype & (ushort)flag) != 0;
+            return GetFlag(MlPalFlag.I, value)   ? MlPalFlag.I   :
+                   GetFlag(MlPalFlag.F, value)   ? MlPalFlag.F   :
+                   GetFlag(MlPalFlag.C, value)   ? MlPalFlag.C   :
+                   GetFlag(MlPalFlag.B, value)   ? MlPalFlag.B   :
+                   GetFlag(MlPalFlag.SKG, value) ? MlPalFlag.SKG :
+                   GetFlag(MlPalFlag.BLK, value) ? MlPalFlag.BLK :
+                   GetFlag(MlPalFlag.DYN, value) ? MlPalFlag.DYN : MlPalFlag.CUR_SEL;
         }
 
-        public static MLPalFlag GetPalType(ushort value)
-        {
-            return GetFlag(MLPalFlag.I, value)   ? MLPalFlag.I   :
-                   GetFlag(MLPalFlag.F, value)   ? MLPalFlag.F   :
-                   GetFlag(MLPalFlag.C, value)   ? MLPalFlag.C   :
-                   GetFlag(MLPalFlag.B, value)   ? MLPalFlag.B   :
-                   GetFlag(MLPalFlag.SKG, value) ? MLPalFlag.SKG :
-                   GetFlag(MLPalFlag.BLK, value) ? MLPalFlag.BLK :
-                   GetFlag(MLPalFlag.DYN, value) ? MLPalFlag.DYN : MLPalFlag.CUR_SEL;
-        }
-
-        public enum MLPalFlag
+        public enum MlPalFlag
         {
             I = 0x0001,   /* I-Palette */
             F = 0x0002,   /* F-Palette */

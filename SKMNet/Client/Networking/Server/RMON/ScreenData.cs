@@ -1,4 +1,4 @@
-﻿namespace SKMNET.Client.Networking.Server
+﻿namespace SKMNET.Client.Networking.Server.RMON
 {
     /// <summary>
     /// Bildschirmdaten

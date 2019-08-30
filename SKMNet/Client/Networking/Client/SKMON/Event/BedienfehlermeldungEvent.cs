@@ -1,6 +1,6 @@
-﻿﻿using System;
+﻿using System;
 
-namespace SKMNET.Client.Networking.Client
+namespace SKMNET.Client.Networking.Client.SKMON.Event
 {
     public class BedienfehlermeldungEvent : Event
     {
@@ -17,7 +17,7 @@ namespace SKMNET.Client.Networking.Client
         public override int GetEventInteger(LightingConsole console)
         {
             byte[] data = BitConverter.GetBytes(fehlNo);
-            Array.Reverse(data);
+            data.TransformToBigEndian();
             return 0x05000000 | (bdst << 16) | (data[0] << 8) | data[1];
         }
     }

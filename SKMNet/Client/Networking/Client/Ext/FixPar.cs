@@ -1,10 +1,10 @@
-﻿using SKMNET.Client.Stromkreise;
-using SKMNET.Client.Stromkreise.ML;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SKMNET.Client.Stromkreise;
+using SKMNET.Client.Stromkreise.ML;
 
-namespace SKMNET.Client.Networking.Client
+namespace SKMNET.Client.Networking.Client.Ext
 {
     /// <summary>
     /// Geräte-orientierte Parameterwerte
@@ -13,7 +13,7 @@ namespace SKMNET.Client.Networking.Client
     {
         private readonly ValueType valueType;
         private readonly Enums.FixParDst dstReg;
-        private readonly MLParameter[] parameters;
+        private readonly MlParameter[] parameters;
         public override short Type => 20;
 
         public override IEnumerable<byte[]> GetData(LightingConsole console)
@@ -32,7 +32,7 @@ namespace SKMNET.Client.Networking.Client
             );
         }
 
-        public FixPar(ValueType type = ValueType.ABS, Enums.FixParDst reg = Enums.FixParDst.Current, params MLParameter[] parameters)
+        public FixPar(ValueType type = ValueType.ABS, Enums.FixParDst reg = Enums.FixParDst.Current, params MlParameter[] parameters)
         {
             this.parameters = parameters;
             valueType = type;
@@ -43,10 +43,10 @@ namespace SKMNET.Client.Networking.Client
         {
             int estSize = sks.Sum(s => s.Parameters.Count);
 
-            parameters = new MLParameter[estSize];
+            parameters = new MlParameter[estSize];
             for(int i = 0, pointer = 0; i < sks.Length; i++)
             {
-                foreach(MLParameter parameter in sks[i].Parameters)
+                foreach(MlParameter parameter in sks[i].Parameters)
                 {
                     parameters[i] = parameter;
 

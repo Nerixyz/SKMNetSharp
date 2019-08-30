@@ -8,7 +8,7 @@ namespace SKMNET.Client.Networking.Server.TSD
     /// ML-Palettendaten
     /// </summary>
     [Serializable]
-    public class TSD_MLPal : SPacket
+    public class TsdMlPal : SPacket
     {
 
         public MLPalPrefab[] Pallets;
@@ -31,20 +31,21 @@ namespace SKMNET.Client.Networking.Server.TSD
         public override Enums.Response ProcessPacket(LightingConsole console, int type)
         {
 
-            if (!console.Paletten.TryGetValue(Enums.GetEnum<MLPal.Flag>(Type), out List<MLPal> list))
+            if (!console.Paletten.TryGetValue(Enums.GetEnum<MlPal.Flag>(Type), out List<MlPal> list))
                 return Enums.Response.BadCmd;
 
             foreach (MLPalPrefab pre in Pallets)
             {
-                MLPal pal = list.Find(x => x.Number == pre.palno / 10.0);
+                MlPal pal = list.Find(x => x.PalNo == pre.palno);
                 if(pal is null)
                 {
-                    pal = new MLPal(MLPal.GetFlag(pre.paltype), pre.Name, pre.palno);
+                    pal = new MlPal(MlPal.GetFlag(pre.paltype), pre.Name, pre.palno);
                     list.Add(pal);
                 }
                 else
                 {
-                    pal.Name = pre.Name;
+                    // TODO: not update?
+                    //pal.Name = pre.Name;
                     pal.Number = pre.palno / 10.0;
                 }
             }
