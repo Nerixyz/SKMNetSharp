@@ -13,6 +13,7 @@ namespace SKMNET.Util.Networking
         private readonly UdpClient baseClient;
         private readonly Thread readThread;
         public readonly bool Local;
+        public bool run = true;
 
         public SendClient(IPEndPoint endPoint)
         {
@@ -29,7 +30,7 @@ namespace SKMNET.Util.Networking
             {
                 try
                 {
-                    while (true)
+                    while (run)
                     {
                         byte[] data = baseClient.Receive(ref endPoint);
                         OnReceiveBasePort(data);
@@ -71,8 +72,9 @@ namespace SKMNET.Util.Networking
 
         public void Dispose()
         {
+            run = false;
+            readThread.Join();
             baseClient?.Dispose();
-            readThread.Abort();
         }
     }
 }

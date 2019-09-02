@@ -72,7 +72,8 @@ namespace SKMNET.Util.Networking
 
         public void Dispose()
         {
-            readThread.Abort();
+            dropConnection = true;
+            readThread.Join();
             udpClient.Dispose();
         }
     }
