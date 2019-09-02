@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SKMNET.Client
 {
-    public sealed partial class LightingConsole
+    public partial class LightingConsole
     {
         public void Query(byte[] data, short type) => Connection.SendPacket(data, type);
 

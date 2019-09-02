@@ -7,7 +7,7 @@ using SKMNET.Exceptions;
 
 namespace SKMNET.Util.Networking
 {
-    internal class SendClient
+    internal class SendClient: IDisposable
     {
         private readonly IPEndPoint endPoint;
         private readonly UdpClient baseClient;
@@ -67,6 +67,12 @@ namespace SKMNET.Util.Networking
         public void SendData(ISendable data, LightingConsole console)
         {
             SendData(data.GetDataToSend(console));
+        }
+
+        public void Dispose()
+        {
+            baseClient?.Dispose();
+            readThread.Abort();
         }
     }
 }

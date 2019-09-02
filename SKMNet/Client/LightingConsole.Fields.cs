@@ -14,7 +14,7 @@ using SKMNET.Util;
 
 namespace SKMNET.Client
 {
-    public sealed partial class LightingConsole
+    public partial class LightingConsole
     {
         [NonSerialized]
         public SK[] Stromkreise;

@@ -15,7 +15,7 @@ using static SKMNET.Enums;
 
 namespace SKMNET.Client
 {
-    public sealed partial class LightingConsole
+    public partial class LightingConsole
     {
         #region PalEdit
         /// <summary>

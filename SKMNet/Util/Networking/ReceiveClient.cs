@@ -7,17 +7,18 @@ using SKMNET.Exceptions;
 
 namespace SKMNET.Util.Networking
 {
-    internal sealed class ReceiveClient
+    internal sealed class ReceiveClient : IDisposable
     {
         private const int T90_TO_SKM_PORT = 5064;
         private bool dropConnection = false;
+        private readonly Thread readThread;
+        private readonly UdpClient udpClient;
 
         public ReceiveClient()
         {
-            UdpClient client;
             try
             {
-                client = new UdpClient(T90_TO_SKM_PORT)
+                udpClient = new UdpClient(T90_TO_SKM_PORT)
                 {
                     EnableBroadcast = true
                 };
@@ -26,12 +27,12 @@ namespace SKMNET.Util.Networking
             {
                 throw new SKMConnectException(new IPEndPoint(0x0, T90_TO_SKM_PORT), "Could not bind to port " + T90_TO_SKM_PORT, e);
             }
-            Thread readThread = new Thread(() =>
+            readThread = new Thread(() =>
             {
                 IPEndPoint endPoint = null;
                 while (!dropConnection)
                 {
-                    byte[] data = client.Receive(ref endPoint);
+                    byte[] data = udpClient.Receive(ref endPoint);
 
                     RecieveEventArgs eventArgs = new RecieveEventArgs(data, endPoint);
                     IPEndPoint point = endPoint;
@@ -39,7 +40,7 @@ namespace SKMNET.Util.Networking
                     {
                         Recieve?.Invoke(this, eventArgs);
                         byte[] arr = new ByteBuffer().Write((int)eventArgs.ResponseCode).ToArray();
-                        client.Send(arr, arr.Length, point);
+                        udpClient.Send(arr, arr.Length, point);
                     });
 
                 }
@@ -69,5 +70,10 @@ namespace SKMNET.Util.Networking
             }
         }
 
+        public void Dispose()
+        {
+            readThread.Abort();
+            udpClient.Dispose();
+        }
     }
 }

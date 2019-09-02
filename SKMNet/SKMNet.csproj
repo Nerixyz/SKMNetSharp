@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>SKMNET</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageVersion>0.1.2</PackageVersion>
+    <PackageVersion>0.1.3</PackageVersion>
     <Title>SKMNetSharp</Title>
     <Authors>Nerix</Authors>
     <Description>Connect to any transtechnik Focus/Prisma NT(X) using simple SKMNet-Client</Description>

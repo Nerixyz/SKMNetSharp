@@ -12,7 +12,7 @@ using SKMNET.Util;
 namespace SKMNET.Client
 {
     [Serializable]
-    public sealed partial class LightingConsole
+    public partial class LightingConsole : IDisposable
     {
         public LightingConsole(string ip, ConsoleSettings settings)
         {
@@ -113,6 +113,11 @@ namespace SKMNET.Client
                     SkSize       = skSize
                 };
             }
+        }
+
+        public void Dispose()
+        {
+            Connection?.Dispose();
         }
     }
 }

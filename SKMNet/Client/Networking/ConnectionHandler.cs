@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
  namespace SKMNET.Client.Networking
 {
-    public class ConnectionHandler
+    public class ConnectionHandler : IDisposable
     {
         private const ushort MAGIC_NUMBER = 0x1fe2;
         private readonly SendClient sendClient;
@@ -161,6 +161,12 @@ using System.Threading.Tasks;
 
         public event EventHandler<PacketReceivedEventArgs> PacketReceived;
         public void OnPacketReceived(PacketDispatcher sender, PacketReceivedEventArgs args) { PacketReceived?.Invoke(sender, args); }
+
+        public void Dispose()
+        {
+            sendClient?.Dispose();
+            receiveClient?.Dispose();
+        }
     }
 
     public class PacketReceivedEventArgs
