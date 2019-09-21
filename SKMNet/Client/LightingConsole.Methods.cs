@@ -5,6 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using SKMNET.Client.Events;
+using SKMNET.Client.Networking;
+using SKMNET.Client.Networking.Server.RMON;
+using SKMNET.Client.Networking.Server.T98;
 
 namespace SKMNET.Client
 {
@@ -38,6 +42,30 @@ namespace SKMNET.Client
         public SK GetSKByNumber(short num)
         {
             return Stromkreise[num];
+        }
+
+        private void OnPacketReceived(object sender, PacketReceivedEventArgs args)
+        {
+            if (args.Response != Enums.Response.OK) return;
+            
+            switch (args.Type)
+            {
+                case Enums.Type.BLamp:
+                {
+                    LampUpdate?.Invoke(this, new BLampEventArgs((BLamp)args.Packet));
+                    break;
+                }
+                case Enums.Type.SKRegData:
+                {
+                    SkIntensityChanged?.Invoke(this, new SkIntensityChangedEventArgs((SKRegData)args.Packet));
+                    break;
+                }
+                case Enums.Type.SkAttr:
+                {
+                    SkAttrChanged?.Invoke(this, new SkAttrChangedEventArgs((SKRegAttr)args.Packet));
+                    break;
+                }
+            }
         }
     }
 }

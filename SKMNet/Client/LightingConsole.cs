@@ -17,6 +17,7 @@ namespace SKMNET.Client
         public LightingConsole(
             string ip,
             ConsoleSettings settings,
+            bool disablePacketEvents = false,
             SK[] sks = null,
             ConnectionHandler connectionHandler = null,
             ScreenManager screenManager = null,
@@ -29,8 +30,14 @@ namespace SKMNET.Client
             Stromkreise = sks ?? new SK[Settings.SkSize];
             SKSize = Settings.SkSize;
 
+            _disablePacketEvents = disablePacketEvents;
+
             Connection = connectionHandler ?? new ConnectionHandler(ip, steckbrief, Settings.SkmType);
             Connection.Errored += Connection_Errored;
+            if (!_disablePacketEvents)
+            {
+                Connection.PacketReceived += OnPacketReceived;
+            }
 
             Bedienstelle = Settings.Bedienstelle;
             Logger = Settings.Logger;

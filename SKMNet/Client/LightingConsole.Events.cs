@@ -1,4 +1,5 @@
 ﻿using System;
+using SKMNET.Client.Events;
 
 namespace SKMNET.Client
 {
@@ -11,6 +12,11 @@ namespace SKMNET.Client
 
         public event EventHandler Pieps;
         public void OnPieps(object sender) { Pieps?.Invoke(sender, EventArgs.Empty); }
+
+
+        public event EventHandler<BLampEventArgs> LampUpdate;
+        public event EventHandler<SkIntensityChangedEventArgs> SkIntensityChanged;
+        public event EventHandler<SkAttrChangedEventArgs> SkAttrChanged;
 
     }
 }

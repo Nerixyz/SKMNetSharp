@@ -38,6 +38,26 @@ namespace SKMNET.Client
         public string AktReg { get; set; }
         public string AktList { get; set; }
 
+        private bool _disablePacketEvents;
+        public bool DisablePacketEvents
+        {
+            get => _disablePacketEvents;
+            set
+            {
+                if (_disablePacketEvents == value) return;
+                if (value)
+                {
+                    Connection.PacketReceived -= OnPacketReceived;
+                }
+                else
+                {
+                    Connection.PacketReceived += OnPacketReceived;
+                }
+
+                _disablePacketEvents = value;
+            }
+        }
+
         public Dictionary<MlPal.Flag, List<MlPal>> Paletten { get; }
 
         /// <summary>
