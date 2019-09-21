@@ -14,26 +14,22 @@ namespace SKMNET.Client
     [Serializable]
     public partial class LightingConsole : IDisposable
     {
-        public LightingConsole(string ip, ConsoleSettings settings)
+        public LightingConsole(
+            string ip,
+            ConsoleSettings settings,
+            SK[] sks = null,
+            ConnectionHandler connectionHandler = null,
+            ScreenManager screenManager = null,
+            TastenManager tastenManager = null,
+            Dictionary<MlPal.Flag, List<MlPal>> paletten = null)
         {
             Settings = settings;
-            SKMSteckbrief steckbrief = new SKMSteckbrief
-            {
-                Bedientasten = Settings.Bedientasten,
-                BefMeldZeile = Settings.BefMeldZeile,
-                FuncKeys = Settings.FuncKeys,
-                Lki = Settings.Lki,
-                BlockInfo = Settings.BlockInfo,
-                AzZeilen = Settings.AzZeilen,
-                ExtKeys = Settings.ExtKeys,
-                AktInfo = Settings.AktInfo,
-                Steller = Settings.Steller
-            };
+            SKMSteckbrief steckbrief = settings.Steckbrief;
 
-            Stromkreise = new SK[Settings.SkSize];
+            Stromkreise = sks ?? new SK[Settings.SkSize];
             SKSize = Settings.SkSize;
 
-            Connection = new ConnectionHandler(ip, this, steckbrief, Settings.SkmType);
+            Connection = connectionHandler ?? new ConnectionHandler(ip, steckbrief, Settings.SkmType);
             Connection.Errored += Connection_Errored;
 
             Bedienstelle = Settings.Bedienstelle;
@@ -45,14 +41,14 @@ namespace SKMNET.Client
 
             Paletten = new Dictionary<MlPal.Flag, List<MlPal>>
             {
-                { MlPal.Flag.I, new List<MlPal>() },
-                { MlPal.Flag.F, new List<MlPal>() },
-                { MlPal.Flag.C, new List<MlPal>() },
-                { MlPal.Flag.B, new List<MlPal>() },
-                { MlPal.Flag.SKG, new List<MlPal>() },
-                { MlPal.Flag.BLK, new List<MlPal>() },
-                { MlPal.Flag.DYN, new List<MlPal>() },
-                { MlPal.Flag.CUR_SEL, new List<MlPal>() }
+                {MlPal.Flag.I, new List<MlPal>()},
+                {MlPal.Flag.F, new List<MlPal>()},
+                {MlPal.Flag.C, new List<MlPal>()},
+                {MlPal.Flag.B, new List<MlPal>()},
+                {MlPal.Flag.SKG, new List<MlPal>()},
+                {MlPal.Flag.BLK, new List<MlPal>()},
+                {MlPal.Flag.DYN, new List<MlPal>()},
+                {MlPal.Flag.CUR_SEL, new List<MlPal>()}
             };
         }
 
@@ -72,6 +68,7 @@ namespace SKMNET.Client
             /// Type of SKM (0=regular, 1=tsd, 2=mlc)
             /// </summary>
             public byte SkmType { get; private set; }
+
             public Enums.Bedienstelle Bedienstelle { get; private set; } = Enums.Bedienstelle.Libra;
 
             /// <summary>
@@ -84,6 +81,20 @@ namespace SKMNET.Client
             /// </summary>
             public int SkSize { get; private set; } = 512 * 2;
 
+            public SKMSteckbrief Steckbrief =>
+                new SKMSteckbrief
+                {
+                    Bedientasten = Bedientasten,
+                    BefMeldZeile = BefMeldZeile,
+                    FuncKeys = FuncKeys,
+                    Lki = Lki,
+                    BlockInfo = BlockInfo,
+                    AzZeilen = AzZeilen,
+                    ExtKeys = ExtKeys,
+                    AktInfo = AktInfo,
+                    Steller = Steller
+                };
+
             /// <summary>
             /// Initialize default settings
             /// </summary>
@@ -93,24 +104,25 @@ namespace SKMNET.Client
             /// <param name="logger">Logger for the connection</param>
             /// <param name="state">State of all flags</param>
             /// <returns>Default <see cref="ConsoleSettings"/></returns>
-            public static ConsoleSettings All(int skSize = 512 * 2, byte skmType = 2, Enums.Bedienstelle bedienstelle = Enums.Bedienstelle.Libra, ILogger logger = null, bool state = true)
+            public static ConsoleSettings All(int skSize = 512 * 2, byte skmType = 2,
+                Enums.Bedienstelle bedienstelle = Enums.Bedienstelle.Libra, ILogger logger = null, bool state = true)
             {
                 return new ConsoleSettings
                 {
                     Bedientasten = state,
-                    AktInfo      = state,
-                    AzZeilen     = state,
+                    AktInfo = state,
+                    AzZeilen = state,
                     BefMeldZeile = state,
-                    BlockInfo    = state,
-                    ExtKeys      = state,
-                    FuncKeys     = state,
-                    Lki          = state,
-                    Steller      = state,
+                    BlockInfo = state,
+                    ExtKeys = state,
+                    FuncKeys = state,
+                    Lki = state,
+                    Steller = state,
 
-                    Logger       = logger,
+                    Logger = logger,
                     Bedienstelle = bedienstelle,
-                    SkmType      = skmType,
-                    SkSize       = skSize
+                    SkmType = skmType,
+                    SkSize = skSize
                 };
             }
         }

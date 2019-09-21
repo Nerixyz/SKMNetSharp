@@ -10,6 +10,9 @@ namespace SKMNET.Client
 {
     public partial class LightingConsole
     {
+
+        public Task<Enums.FehlerT> ConnectAsync(CPacket initPacket = null) => Connection.Connect(this, initPacket);
+
         public void Query(byte[] data, short type) => Connection.SendPacket(data, type);
 
         /// <summary>

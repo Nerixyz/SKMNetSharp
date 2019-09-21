@@ -1,80 +1,100 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 using SKMNET.Exceptions;
 
 namespace SKMNET.Util.Networking
 {
-    internal sealed class ReceiveClient : IDisposable
+    public class ReceiveClient : IReceiveClient
     {
         private const int T90_TO_SKM_PORT = 5064;
-        private bool dropConnection = false;
-        private readonly Thread readThread;
+
+        private IPEndPoint ipEndPoint;
+
         private readonly UdpClient udpClient;
+
+        private AsyncCallback receiveCallback;
 
         public ReceiveClient()
         {
             try
             {
-                udpClient = new UdpClient(T90_TO_SKM_PORT)
-                {
-                    EnableBroadcast = true
-                };
+                udpClient = new UdpClient(T90_TO_SKM_PORT) {EnableBroadcast = true};
+                Closing = false;
             }
-            catch(Exception e)
+            catch (SocketException ex)
             {
-                throw new SKMConnectException(new IPEndPoint(0x0, T90_TO_SKM_PORT), "Could not bind to port " + T90_TO_SKM_PORT, e);
-            }
-            readThread = new Thread(() =>
-            {
-                IPEndPoint endPoint = null;
-                while (!dropConnection)
-                {
-                    byte[] data = udpClient.Receive(ref endPoint);
-
-                    RecieveEventArgs eventArgs = new RecieveEventArgs(data, endPoint);
-                    IPEndPoint point = endPoint;
-                    Task.Run(() =>
-                    {
-                        Recieve?.Invoke(this, eventArgs);
-                        byte[] arr = new ByteBuffer().Write((int)eventArgs.ResponseCode).ToArray();
-                        udpClient.Send(arr, arr.Length, point);
-                    });
-
-                }
-            });
-
-            readThread.Start();
-        }
-
-        public event EventHandler<RecieveEventArgs> Recieve;
-
-        public event EventHandler<Exception> Errored;
-        private void OnErrored(Exception data) { Errored?.Invoke(this, data); }
-
-        public class RecieveEventArgs
-        {
-            public byte[] Data { get; }
-            public Enums.Response ResponseCode;
-            public bool DropConnection;
-            public IPEndPoint EndPoint;
-
-            public RecieveEventArgs(byte[] data, IPEndPoint endPoint)
-            {
-                Data = data;
-                ResponseCode = Enums.Response.OK;
-                DropConnection = false;
-                EndPoint = endPoint;
+                throw new SKMConnectException(new IPEndPoint(0, T90_TO_SKM_PORT),
+                    $"Failed binding to port {T90_TO_SKM_PORT.ToString()}", ex);
             }
         }
+
+        private bool Closing { get; set; }
 
         public void Dispose()
         {
-            dropConnection = true;
-            readThread.Join();
-            udpClient.Dispose();
+            Closing = true;
+            udpClient.Close();
+        }
+
+        public Action<ReceiveEventArgs> Receive { get; set; }
+        public event EventHandler<Exception> Errored;
+
+        public void Start(IPEndPoint endPoint)
+        {
+            ipEndPoint = endPoint ?? new IPEndPoint(IPAddress.Any, 0);
+            udpClient.BeginReceive(receiveCallback = ReceiveCallback, new EbReceiveState
+            {
+                UdpClient = udpClient,
+                Receive = Receive,
+                Sender = this,
+                EndPoint = ipEndPoint,
+                AsyncReceiveCallback = receiveCallback,
+            });
+        }
+
+        private static void ReceiveCallback(IAsyncResult result)
+        {
+            if(result == null) return;
+            
+            byte[] receivedBytes = null;
+            EbReceiveState state = (EbReceiveState) result.AsyncState;
+            try
+            {
+                receivedBytes = state.UdpClient.EndReceive(result, ref state.EndPoint);
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+
+            if (receivedBytes?.Length > 0)
+            {
+                ReceiveEventArgs eventArgs = new ReceiveEventArgs(receivedBytes, state.EndPoint);
+
+                if (state.Receive != null)
+                {
+                    Task.Factory.StartNew(() => state.Receive(eventArgs)).ContinueWith((task =>
+                    {
+                        byte[] toWrite = new ByteBuffer().Write((int) eventArgs.ResponseCode).ToArray();
+                        state.UdpClient.Send(toWrite, toWrite.Length, state.EndPoint);
+                    }));
+                }
+            }
+            
+            if (!state.Sender.Closing)
+            {
+                state.UdpClient.BeginReceive(state.AsyncReceiveCallback, state);
+            }
+        }
+
+        private class EbReceiveState
+        {
+            public UdpClient UdpClient;
+            public Action<ReceiveEventArgs> Receive;
+            public ReceiveClient Sender;
+            public IPEndPoint EndPoint;
+            public AsyncCallback AsyncReceiveCallback;
         }
     }
 }

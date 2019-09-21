@@ -1,80 +1,110 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
+using System.Threading.Tasks;
 using SKMNET.Client;
-using SKMNET.Exceptions;
 
 namespace SKMNET.Util.Networking
 {
-    internal class SendClient: IDisposable
+    /// <summary>
+    /// EventBasedSendClient
+    /// </summary>
+    public class SendClient : ISendClient
     {
-        private readonly IPEndPoint endPoint;
-        private readonly UdpClient baseClient;
-        private readonly Thread readThread;
-        public readonly bool Local;
-        public bool run = true;
 
-        public SendClient(IPEndPoint endPoint)
+        private readonly UdpClient udpClient;
+
+        private readonly AsyncCallback receiveCallback;
+        private readonly AsyncCallback sendCallback;
+
+        private bool Closing { get; set; }
+
+        public SendClient()
         {
-            byte[] adress = endPoint.Address.GetAddressBytes();
-            Local = adress[0] == 127 && adress[1] == 0 && adress[2] == 0 && adress[3] == 1;
-            this.endPoint = endPoint;
+            udpClient = new UdpClient {EnableBroadcast = true};
+            receiveCallback = ReceiveCallback;
+            sendCallback = SendCallback;
+            Closing = false;
+        }
+        
+        public void Dispose()
+        {
+            Closing = true;
+            udpClient.Close();
+        }
 
-            baseClient = new UdpClient
+        public Action<byte[]> Receive { get; set; }
+        public event EventHandler<Exception> Errored;
+        public void SendData(byte[] data)
+        {
+            udpClient.BeginSend(data, data.Length, sendCallback, new EbSendState
             {
-                EnableBroadcast = true
-            };
-
-            readThread = new Thread(() =>
-            {
-                try
-                {
-                    while (run)
-                    {
-                        byte[] data = baseClient.Receive(ref endPoint);
-                        OnReceiveBasePort(data);
-                    }
-                }catch(Exception e)
-                {
-                    OnErrored(e);
-                }
+                UdpClient = udpClient,
             });
         }
 
-        public void Start()
+        public void SendData(ISendable sendable, LightingConsole console)
         {
+            SendData(sendable.GetDataToSend(console));
+        }
+
+        public void Start(IPEndPoint ipEndPoint)
+        {
+            udpClient.Connect(ipEndPoint);
+            udpClient.BeginReceive(receiveCallback, new EbReceiveState
+            {
+                UdpClient = udpClient,
+                Receive = Receive,
+                EndPoint = new IPEndPoint(IPAddress.Any, 0),
+                Sender = this,
+                AsyncReceiveCallback = receiveCallback,
+            });
+        }
+
+        private static void ReceiveCallback(IAsyncResult result)
+        {
+            if (result == null) return;
+
+            EbReceiveState state = (EbReceiveState) result.AsyncState;
+            byte[] receivedBytes = null;
             try
             {
-                baseClient.Connect(endPoint);
-                readThread.Start();
-            }catch (Exception e)
+                receivedBytes = state.UdpClient.EndReceive(result, ref state.EndPoint);
+            }
+            catch (ObjectDisposedException)
             {
-                throw new SKMConnectException(endPoint, "Could not connect.", e);
+            }
+
+            if (receivedBytes?.Length > 0 && state.Receive != null)
+                Task.Factory.StartNew(() => state.Receive(receivedBytes));
+            
+            if (!state.Sender.Closing)
+            {
+                state.UdpClient.BeginReceive(state.AsyncReceiveCallback, state);
             }
         }
-
-        public event EventHandler<byte[]> Receive;
-        protected virtual void OnReceiveBasePort(byte[] data) { Receive?.Invoke(this, data); }
-
-        public event EventHandler<Exception> Errored;
-        protected virtual void OnErrored(Exception data) { Errored?.Invoke(this, data); }
-
-        public void SendData(byte[] data)
+        
+        private static void SendCallback(IAsyncResult result)
         {
-            baseClient.Send(data, data.Length);
+            if(result == null) return;
+
+            EbSendState state = (EbSendState) result.AsyncState;
+
+            state.UdpClient.EndSend(result);
         }
 
-        public void SendData(ISendable data, LightingConsole console)
+        private class EbReceiveState
         {
-            SendData(data.GetDataToSend(console));
+            public UdpClient UdpClient;
+            public Action<byte[]> Receive;
+            public IPEndPoint EndPoint;
+            public SendClient Sender;
+            public AsyncCallback AsyncReceiveCallback;
         }
 
-        public void Dispose()
+        private class EbSendState
         {
-            run = false;
-            readThread.Join();
-            baseClient?.Dispose();
+            public UdpClient UdpClient;
         }
     }
 }

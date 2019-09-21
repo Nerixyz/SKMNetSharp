@@ -14,39 +14,55 @@ using System.Threading.Tasks;
     public class ConnectionHandler : IDisposable
     {
         private const ushort MAGIC_NUMBER = 0x1fe2;
-        private readonly SendClient sendClient;
-        private readonly ReceiveClient receiveClient;
-        public readonly LightingConsole Console;
+        private readonly ISendClient sendClient;
+        private readonly IReceiveClient receiveClient;
+
+        public LightingConsole Console { get; private set; } = null;
         //private readonly Thread sendThread;
         private readonly PacketDispatcher packetDispatcher;
 
         private readonly Queue<TaskCompletionSource<Enums.FehlerT>> completionQueue;
 
+        public byte[] LocalIpBytes { get; private set; }
+        private readonly IPAddress consoleIp;
 
-        public ConnectionHandler(string ipAddress, LightingConsole parent, SKMSteckbrief steckbrief, byte SKMType)
+
+        public SKMSteckbrief Steckbrief { get; set; }
+        public byte SKMType { get; set; }
+
+
+        public ConnectionHandler(string ipAddress, SKMSteckbrief steckbrief = default, byte skmType = 0, PacketDispatcher dispatcher = null, ISendClient sendClient = null, IReceiveClient receiveClient = null)
         {
-            Console = parent;
+            Steckbrief = steckbrief;
+            SKMType = skmType;
+            consoleIp = IPAddress.Parse(ipAddress);
 
-            sendClient = new SendClient(new IPEndPoint(IPAddress.Parse(ipAddress), 5063));
-            sendClient.Receive += SendClientReceive;
-            sendClient.Errored += SendClientErrored;
-            sendClient.Start();
+            this.sendClient = sendClient ?? new SendClient();
+            this.sendClient.Receive = SendClientReceive;
+            this.sendClient.Errored += SendClientErrored;
+            this.sendClient.Start(new IPEndPoint(consoleIp, 5063));
 
-            receiveClient = new ReceiveClient();
-            receiveClient.Recieve += ReceiveClientReceive;
-            receiveClient.Errored += ReceiveClientErrored;
+            this.receiveClient = receiveClient ?? new ReceiveClient();
+            this.receiveClient.Receive = ReceiveClientReceive;
+            this.receiveClient.Errored += ReceiveClientErrored;
+            this.receiveClient.Start(new IPEndPoint(IPAddress.Any, 0));
 
-            packetDispatcher = new PacketDispatcher(this);
+            packetDispatcher = dispatcher ?? new PacketDispatcher(this);
 
             completionQueue = new Queue<TaskCompletionSource<Enums.FehlerT>>();
+            LocalIpBytes = GetLocalIpAddress();
+        }
 
-            var sync = new SKMSync(steckbrief, SKMType);
-            SendToConsole(MakePacket(sync.GetDataToSend(Console), sync.Type));
+        public Task<Enums.FehlerT> Connect(LightingConsole console, CPacket initPacket = null)
+        {
+            Console = console;
+            SKMSync sync = new SKMSync(Steckbrief, SKMType);
+            return SendPacketAsync(sync);
         }
 
         private void ReceiveClientErrored(object sender, Exception e) => OnErrored(this, e);
 
-        private void ReceiveClientReceive(object sender, ReceiveClient.RecieveEventArgs args)
+        private void ReceiveClientReceive(ReceiveEventArgs args)
         {
             try
             {
@@ -55,9 +71,9 @@ using System.Threading.Tasks;
             catch (Exception e)
             {
                 args.ResponseCode = Enums.Response.BadCmd;
-                Console.Logger?.Log(args.Data.ToHexString());
+                Console?.Logger?.Log(args.Data.ToHexString());
                 OnErrored(this, e);
-                Console.Logger?.Log(e.StackTrace);
+                Console?.Logger?.Log(e.StackTrace);
             }
         }
 
@@ -66,7 +82,7 @@ using System.Threading.Tasks;
             OnErrored(this, e);
         }
 
-        private void SendClientReceive(object sender, byte[] e)
+        private void SendClientReceive(byte[] e)
         {
 
             ByteBuffer buf = new ByteBuffer(e);
@@ -103,13 +119,19 @@ using System.Threading.Tasks;
         private byte[] MakePacket(byte[] data, short type)
         {
             ByteBuffer buf = new ByteBuffer();
-            buf.Write(MAGIC_NUMBER).Write(type).Write(GetLocalIpAddress()).Write(data);
+            buf.Write(MAGIC_NUMBER).Write(type).Write(LocalIpBytes).Write(data);
             return buf.ToArray();
         }
 
         private byte[] GetLocalIpAddress()
         {
-            if (sendClient.Local) return new byte[] { 127, 0, 0, 1 };
+            byte[] consoleIpBytes = consoleIp.GetAddressBytes();
+            if (consoleIpBytes.Length == 4 &&
+                consoleIpBytes[0] == 127 &&
+                consoleIpBytes[1] == 0 &&
+                consoleIpBytes[2] == 0 &&
+                consoleIpBytes[3] == 1) 
+                return new byte[] { 127, 0, 0, 1 };
             
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (IPAddress ip in host.AddressList)

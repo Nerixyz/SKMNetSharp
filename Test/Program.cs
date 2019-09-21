@@ -1,23 +1,13 @@
-﻿using Newtonsoft.Json;
-using SKMNET;
+﻿using SKMNET;
 using SKMNET.Client;
 using SKMNET.Client.Networking;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using SKMNET.Client.Networking.Server.T98;
 using SKMNET.Exceptions;
 using System.Threading.Tasks;
-using System.Timers;
-using SKMNET.Client.Networking.Client;
 using SKMNET.Client.Networking.Client.TSD;
-using SKMNET.Client.Networking.Server;
-using SKMNET.Client.Stromkreise.ML;
 using SKMNET.Util;
 using static SKMNET.Enums;
-using Type = System.Type;
 
 namespace Test
 {
@@ -30,15 +20,15 @@ namespace Test
         private static async Task MainAsync()
         {
             _stopwatch = new Stopwatch();
-            LightingConsole console = new LightingConsole(
-                Environment.GetEnvironmentVariable("SKM_IP") ?? "127.0.0.1",
-                LightingConsole.ConsoleSettings.All(
-                    logger: new ConsoleLogger()
-                    )
-                );
+
+            string ip = Environment.GetEnvironmentVariable("SKM_IP") ?? "127.0.0.1";
+            LightingConsole.ConsoleSettings settings = LightingConsole.ConsoleSettings.All(logger: new ConsoleLogger());
+            LightingConsole console = new LightingConsole(ip, settings);
 
             console.Errored += Console_Errored;
             console.Connection.PacketReceived += Connection_PacketReceived;
+
+            await console.ConnectAsync();
 
             Console.ReadLine();
             await Print(console.QueryAsync(
@@ -63,10 +53,6 @@ namespace Test
         private static void Connection_PacketReceived(object sender, PacketReceivedEventArgs args)
         {
             Console.WriteLine($"received {(int) args.Type} - {args.Packet.GetType().Name}");
-            if (args.Packet is SKRegData)
-            {
-                Console.WriteLine(JsonConvert.SerializeObject(args.Packet));
-            }
         }
 
         public static byte[] FromHex(string hex)
