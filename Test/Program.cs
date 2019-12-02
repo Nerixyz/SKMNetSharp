@@ -5,6 +5,8 @@ using System;
 using System.Diagnostics;
 using SKMNET.Exceptions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SKMNET.Client.Networking.Client.MLC;
 using SKMNET.Client.Networking.Client.TSD;
 using SKMNET.Util;
 using static SKMNET.Enums;
@@ -31,8 +33,9 @@ namespace Test
             await console.ConnectAsync();
 
             Console.ReadLine();
+            Console.WriteLine(console.GetSKByNumber(107));
             await Print(console.QueryAsync(
-                new PalCommand(commands: new PalCommand.PalCmdEntry(MlUtil.MlPalFlag.BLK, 10))));
+                new ParList(sks: console.GetSKByNumber(107))));
             Console.ReadLine();
         }
 

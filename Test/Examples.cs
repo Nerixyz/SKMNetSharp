@@ -45,33 +45,33 @@ namespace Test
             t.Start();
         }
         
-        private static void HsvToRgb(double h, double saturation, double value, out int r, out int g, out int b)
-        {
-            double H = Math.Abs(h % 360.0);
+        private static void HsvToRgb(double h, double S, double V, out int r, out int g, out int b)
+        {    
+            double H = h;
+            while (H < 0) { H += 360; };
+            while (H >= 360) { H -= 360; };
             double R, G, B;
-            if (value <= 0)
+            if (V <= 0)
+            { R = G = B = 0; }
+            else if (S <= 0)
             {
-                R = G = B = 0;
-            }
-            else if (saturation <= 0)
-            {
-                R = G = B = value;
+                R = G = B = V;
             }
             else
             {
                 double hf = H / 60.0;
                 int i = (int)Math.Floor(hf);
                 double f = hf - i;
-                double pv = value * (1 - saturation);
-                double qv = value * (1 - saturation * f);
-                double tv = value * (1 - saturation * (1 - f));
+                double pv = V * (1 - S);
+                double qv = V * (1 - S * f);
+                double tv = V * (1 - S * (1 - f));
                 switch (i)
                 {
 
                     // Red is the dominant color
 
                     case 0:
-                        R = value;
+                        R = V;
                         G = tv;
                         B = pv;
                         break;
@@ -80,12 +80,12 @@ namespace Test
 
                     case 1:
                         R = qv;
-                        G = value;
+                        G = V;
                         B = pv;
                         break;
                     case 2:
                         R = pv;
-                        G = value;
+                        G = V;
                         B = tv;
                         break;
 
@@ -94,18 +94,18 @@ namespace Test
                     case 3:
                         R = pv;
                         G = qv;
-                        B = value;
+                        B = V;
                         break;
                     case 4:
                         R = tv;
                         G = pv;
-                        B = value;
+                        B = V;
                         break;
 
                     // Red is the dominant color
 
                     case 5:
-                        R = value;
+                        R = V;
                         G = pv;
                         B = qv;
                         break;
@@ -113,12 +113,12 @@ namespace Test
                     // Just in case we overshoot on our math by a little, we put these here. Since its a switch it won't slow us down at all to put these here.
 
                     case 6:
-                        R = value;
+                        R = V;
                         G = tv;
                         B = pv;
                         break;
                     case -1:
-                        R = value;
+                        R = V;
                         G = pv;
                         B = qv;
                         break;
@@ -127,7 +127,7 @@ namespace Test
 
                     default:
                         //LFATAL("i Value error in Pixel conversion, Value is %d", i);
-                        R = G = B = value; // Just pretend its black/white
+                        R = G = B = V; // Just pretend its black/white
                         break;
                 }
             }
